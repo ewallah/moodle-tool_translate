@@ -12,6 +12,7 @@ jobs:
         moodle-branch: ['master', 'MOODLE_311_STABLE', 'MOODLE_310_STABLE']
         php: ['7.4']
         database: ['mysqli']
+        include:
         - php: 8.0
           moodle-branch: master
           database: mysqli
