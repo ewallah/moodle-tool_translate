@@ -75,10 +75,5 @@ jobs:
       - name: phpunit 
         run: moodle-plugin-ci --ansi phpunit --coverage-text
 
-      - name: subplugin 
-        run: moodle-plugin-ci --ansi parallel admin/tool/translate/engine/aws
-        working-directory: moodle
-
-      - name: subplugin 
-        run: moodle-plugin-ci --ansi parallel admin/tool/translate/engine/google
-        working-directory: moodle
+      - name: behat 
+        run: moodle-plugin-ci --ansi behat

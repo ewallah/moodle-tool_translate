@@ -30,11 +30,8 @@ if (is_siteadmin()) {
     $trans = get_string_manager()->get_list_of_translations();
     if (count($trans) > 1 or PHPUNIT_TEST) {
         $s = 'translateengine_google';
-        $t = get_strings(['pluginname', 'access_key', 'secret_key'], $s);
-        $settings = new admin_settingpage($s . '_settings', $t->pluginname);
-        $setting = new admin_setting_configtext("$s/access_key", $t->access_key, '', '');
-        $settings->add($setting);
-        $setting = new admin_setting_configpasswordunmask("$s/secret_key", $t->secret_key, '', '');
+        $settings = new admin_settingpage($s . '_settings', get_string('pluginname', 'translateengine_google'));
+        $setting = new admin_setting_configtext("$s/googleapikey", get_string('googleapikey', 'translateengine_google'), '', '');
         $settings->add($setting);
     }
 }

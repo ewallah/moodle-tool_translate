@@ -25,5 +25,4 @@
  */
 $string['pluginname'] = 'Google translate';
 $string['privacy:metadata'] = 'The Google translate engine plugin does not store any personal data.';
-$string['access_key'] = 'Google access key';
-$string['secret_key'] = 'Google secret key';
+$string['googleapikey'] = 'Google API key';

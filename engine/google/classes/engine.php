@@ -39,4 +39,48 @@ defined('MOODLE_INTERNAL') || die();
  */
 class engine extends \tool_translate\engine {
 
+    /**
+     * Is the translate engine fully configured and ready to use.
+     *
+     * @return bool if the engine is ready for use
+     */
+    public function is_configured(): bool {
+        return (get_config('translateengine_google', 'googleapikey') != '');
+    }
+
+    /**
+     * Supported languges.
+     *
+     * @return string[] Array of suported source/target languages
+     */
+    public function supported_langs(): array {
+        return ['en', 'fr'];
+    }
+
+    /**
+     * Translate text.
+     *
+     * @param string $source The source language
+     * @param string $target The target language
+     * @param string $txt The text that has to be translated
+     * @return string|null The translated text
+     */
+    public function translatetext(string $source, string $target, string $txt): ?string {
+        if ($this->is_configured()) {
+            try {
+                // TODO: Configure Google.
+                $url = 'https://www.googleapis.com/language/translate/v2?key=';
+                $url .= get_config('translateengine_google', 'googleapikey');
+                $url .= '&format=html&prettyprint=false&q=';
+                $url .= $txt;
+                $url .= '&source=' . $source;
+                $url .= '&target=' . $target;
+                return $txt;
+            } catch (exception $e) {
+                return null;
+            }
+        }
+        return null;
+    }
+
 }
