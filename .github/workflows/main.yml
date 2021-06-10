@@ -9,13 +9,9 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        moodle-branch: ['master', 'MOODLE_311_STABLE', 'MOODLE_310_STABLE']
+        moodle-branch: ['master']
         php: ['7.4']
         database: ['mysqli']
-        include:
-        - php: 8.0
-          moodle-branch: master
-          database: mysqli
 
     name: ${{ matrix.moodle-branch }}  php ${{ matrix.php }}  ${{ matrix.database }}
 
@@ -81,6 +77,8 @@ jobs:
 
       - name: subplugin 
         run: moodle-plugin-ci --ansi parallel admin/tool/translate/engine/aws
+        working-directory: moodle
 
       - name: subplugin 
         run: moodle-plugin-ci --ansi parallel admin/tool/translate/engine/google
+        working-directory: moodle
