@@ -73,7 +73,7 @@ class tool_translate_table_testcase extends advanced_testcase {
         $generator->create_module('choice', ['course' => $course->id]);
         $generator->create_module('forum', ['course' => $course->id]);
 
-        $table = new \tool_translate\translation_table($course);
+        $table = new \tool_translate\output\translation_table($course);
         $table->filldata();
         $out = \html_writer::table($table);
         $this->assertStringContainsString($lesson->name, $out);

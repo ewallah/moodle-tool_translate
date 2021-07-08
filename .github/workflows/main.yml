@@ -10,7 +10,7 @@ jobs:
       fail-fast: false
       matrix:
         moodle-branch: ['master']
-        php: ['7.4']
+        php: ['7.4', '8.0']
         database: ['mysqli']
 
     name: ${{ matrix.moodle-branch }}  php ${{ matrix.php }}  ${{ matrix.database }}
@@ -74,6 +74,14 @@ jobs:
 
       - name: phpunit 
         run: moodle-plugin-ci --ansi phpunit --coverage-text
+
+      - name: privacy
+        run: vendor/bin/phpunit --colors --no-coverage --testsuite tool_dataprivacy_testsuite,tool_policy_testsuite,core_privacy_testsuite
+        working-directory: moodle
+
+      - name: admin bookmarks
+        run: php admin/tool/behat/cli/run.php --profile=chrome --tags=@block_admin_bookmarks
+        working-directory: moodle
 
       - name: behat 
         run: moodle-plugin-ci --ansi behat

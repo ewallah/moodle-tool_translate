@@ -23,6 +23,7 @@
  * @author    info@iplusacademy.org
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
+
+$string['googleapikey'] = 'Google API key';
 $string['pluginname'] = 'Google translate';
 $string['privacy:metadata'] = 'The Google translate engine plugin does not store any personal data.';
-$string['googleapikey'] = 'Google API key';

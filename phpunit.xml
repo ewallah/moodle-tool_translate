@@ -4,6 +4,7 @@
         xsi:noNamespaceSchemaLocation="../../lib/phpunit/phpunit.xsd"
         bootstrap="../../../lib/phpunit/bootstrap.php"
         cacheResult="false"
+        colors="true"
         convertErrorsToExceptions="true"
         convertNoticesToExceptions="true"
         convertWarningsToExceptions="true"
@@ -33,16 +34,16 @@
             <directory suffix="_test.php">.</directory>
         </testsuite>
     </testsuites>
-    <filter>
-        <whitelist processUncoveredFilesFromWhitelist="false">
+    <coverage>
+        <include>
             <directory suffix=".php">.</directory>
-            <exclude>
-                <directory suffix=".php">cli</directory>
-                <directory>engine</directory>
-                <file>version.php</file>
-                <file>settings.php</file>
-                <file>index.php</file>
-            </exclude>
-        </whitelist>
-    </filter>
+        </include>
+        <exclude>
+            <directory suffix=".php">cli</directory>
+            <directory>engine</directory>
+            <file>version.php</file>
+            <file>settings.php</file>
+            <file>index.php</file>
+        </exclude>
+    </coverage>
 </phpunit>

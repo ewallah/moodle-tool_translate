@@ -23,12 +23,9 @@
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-namespace tool_translate;
+namespace tool_translate\output;
 
 defined('MOODLE_INTERNAL') || die();
-
-require_once($CFG->dirroot . '/question/engine/bank.php');
-require_once($CFG->libdir . '/badgeslib.php');
 
 /**
  * Translation of modules.
@@ -54,9 +51,8 @@ class translation_table extends \html_table {
      * Constructor
      *
      * @param course $course
-     * @param string $forcetranslate
      */
-    public function __construct($course, $forcetranslate = '') {
+    public function __construct($course) {
         parent::__construct('translate');
         $this->course = $course;
         $this->caption = get_string('pluginname', 'tool_translate');

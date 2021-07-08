@@ -45,7 +45,8 @@ $PAGE->set_pagelayout('report');
 $PAGE->set_title($title);
 $PAGE->set_heading($course->fullname);
 echo $OUTPUT->header();
-$table = new \tool_translate\translation_table($course);
+
+$table = new \tool_translate\output\translation_table($course);
 if ($action === 'translate') {
     if (confirm_sesskey()) {
         $sectionid = optional_param('sectionid', 0, PARAM_INT);

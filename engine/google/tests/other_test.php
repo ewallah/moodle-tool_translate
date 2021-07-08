@@ -56,9 +56,6 @@ class translateengine_google_other_testcase extends advanced_testcase {
         $this->assertFalse($class->is_configured());
         set_config('googleapikey', 'key', 'translateengine_google');
         $this->assertTrue($class->is_configured());
-        // TODO.
-        $this->assertSame('boe', $class->translatetext('en', 'fr', 'boe'));
-        $this->assertIsArray($class->supported_langs());
     }
 
     /**
@@ -70,7 +67,8 @@ class translateengine_google_other_testcase extends advanced_testcase {
         $class = new \translateengine_google\engine($course);
         $this->assertInstanceOf('\translateengine_google\engine', $class);
         $this->assertTrue($class->is_configured());
+        $this->assertIsArray($class->supported_langs());
         // TODO.
-        $this->assertSame('boe', $class->translatetext('en', 'fr', 'boe'));
+        $this->assertSame(null, $class->translatetext('en', 'fr', 'boe'));
     }
 }

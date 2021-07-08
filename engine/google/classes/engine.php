@@ -39,6 +39,28 @@ defined('MOODLE_INTERNAL') || die();
  */
 class engine extends \tool_translate\engine {
 
+    /** @var \stdClass client */
+    protected $client;
+    /** @var \stdClass service */
+    protected $service;
+
+    /**
+     * Constructor
+     *
+     * @param course $course
+     */
+    public function __construct($course) {
+        global $CFG;
+        parent::__construct($course);
+        require_once($CFG->libdir . '/google/lib.php');
+        $this->client = get_google_client();
+        $key = get_config('translateengine_google', 'googleapikey');
+        if ($key != '') {
+            $this->client->setDeveloperKey($key);
+            $this->service = new \Google_Service_Translate($this->client);
+        }
+    }
+
     /**
      * Is the translate engine fully configured and ready to use.
      *
@@ -66,16 +88,28 @@ class engine extends \tool_translate\engine {
      * @return string|null The translated text
      */
     public function translatetext(string $source, string $target, string $txt): ?string {
-        if ($this->is_configured()) {
+        if ($this->service) {
             try {
                 // TODO: Configure Google.
                 $url = 'https://www.googleapis.com/language/translate/v2?key=';
                 $url .= get_config('translateengine_google', 'googleapikey');
                 $url .= '&format=html&prettyprint=false&q=';
-                $url .= $txt;
+                $url .= urlencode($txt);
                 $url .= '&source=' . $source;
                 $url .= '&target=' . $target;
-                return $txt;
+                $handle = curl_init($url);
+                curl_setopt($handle, CURLOPT_SSL_VERIFYPEER, false);
+                curl_setopt($handle, CURLOPT_SSL_VERIFYHOST, false);
+                curl_setopt($handle, CURLOPT_RETURNTRANSFER, true);
+                $response = curl_exec($handle);
+                $responsed = json_decode($response, true);
+                $responsecode = curl_getinfo($handle, CURLINFO_HTTP_CODE);
+                // TODO: print_object($responsed);.
+                curl_close($handle);
+                if ($responsecode != 200) {
+                     return null;
+                }
+                return 'boe';
             } catch (exception $e) {
                 return null;
             }
