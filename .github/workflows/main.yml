@@ -81,7 +81,3 @@ jobs:
 
       - name: behat 
         run: moodle-plugin-ci --ansi behat
-
-      - name: admin bookmarks
-        run: php admin/tool/behat/cli/run.php --profile=chrome --tags=@block_admin_bookmarks
-        working-directory: moodle
