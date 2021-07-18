@@ -104,7 +104,6 @@ class engine extends \tool_translate\engine {
                 $response = curl_exec($handle);
                 $responsed = json_decode($response, true);
                 $responsecode = curl_getinfo($handle, CURLINFO_HTTP_CODE);
-                // TODO: print_object($responsed);.
                 curl_close($handle);
                 if ($responsecode != 200) {
                      return null;
@@ -116,5 +115,4 @@ class engine extends \tool_translate\engine {
         }
         return null;
     }
-
 }

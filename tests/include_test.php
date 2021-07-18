@@ -70,5 +70,4 @@ class tool_translate_include_testcase extends advanced_testcase {
         global $CFG;
         require_once($CFG->dirroot . '/admin/tool/translate/version.php');
     }
-
 }

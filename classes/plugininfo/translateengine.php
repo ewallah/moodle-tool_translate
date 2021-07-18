@@ -76,7 +76,6 @@ class translateengine extends base {
      * @param bool $hassiteconfig whether the current user has moodle/site:config capability
      */
     public function load_settings(part_of_admin_tree $adminroot, $parentnodename, $hassiteconfig) {
-        // TODO: global $CFG, $USER, $DB, $OUTPUT, $PAGE; // In case settings.php wants to refer to them.
         $ADMIN = $adminroot;
 
         if (!$this->is_installed_and_upgraded() or !$hassiteconfig or !file_exists($this->full_path('settings.php'))) {
@@ -101,5 +100,3 @@ class translateengine extends base {
     }
 
 }
-
-
