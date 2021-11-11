@@ -202,7 +202,7 @@ abstract class engine {
 
 
     /**
-     * Translate record
+     * Add record
      *
      * @param string $tablename
      * @param string $fieldname
