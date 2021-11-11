@@ -16,7 +16,6 @@
 /**
  * Module to handle AJAX interactions with tool translate
  *
- * @package   tool_translate
  * @copyright 2021 eWallah
  * @author    Renaat Debleu <info@eWallah.net>
  * @author    info@iplusacademy.org
