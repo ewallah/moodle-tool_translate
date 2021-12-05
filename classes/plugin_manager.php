@@ -57,28 +57,26 @@ class plugin_manager {
      */
     public function execute($action, $plugin) {
         global $OUTPUT;
-        if ($action == null) {
-            $action = 'view';
-        }
-
         $this->check_permissions();
-
-        // Process.
-        if ($action == 'hide' && $plugin != null) {
-            $action = $this->hide_plugin($plugin);
-        } else if ($action == 'show' && $plugin != null) {
-            $action = $this->show_plugin($plugin);
-        } else if ($action == 'moveup' && $plugin != null) {
-            $action = $this->move_plugin($plugin, 'up');
-        } else if ($action == 'movedown' && $plugin != null) {
-            $action = $this->move_plugin($plugin, 'down');
-        } else if ($action == 'view') {
-
+        if ($plugin != null) {
+            switch ($action) {
+                case 'hide';
+                    $this->hide_plugin($plugin);
+                    break;
+                case 'moveup';
+                    $this->move_plugin($plugin, 'up');
+                    break;
+                case 'movedown';
+                    $this->move_plugin($plugin, 'down');
+                    break;
+                case 'show':
+                    $this->show_plugin($plugin);
+                    break;
+            }
+        } else {
             echo $OUTPUT->header();
             echo $OUTPUT->heading(get_string('manageengines', 'tool_translate'));
-
             $this->view_plugins_table();
-
             echo $OUTPUT->footer();
         }
     }

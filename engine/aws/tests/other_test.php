@@ -24,6 +24,8 @@
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
+namespace translateengine_aws;
+
 defined('MOODLE_INTERNAL') || die();
 
 
@@ -36,7 +38,7 @@ defined('MOODLE_INTERNAL') || die();
  * @author    info@iplusacademy.org
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-class translateengine_aws_other_testcase extends advanced_testcase {
+class other_test extends \advanced_testcase {
 
     /**
      * Setup testcase.
@@ -55,7 +57,7 @@ class translateengine_aws_other_testcase extends advanced_testcase {
     public function test_notconfigured() {
         $course = $this->getDataGenerator()->create_course();
         set_config('access_key', '', 'translateengine_aws');
-        $class = new \translateengine_aws\engine($course);
+        $class = new engine($course);
         $this->assertInstanceOf('\translateengine_aws\engine', $class);
         $this->assertFalse($class->is_configured());
         $this->assertSame(null, $class->translatetext('en', 'fr', 'boe'));
@@ -68,7 +70,7 @@ class translateengine_aws_other_testcase extends advanced_testcase {
      */
     public function test_class() {
         $course = $this->getDataGenerator()->create_course();
-        $class = new \translateengine_aws\engine($course);
+        $class = new engine($course);
         $this->assertInstanceOf('\translateengine_aws\engine', $class);
         $this->assertTrue($class->is_configured());
         $this->assertSame('BEHAT 1', $class->translatetext('en', 'fr', 'boe'));

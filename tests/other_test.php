@@ -24,8 +24,9 @@
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-defined('MOODLE_INTERNAL') || die();
+namespace tool_translate;
 
+defined('MOODLE_INTERNAL') || die();
 
 /**
  * Other tests for translate tool.
@@ -36,7 +37,7 @@ defined('MOODLE_INTERNAL') || die();
  * @author    info@iplusacademy.org
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-class tool_translate_other_testcase extends advanced_testcase {
+class other_test extends \advanced_testcase {
 
     /**
      * Test the library.
@@ -47,7 +48,7 @@ class tool_translate_other_testcase extends advanced_testcase {
         $this->setAdminUser();
         $this->resetAfterTest();
         $course = $this->getDataGenerator()->create_course();
-        $context = context_course::instance($course->id);
+        $context = \context_course::instance($course->id);
         $PAGE->set_context($context);
         $this->assertDebuggingNotCalled();
         tool_translate_extend_navigation_course($PAGE->navigation, $course, $context);
@@ -60,7 +61,7 @@ class tool_translate_other_testcase extends advanced_testcase {
         $this->resetAfterTest();
         $this->setAdminUser();
         $course = $this->getDataGenerator()->create_course();
-        $context = context_course::instance($course->id);
+        $context = \context_course::instance($course->id);
         $event = \tool_translate\event\tool_viewed::create(['context' => $context]);
 
         // Trigger and capture the event.
@@ -73,7 +74,7 @@ class tool_translate_other_testcase extends advanced_testcase {
         $this->assertEquals($context, $event->get_context());
         $this->assertEquals('Translate page viewed', $event->get_name());
         $this->assertStringContainsString('viewed the tranlation page for the course', $event->get_description());
-        $url = new moodle_url('/admin/tool/translate/index.php', ['course' => $course->id]);
+        $url = new \moodle_url('/admin/tool/translate/index.php', ['course' => $course->id]);
         $this->assertEquals($url, $event->get_url());
     }
 
@@ -96,7 +97,7 @@ class tool_translate_other_testcase extends advanced_testcase {
         $this->assertInstanceOf('\tool_translate\event\course_translated', $event);
         $this->assertEquals($context, $event->get_context());
         $this->assertEquals('Course elements translated', $event->get_name());
-        $url = new moodle_url('/admin/tool/translate/index.php', ['course' => $course->id]);
+        $url = new \moodle_url('/admin/tool/translate/index.php', ['course' => $course->id]);
         $this->assertEquals($url, $event->get_url());
         $this->assertEventContextNotUsed($event);
     }
@@ -120,7 +121,7 @@ class tool_translate_other_testcase extends advanced_testcase {
         $this->assertInstanceOf('\tool_translate\event\section_translated', $event);
         $this->assertEquals($context, $event->get_context());
         $this->assertEquals('Section translated', $event->get_name());
-        $url = new moodle_url('/admin/tool/translate/index.php', ['course' => $course->id]);
+        $url = new \moodle_url('/admin/tool/translate/index.php', ['course' => $course->id]);
         $this->assertEquals($url, $event->get_url());
         $this->assertEventContextNotUsed($event);
     }
@@ -146,7 +147,7 @@ class tool_translate_other_testcase extends advanced_testcase {
         $this->assertInstanceOf('\tool_translate\event\module_translated', $event);
         $this->assertEquals($context, $event->get_context());
         $this->assertEquals('Module translated', $event->get_name());
-        $url = new moodle_url('/course/modedit.php', ['update' => $lesson->cmid]);
+        $url = new \moodle_url('/course/modedit.php', ['update' => $lesson->cmid]);
         $this->assertEquals($url, $event->get_url());
         $this->assertEventContextNotUsed($event);
     }
@@ -164,7 +165,7 @@ class tool_translate_other_testcase extends advanced_testcase {
         $this->assertTrue($translateengine->is_uninstall_allowed());
         $this->assertTrue($translateengine->is_enabled());
         $this->assertEquals('translateengine_', $translateengine->get_settings_section_name());
-        $category = new admin_category('translateengines', new \lang_string('settings', 'tool_translate'));
+        $category = new \admin_category('translateengines', new \lang_string('settings', 'tool_translate'));
         $translateengine->load_settings($category, 'aws', true);
     }
 
@@ -177,32 +178,16 @@ class tool_translate_other_testcase extends advanced_testcase {
         require_once($CFG->dirroot . '/lib/adminlib.php');
         $this->resetAfterTest();
         $this->setAdminUser();
-        $pluginmanager = new \tool_translate\plugin_manager();
-        ob_start();
+        $pluginmanager = new plugin_manager();
         $pluginmanager->execute(null, 'aws');
-        $html = ob_get_contents();
-        ob_end_clean();
-        $this->assertStringContainsString('AWS', $html);
-        try {
-             $pluginmanager->execute('hide', 'aws');
-        } catch (Exception $e) {
-             $this->assertStringContainsString('redirect', $e->getmessage());
-        }
-        try {
-             $pluginmanager->execute('show', 'aws');
-        } catch (Exception $e) {
-             $this->assertStringContainsString('redirect', $e->getmessage());
-        }
-        try {
-             $pluginmanager->execute('moveup', 'aws');
-        } catch (Exception $e) {
-             $this->assertStringContainsString('redirect', $e->getmessage());
-        }
-        try {
-             $pluginmanager->execute('movedown', 'aws');
-        } catch (Exception $e) {
-             $this->assertStringContainsString('redirect', $e->getmessage());
-        }
+        $this->expectExceptionMessage('Unsupported redirect detected');
+        $pluginmanager->execute('hide', 'aws');
+        $this->expectExceptionMessage('Unsupported redirect detected');
+        $pluginmanager->execute('show', 'aws');
+        $this->expectExceptionMessage('Unsupported redirect detected');
+        $pluginmanager->execute('moveup', 'aws');
+        $this->expectExceptionMessage('Unsupported redirect detected');
+        $pluginmanager->execute('movedown', 'aws');
     }
 
     /**
@@ -215,7 +200,7 @@ class tool_translate_other_testcase extends advanced_testcase {
         $this->setAdminUser();
         $generator = $this->getDataGenerator();
         $course = $generator->create_course();
-        $fordb = new stdClass();
+        $fordb = new \stdClass();
         $fordb->id = null;
         $fordb->name = "Test badge with 'apostrophe' and other friends &(";
         $fordb->description = "Testing badges";
@@ -260,7 +245,8 @@ class tool_translate_other_testcase extends advanced_testcase {
         $glossarygenerator->create_content($glossary);
         $glossarygenerator->create_content($glossary, ['concept' => 'Custom concept']);
         $quizgen = $generator->get_plugin_generator('mod_quiz');
-        $quiz = $quizgen->create_instance(['course' => $course->id]);$engine = new \translateengine_aws\engine($course);
+        $quiz = $quizgen->create_instance(['course' => $course->id]);
+        $engine = new \translateengine_aws\engine($course);
         $this->assertFalse($engine->is_configured());
         $this->assertIsArray($engine->supported_langs());
         $this->assertNull($engine->translatetext('en', 'nl', 'boe'));
@@ -289,15 +275,11 @@ class tool_translate_other_testcase extends advanced_testcase {
         $this->resetAfterTest();
         $this->setAdminUser();
         $course = $this->getDataGenerator()->create_course();
-        $context = context_course::instance($course->id);
         $engine = new \translateengine_aws\engine($course);
-        $reflection = new ReflectionClass('\tool_translate\engine');
+        $reflection = new \ReflectionClass('\tool_translate\engine');
         $this->assertTrue($reflection->isAbstract());
         $method = $reflection->getMethod('supported_langs');
-        try {
-             $method->invoke($engine);
-        } catch (Exception $e) {
-             $this->assertStringContainsString('supported_langs not configured', $e->getmessage());
-        }
+        $this->expectExceptionMessage('supported_langs not configured for this engine');
+        $method->invoke($engine);
     }
 }

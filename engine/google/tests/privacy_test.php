@@ -24,6 +24,8 @@
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
+namespace translateengine_google\privacy;
+
 defined('MOODLE_INTERNAL') || die();
 
 use core_privacy\tests\provider_testcase;
@@ -37,7 +39,7 @@ use core_privacy\tests\provider_testcase;
  * @author    info@iplusacademy.org
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-class translateengine_google_privacy_testcase extends provider_testcase {
+class privacy_test extends provider_testcase {
 
     /**
      * Test returning metadata.

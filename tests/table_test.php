@@ -24,8 +24,9 @@
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-defined('MOODLE_INTERNAL') || die();
+namespace tool_translate;
 
+defined('MOODLE_INTERNAL') || die();
 
 /**
  * Table tests for translate tool.
@@ -37,7 +38,7 @@ defined('MOODLE_INTERNAL') || die();
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  * @coversDefaultClass \tool_translate\translation_table
  */
-class tool_translate_table_testcase extends advanced_testcase {
+class table_test extends \advanced_testcase {
 
     /**
      * Setup testcase.

@@ -108,7 +108,7 @@ class engine extends \tool_translate\engine {
                 if ($responsecode != 200) {
                      return null;
                 }
-                return 'boe';
+                return $responsed;
             } catch (exception $e) {
                 return null;
             }

@@ -24,6 +24,8 @@
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
+namespace translateengine_aws\privacy;
+
 defined('MOODLE_INTERNAL') || die();
 
 use core_privacy\tests\provider_testcase;
@@ -37,7 +39,7 @@ use core_privacy\tests\provider_testcase;
  * @author    info@iplusacademy.org
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-class translateengine_aws_privacy_testcase extends provider_testcase {
+class privacy_test extends provider_testcase {
 
     /**
      * Test returning metadata.
@@ -45,7 +47,7 @@ class translateengine_aws_privacy_testcase extends provider_testcase {
     public function test_get_metadata() {
         $this->resetAfterTest(true);
         $collection = new \core_privacy\local\metadata\collection('translateengine_aws');
-        $reason = \translateengine_aws\privacy\provider::get_reason($collection);
+        $reason = provider::get_reason($collection);
         $this->assertEquals($reason, 'privacy:metadata');
         $str = get_string($reason, 'translateengine_aws');
         $this->assertStringContainsString('plugin does not store any personal data', $str);

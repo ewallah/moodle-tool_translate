@@ -23,10 +23,13 @@
  * @author    info@iplusacademy.org
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
+namespace tool_translate;
 
 defined('MOODLE_INTERNAL') || die();
 
 use core_privacy\tests\provider_testcase;
+use core_privacy\local\metadata\collection;
+use tool_translate\privacy\provider;
 
 /**
  * Privacy tests for translate tool.
@@ -37,15 +40,15 @@ use core_privacy\tests\provider_testcase;
  * @author    info@iplusacademy.org
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-class tool_translate_privacy_testcase extends provider_testcase {
+class privacy_test extends provider_testcase {
 
     /**
      * Test returning metadata.
      */
     public function test_get_metadata() {
         $this->resetAfterTest(true);
-        $collection = new \core_privacy\local\metadata\collection('tool_translate');
-        $reason = \tool_translate\privacy\provider::get_reason($collection);
+        $collection = new collection('tool_translate');
+        $reason = provider::get_reason($collection);
         $this->assertEquals($reason, 'privacy:metadata');
         $str = get_string($reason, 'tool_translate');
         $this->assertStringContainsString('plugin does not store any personal data', $str);

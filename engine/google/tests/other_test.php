@@ -24,8 +24,9 @@
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-defined('MOODLE_INTERNAL') || die();
+namespace translateengine_google;
 
+defined('MOODLE_INTERNAL') || die();
 
 /**
  * Other tests for Google translate engine.
@@ -36,7 +37,7 @@ defined('MOODLE_INTERNAL') || die();
  * @author    info@iplusacademy.org
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-class translateengine_google_other_testcase extends advanced_testcase {
+class other_test extends \advanced_testcase {
 
     /**
      * Setup testcase.
