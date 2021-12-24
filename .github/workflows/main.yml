@@ -27,6 +27,14 @@ jobs:
           php-version: ${{ matrix.php }}
           extensions: mbstring, mysqli, gd, zip
           ini-values: max_input_vars=5000
+          coverage: xdebug
+
+      - name: add plugin
+        uses: actions/checkout@v2
+        with:
+          repository: https://github.com/ewallah/moodle-local_aws.git
+          ref: 'main'
+          path: extras/local_aws
 
       - name: composer
         run: |
@@ -35,49 +43,50 @@ jobs:
            echo $(cd ci/vendor/bin; pwd) >> $GITHUB_PATH
            sudo locale-gen en_AU.UTF-8
            sudo systemctl start mysql.service
-
-      - name: add plugin
-        run: moodle-plugin-ci add-plugin --clone https://github.com/ewallah/moodle-local_aws.git --branch main
+           sed -i 's/phpdbg -d memory_limit=-1 -qrr//g' ci/src/Command/PHPUnitCommand.php
 
       - name: install Moodle
-        run: moodle-plugin-ci install --db-user=root --db-pass=root --db-host=127.0.0.1 --plugin this-plugin
+        run: moodle-plugin-ci install --db-user=root --db-pass=root --db-host=127.0.0.1 --plugin this-plugin --extra-plugins=extras
         env:
           DB: ${{ matrix.database }}
           MOODLE_BRANCH: ${{ matrix.moodle-branch }}
 
       - name: phplint
+        if: ${{ always() }}
         run: moodle-plugin-ci --ansi phplint
 
       - name: phpcpd
+        if: ${{ always() }}
         run: moodle-plugin-ci --ansi phpcpd
 
       - name: phpmd
+        if: ${{ always() }}
         run: moodle-plugin-ci --ansi phpmd
 
       - name: phpdoc
+        if: ${{ always() }}
         run: moodle-plugin-ci --ansi phpdoc
 
       - name: codechecker
+        if: ${{ always() }}
         run: moodle-plugin-ci --ansi codechecker
 
       - name: validate
+        if: ${{ always() }}
         run: moodle-plugin-ci --ansi validate
 
       - name: savepoints
+        if: ${{ always() }}
         run: moodle-plugin-ci --ansi savepoints
 
-      - name: mustache
-        run: moodle-plugin-ci --ansi mustache
-
       - name: grunt
+        if: ${{ always() }}
         run: moodle-plugin-ci --ansi grunt
 
-      - name: phpunit 
-        run: moodle-plugin-ci --ansi phpunit --coverage-text || true
+      - name: mustache
+        if: ${{ always() }}
+        run: moodle-plugin-ci --ansi mustache
 
-      - name: privacy
-        run: vendor/bin/phpunit --colors --no-coverage --testsuite tool_dataprivacy_testsuite,tool_policy_testsuite,core_privacy_testsuite
-        working-directory: moodle
-
-      - name: behat 
-        run: moodle-plugin-ci --ansi behat
+      - name: phpunit
+        if: ${{ always() }}
+        run: moodle-plugin-ci --ansi phpunit --coverage-text --coverage-clover
