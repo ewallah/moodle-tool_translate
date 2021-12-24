@@ -32,7 +32,7 @@ jobs:
       - name: add plugin
         uses: actions/checkout@v2
         with:
-          repository: https://github.com/ewallah/moodle-local_aws.git
+          repository: ewallah/moodle-local_aws.git
           ref: 'main'
           path: extras/local_aws
 
