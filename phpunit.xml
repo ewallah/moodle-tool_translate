@@ -33,7 +33,6 @@
         </include>
         <exclude>
             <directory suffix=".php">cli</directory>
-            <directory>engine</directory>
             <file>version.php</file>
             <file>settings.php</file>
             <file>index.php</file>

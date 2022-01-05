@@ -101,6 +101,7 @@ class plugin_manager {
         $table->setup();
 
         $plugins = $this->get_sorted_plugins_list();
+        $s = get_string('settings');
         foreach ($plugins as $idx => $plugin) {
             $row = [];
             $class = '';
@@ -129,12 +130,8 @@ class plugin_manager {
             }
             $row[] = $movelinks;
 
-            $exists = file_exists($CFG->dirroot . '/'. $CFG->admin . '/tool/translate/engine/' . $plugin . '/settings.php');
-            if ($row[1] != '' && $exists) {
-                $row[] = \html_writer::link(new \moodle_url('/admin/settings.php', ['section' => $sub]), get_string('settings'));
-            } else {
-                $row[] = '&nbsp;';
-            }
+            $exists = $row[1] != '' && file_exists($CFG->dirroot . "/$CFG->admin/tool/translate/engine/$plugin/settings.php");
+            $row[] = $exists ? \html_writer::link(new \moodle_url('/admin/settings.php', ['section' => $sub]), $s) : '&nbsp;';
 
             $row[] = $this->format_icon_link('delete', $plugin, 'i/trash', get_string('uninstallplugin', 'core_admin'));
             $table->add_data($row, $class);
@@ -161,7 +158,9 @@ class plugin_manager {
     public function hide_plugin($plugin) {
         set_config('disabled', 1, 'translateengine_' . $plugin);
         \core_plugin_manager::reset_caches();
-        redirect($this->pageurl);
+        if (!PHPUNIT_TEST) {
+            redirect($this->pageurl);
+        }
     }
 
     /**
@@ -172,7 +171,9 @@ class plugin_manager {
     public function show_plugin($plugin) {
         set_config('disabled', 0, 'translateengine_' . $plugin);
         \core_plugin_manager::reset_caches();
-        redirect($this->pageurl);
+        if (!PHPUNIT_TEST) {
+            redirect($this->pageurl);
+        }
     }
 
     /**
@@ -253,6 +254,8 @@ class plugin_manager {
         foreach ($plugins as $key => $plugin) {
             set_config('sortorder', $key, 'translateengine_' . $plugin);
         }
-        redirect($this->pageurl);
+        if (!PHPUNIT_TEST) {
+            redirect($this->pageurl);
+        }
     }
 }

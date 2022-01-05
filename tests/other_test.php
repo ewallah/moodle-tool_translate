@@ -179,15 +179,28 @@ class other_test extends \advanced_testcase {
         $this->resetAfterTest();
         $this->setAdminUser();
         $pluginmanager = new plugin_manager();
-        $pluginmanager->execute(null, 'aws');
-        $this->expectExceptionMessage('Unsupported redirect detected');
+        $pluginmanager->get_sorted_plugins_list();
+        ob_start();
+        \phpunit_util::call_internal_method($pluginmanager, 'view_plugins_table', [], 'tool_translate\plugin_manager');
+        $out = ob_get_contents();
+        ob_end_clean();
+        $this->assertStringContainsString('aws', $out);
         $pluginmanager->execute('hide', 'aws');
-        $this->expectExceptionMessage('Unsupported redirect detected');
+        ob_start();
+        $pluginmanager->execute(null, null);
+        $out = ob_get_contents();
+        ob_end_clean();
+        $this->assertStringContainsString('aws', $out);
+        $pluginmanager->execute(null, 'aws');
+        $pluginmanager->execute('hide', 'aws');
         $pluginmanager->execute('show', 'aws');
-        $this->expectExceptionMessage('Unsupported redirect detected');
-        $pluginmanager->execute('moveup', 'aws');
-        $this->expectExceptionMessage('Unsupported redirect detected');
         $pluginmanager->execute('movedown', 'aws');
+        $pluginmanager->execute('movedown', 'aws');
+        $pluginmanager->execute('movedown', 'aws');
+        $pluginmanager->execute('moveup', 'aws');
+        $pluginmanager->execute('moveup', 'aws');
+        $pluginmanager->execute('moveup', 'aws');
+        $pluginmanager->show_plugin('aws');
     }
 
     /**

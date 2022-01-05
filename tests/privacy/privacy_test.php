@@ -23,7 +23,7 @@
  * @author    info@iplusacademy.org
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-namespace tool_translate;
+namespace tool_translate\privacy;
 
 defined('MOODLE_INTERNAL') || die();
 
