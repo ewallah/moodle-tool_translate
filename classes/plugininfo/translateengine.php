@@ -26,9 +26,10 @@
 
 namespace tool_translate\plugininfo;
 
-defined('MOODLE_INTERNAL') || die();
-
-use core\plugininfo\base, moodle_url, part_of_admin_tree, admin_settingpage;
+use core\plugininfo\base;
+use \moodle_url;
+use \part_of_admin_tree;
+use \admin_settingpage;
 
 /**
  * Sub plugin info.
@@ -82,7 +83,7 @@ class translateengine extends base {
             return;
         }
 
-        $settings = new admin_settingpage($this->get_settings_section_name(), $this->displayname, 'moodle/site:config');
+        $settings = new \admin_settingpage($this->get_settings_section_name(), $this->displayname, 'moodle/site:config');
         include($this->full_path('settings.php'));
 
         if ($settings) {
@@ -96,7 +97,6 @@ class translateengine extends base {
      * @return moodle_url the manage section.
      */
     public static function get_manage_url() {
-        return new moodle_url('/admin/settings.php', ['section' => 'translateengines']);
+        return new \moodle_url('/admin/settings.php', ['section' => 'translateengines']);
     }
-
 }

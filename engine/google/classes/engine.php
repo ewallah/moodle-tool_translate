@@ -26,8 +26,6 @@
 
 namespace translateengine_google;
 
-defined('MOODLE_INTERNAL') || die();
-
 /**
  * google translating engine.
  *

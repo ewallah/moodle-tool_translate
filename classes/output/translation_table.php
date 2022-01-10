@@ -25,8 +25,6 @@
 
 namespace tool_translate\output;
 
-defined('MOODLE_INTERNAL') || die();
-
 /**
  * Translation of modules.
  *

@@ -28,7 +28,7 @@
 
 namespace tool_translate;
 
-defined('MOODLE_INTERNAL') || die();
+use stdClass;
 
 /**
  * Base class for translate engines.
@@ -41,10 +41,10 @@ defined('MOODLE_INTERNAL') || die();
  */
 abstract class engine {
 
-    /** @var \stdClass course */
+    /** @var stdClass course */
     protected $course;
 
-    /** @var \bool counting */
+    /** @var bool counting */
     public $counting = true;
 
     /**

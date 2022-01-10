@@ -25,8 +25,6 @@
 
 namespace tool_translate\event;
 
-defined('MOODLE_INTERNAL') || die();
-
 /**
  * The translate tool viewed event.
  *

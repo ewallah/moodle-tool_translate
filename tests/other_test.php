@@ -26,8 +26,6 @@
 
 namespace tool_translate;
 
-defined('MOODLE_INTERNAL') || die();
-
 /**
  * Other tests for translate tool.
  *

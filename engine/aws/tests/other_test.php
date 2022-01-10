@@ -26,9 +26,6 @@
 
 namespace translateengine_aws;
 
-defined('MOODLE_INTERNAL') || die();
-
-
 /**
  * Other tests for AWS translate engine.
  *

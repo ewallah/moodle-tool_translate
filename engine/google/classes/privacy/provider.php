@@ -26,8 +26,6 @@
 
 namespace translateengine_google\privacy;
 
-defined('MOODLE_INTERNAL') || die();
-
 /**
  * Privacy main class.
  *

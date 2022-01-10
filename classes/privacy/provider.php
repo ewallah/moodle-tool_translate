@@ -26,8 +26,6 @@
 
 namespace tool_translate\privacy;
 
-defined('MOODLE_INTERNAL') || die();
-
 /**
  * Privacy main class.
  *
