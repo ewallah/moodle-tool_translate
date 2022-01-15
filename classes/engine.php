@@ -25,9 +25,12 @@
  * @author    info@iplusacademy.org
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-
 namespace tool_translate;
 
+use context_course;
+use context_module;
+use html_writer;
+use moodle_exception;
 use stdClass;
 
 /**
@@ -64,12 +67,12 @@ abstract class engine {
     abstract public function is_configured(): bool;
 
     /**
-     * Supported languges.
+     * Supported languages.
      *
      * @return string[] Array of suported source/target languages
      */
     public function supported_langs(): array {
-        throw new \coding_exception('supported_langs not configured for this engine');
+        throw new moodle_exception('supported_langs not configured for this engine');
     }
 
     /**
@@ -90,7 +93,7 @@ abstract class engine {
     public function translate_other(): string {
         global $DB;
         $id = $this->course->id;
-        $context = \context_course::instance($id);
+        $context = context_course::instance($id);
         $s = $this->add_records('enrol', 'courseid', $id);
         $s .= $this->add_records('course', 'id', $id);
         $s .= $this->add_records('customfield_data', 'contextid', $context->id);
@@ -114,7 +117,7 @@ abstract class engine {
         if ($this->counting) {
             return $s;
         }
-        \tool_translate\event\course_translated::create(['context' => $context])->trigger();
+        event\course_translated::create(['context' => $context])->trigger();
         rebuild_course_cache($id);
         return "$s <br/>Course with id $id translated all extra elements.";
     }
@@ -130,8 +133,8 @@ abstract class engine {
         if ($this->counting) {
             return $s;
         }
-        $context = \context_course::instance($this->course->id);
-        \tool_translate\event\module_translated::create(['context' => $context, 'other' => ['sectionid' => $sectionid]])->trigger();
+        $context = context_course::instance($this->course->id);
+        event\module_translated::create(['context' => $context, 'other' => ['sectionid' => $sectionid]])->trigger();
         rebuild_course_cache($this->course->id);
         $courseformat = course_get_format($this->course)->get_format();
         return $s . get_string('sectionname', 'format_' . $courseformat) . " with id $sectionid translated";
@@ -148,58 +151,59 @@ abstract class engine {
         $modinfo = get_fast_modinfo($this->course->id, -1);
         $cm = $modinfo->cms[$moduleid];
         $s = $this->translate_record($cm->modname, $cm->instance);
-        $mod = $cm->modname;
-        if ($mod == 'choice') {
-            $s .= $this->add_records('choice_options', 'choiceid', $cm->instance, ['text']);
-        }
-        if ($mod == 'checklist') {
-            $s .= $this->add_records('checklist_item', 'checklist', $cm->instance, ['displaytext']);
-        }
-        // TODO: integrate feedback_item with array label and presentation.
-        if ($mod == 'glossary') {
-            $s .= $this->add_records('glossary_categories', 'glossaryid', $cm->instance);
-            $s .= $this->add_records('glossary_entries', 'glossaryid', $cm->instance, ['concept']);
-        }
-        if ($mod == 'forum') {
-            $s .= $this->add_records('forum_discussions', 'forum', $cm->instance);
-        }
-        if ($mod == 'book') {
-            $s .= $this->add_records('book_chapters', 'bookid', $cm->instance);
-        }
-        if ($mod == 'lesson') {
-            $s .= $this->add_records('lesson_pages', 'lessonid', $cm->instance);
-            $s .= $this->add_records('lesson_answers', 'lessonid', $cm->instance);
-        }
-        if ($mod == 'quiz') {
-            $s .= $this->add_records('quiz_sections', 'quizid', $cm->instance, ['heading']);
-            $s .= $this->add_records('quiz_feedback', 'quizid', $cm->instance);
-            $slots = $DB->get_records('quiz_slots', ['quizid' => $cm->instance]);
-            foreach ($slots as $slot) {
-                 $s .= $this->add_records('question', 'id', $slot->questionid);
-                 $s .= $this->add_records('question_answers', 'question', $slot->questionid);
-                 $s .= $this->add_records('question_hints', 'questionid', $slot->questionid);
-                 $s .= $this->add_records('question_order', 'question', $slot->questionid);
-                 $s .= $this->add_records('question_order_sub', 'question', $slot->questionid);
-                 $q = \question_bank::load_question($slot->questionid);
-                 $qt = get_class($q->qtype);
-                 // Brute force collect feedback.
-                 $s .= $this->add_records($qt, 'questionid', $slot->questionid);
-                 $s .= $this->add_records($qt . '_options' , 'questionid', $slot->questionid);
-                 $s .= $this->add_records($qt . '_answers' , 'questionid', $slot->questionid);
-                 $s .= $this->add_records($qt . '_subquestions' , 'questionid', $slot->questionid);
-            }
+        switch ($cm->modname) {
+            case 'book':
+                $s .= $this->add_records('book_chapters', 'bookid', $cm->instance);
+                break;
+            case 'checklist':
+                $s .= $this->add_records('checklist_item', 'checklist', $cm->instance, ['displaytext']);
+                break;
+            case 'choice':
+                $s .= $this->add_records('choice_options', 'choiceid', $cm->instance, ['text']);
+                break;
+            case 'feedback':
+                $s .= $this->add_records('feedback_item', 'feedback', $cm->instance, ['label', 'presentation']);
+                break;
+            case 'forum':
+                $s .= $this->add_records('forum_discussions', 'forum', $cm->instance);
+                break;
+            case 'glossary':
+                $s .= $this->add_records('glossary_categories', 'glossaryid', $cm->instance);
+                $s .= $this->add_records('glossary_entries', 'glossaryid', $cm->instance, ['concept']);
+                break;
+            case 'lesson':
+                $s .= $this->add_records('lesson_pages', 'lessonid', $cm->instance);
+                $s .= $this->add_records('lesson_answers', 'lessonid', $cm->instance);
+            case 'quiz':
+                $s .= $this->add_records('quiz_sections', 'quizid', $cm->instance, ['heading']);
+                $s .= $this->add_records('quiz_feedback', 'quizid', $cm->instance);
+                $slots = $DB->get_records('quiz_slots', ['quizid' => $cm->instance]);
+                foreach ($slots as $slot) {
+                     $s .= $this->add_records('question', 'id', $slot->questionid);
+                     $s .= $this->add_records('question_answers', 'question', $slot->questionid);
+                     $s .= $this->add_records('question_hints', 'questionid', $slot->questionid);
+                     $s .= $this->add_records('question_order', 'question', $slot->questionid);
+                     $s .= $this->add_records('question_order_sub', 'question', $slot->questionid);
+                     $q = \question_bank::load_question($slot->questionid);
+                     $qt = get_class($q->qtype);
+                     // Brute force collect feedback.
+                     $s .= $this->add_records($qt, 'questionid', $slot->questionid);
+                     $s .= $this->add_records($qt . '_options' , 'questionid', $slot->questionid);
+                     $s .= $this->add_records($qt . '_answers' , 'questionid', $slot->questionid);
+                     $s .= $this->add_records($qt . '_subquestions' , 'questionid', $slot->questionid);
+                }
+                break;
         }
         if ($this->counting) {
             return $s;
         }
-        $context = \context_module::instance($cm->id);
-        \tool_translate\event\module_translated::create(['context' => $context])->trigger();
+        $context = context_module::instance($cm->id);
+        event\module_translated::create(['context' => $context])->trigger();
         rebuild_course_cache($this->course->id);
         $cm = $modinfo->cms[$moduleid];
-        $url = \html_writer::link($cm->url, $cm->get_formatted_name());
+        $url = html_writer::link($cm->url, $cm->get_formatted_name());
         return "$s<br/>Module with id $moduleid translated<br/>$url<br/>";
     }
-
 
     /**
      * Add record
@@ -233,41 +237,37 @@ abstract class engine {
      */
     private function translate_record($table, $id, $fields = []) {
         global $DB;
-        $s = '';
+        $s = [];
         if ($record = $DB->get_record($table, ['id' => $id])) {
             $dbman = $DB->get_manager();
             $ref = new \ReflectionObject($record);
             $updatetime = false;
             $properties = $ref->getProperties();
+            $skipped = ['displayformat', 'approvaldisplayformat'];
+            $handled = ['name', 'answertext', 'title'];
             foreach ($properties as $prop) {
-                if ($prop->name === 'displayformat' or $prop->name === 'approvaldisplayformat') {
+                if (in_array($prop->name, $skipped, true)) {
                     continue;
                 }
-                if ($prop->name === 'name') {
-                    $fields[] = 'name';
-                }
-                if ($prop->name === 'answertext') {
-                    $fields[] = 'answertext';
-                }
-                if ($prop->name === 'title') {
-                    $fields[] = 'title';
-                }
-                if ($prop->name === 'timemodified') {
-                    $updatetime = true;
+                if (in_array($prop->name, $handled, true)) {
+                    $fields[] = $prop->name;
                 }
                 $x = stripos($prop->name, 'format');
                 if ( $x > 1) {
                     $fields[] = substr($prop->name, 0, $x);
                 }
+                if ($prop->name === 'timemodified') {
+                    $updatetime = true;
+                }
             }
             foreach ($fields as $field) {
                 if ($dbman->field_exists($table, $field)) {
                     $task = $record->{$field};
-                    $len = strlen($task);
-                    if ($len > 0) {
+                    if (strlen($task) > 0) {
                         $result = $task;
                         if (!$this->counting) {
                             // TODO: What if max lenght > result.
+                            // TODO: translate the correct language.
                             $result = $this->translatetext('en', 'fr', $task);
                             if (!is_null($result) && $task != $result) {
                                 $DB->set_field($table, $field, $result, ['id' => $id]);
@@ -276,13 +276,39 @@ abstract class engine {
                                 }
                             }
                         }
-                        $s .= "<br />$result";
+                        $s[] = $result;
                     }
-                } else {
-                    return "$field with id $id not found in table $table";
                 }
             }
         }
-        return $s;
+        return implode('<br />', $s);
+    }
+
+
+    /**
+     * Plugin
+     *
+     * @param string $component
+     * @param string $fromlanguage
+     * @param string $tolanguage
+     * @return string
+     */
+    public function translate_plugin($component, $fromlanguage, $tolanguage) {
+        global $CFG;
+        require_once($CFG->dirroot . '/admin/tool/customlang/locallib.php');
+        $done = [];
+        $components = \tool_customlang_utils::list_components();
+        if (!array_key_exists($component, $components)) {
+             throw new moodle_exception('Plugin not found');
+        }
+        $sm = get_string_manager();
+        $entries = $sm->load_component_strings($component, $fromlanguage);
+        foreach ($entries as $key => $value) {
+            $s = $this->translatetext($fromlanguage, $tolanguage, $value);
+            if ($s != $value) {
+                $done[$key] = $this->translatetext($fromlanguage, $tolanguage, $value);
+            }
+        }
+        return \tool_translate\util::dump_strings($component, $tolanguage, $done);
     }
 }

@@ -25,6 +25,14 @@
 
 namespace tool_translate\output;
 
+
+use html_table;
+use html_table_cell;
+use html_table_row;
+use html_writer;
+use moodle_url;
+use stdClass;
+
 /**
  * Translation of modules.
  *
@@ -33,15 +41,15 @@ namespace tool_translate\output;
  * @author    Renaat Debleu <info@eWallah.net>
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-class translation_table extends \html_table {
+class translation_table extends html_table {
 
-    /** @var \stdClass course */
+    /** @var stdClass course */
     protected $course;
-    /** @var \stdClass engine */
+    /** @var stdClass engine */
     protected $engine;
-    /** @var \stdClass words */
+    /** @var stdClass words */
     protected $words = 0;
-    /** @var \stdClass letters */
+    /** @var stdClass letters */
     protected $letters = 0;
 
 
@@ -73,23 +81,23 @@ class translation_table extends \html_table {
         $this->addrow('', get_string('course'), $this->engine->translate_other(), []);
         $sections = $modinfo->get_section_info_all();
         $modinfosections = $modinfo->get_sections();
-        $options = new \stdClass();
+        $options = new stdClass();
         $options->noclean = true;
         $options->overflowdiv = true;
         foreach ($sections as $key => $section) {
             if (isset($modinfosections[$section->section])) {
-                $url = new \moodle_url('/course/editsection.php', ['id' => $section->id]);
-                $url = \html_writer::link($url, $courseformat->get_section_name($key));
+                $url = new moodle_url('/course/editsection.php', ['id' => $section->id]);
+                $url = html_writer::link($url, $courseformat->get_section_name($key));
                 $this->addrow('', $url, $this->engine->translate_section($section->id), ['sectionid' => $section->id]);
                 foreach ($modinfosections[$key] as $cmid) {
                     $cm = $modinfo->cms[$cmid];
-                    $icon = \html_writer::empty_tag('img', ['src' => $cm->get_icon_url(), 'class' => 'icon']);
-                    $url = \html_writer::link($cm->url, $cm->get_formatted_name());
+                    $icon = html_writer::empty_tag('img', ['src' => $cm->get_icon_url(), 'class' => 'icon']);
+                    $url = html_writer::link($cm->url, $cm->get_formatted_name());
                     $this->addrow($icon, $url, $this->engine->translate_module($cmid), ['cmid' => $cmid]);
                 }
             }
         }
-        $this->data[] = new \html_table_row(['', '', get_string('total'), $this->words, $this->letters]);
+        $this->data[] = new html_table_row(['', '', get_string('total'), $this->words, $this->letters]);
     }
 
     /**
@@ -103,7 +111,7 @@ class translation_table extends \html_table {
     private function addrow($icon, $text, $translation = '', $params = []) {
         $words = count_words($translation);
         $letters = count_letters($translation);
-        $this->data[] = new \html_table_row([$this->ibutton($params), $icon, $text, $words, $letters]);
+        $this->data[] = new html_table_row([$this->ibutton($params), $icon, $text, $words, $letters]);
         $this->words += $words;
         $this->letters += $letters;
     }
@@ -113,14 +121,14 @@ class translation_table extends \html_table {
      *
      * @param array $params
      * @param string $action defaults to translate
-     * @return \html_table_cell
+     * @return html_table_cell
      */
     private function ibutton($params, $action = 'translate') {
         global $OUTPUT;
         $cell = '';
         $params['course'] = $this->course->id;
         $params['action'] = $action;
-        $cell = $OUTPUT->single_button(new \moodle_url('/admin/tool/translate/index.php', $params), 'fr');
-        return new \html_table_cell($cell);
+        $cell = $OUTPUT->single_button(new moodle_url('/admin/tool/translate/index.php', $params), 'fr');
+        return new html_table_cell($cell);
     }
 }

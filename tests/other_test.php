@@ -183,12 +183,13 @@ class other_test extends \advanced_testcase {
         $out = ob_get_contents();
         ob_end_clean();
         $this->assertStringContainsString('aws', $out);
-        $pluginmanager->execute('hide', 'aws');
         ob_start();
+        $pluginmanager->execute('hide', 'aws');
         $pluginmanager->execute(null, null);
         $out = ob_get_contents();
         ob_end_clean();
         $this->assertStringContainsString('aws', $out);
+        ob_start();
         $pluginmanager->execute(null, 'aws');
         $pluginmanager->execute('hide', 'aws');
         $pluginmanager->execute('show', 'aws');
@@ -199,6 +200,7 @@ class other_test extends \advanced_testcase {
         $pluginmanager->execute('moveup', 'aws');
         $pluginmanager->execute('moveup', 'aws');
         $pluginmanager->show_plugin('aws');
+        ob_end_clean();
     }
 
     /**
@@ -257,10 +259,15 @@ class other_test extends \advanced_testcase {
         $glossarygenerator->create_content($glossary, ['concept' => 'Custom concept']);
         $quizgen = $generator->get_plugin_generator('mod_quiz');
         $quiz = $quizgen->create_instance(['course' => $course->id]);
+        $questiongenerator = $generator->get_plugin_generator('core_question');
+        $cat = $questiongenerator->create_question_category();
+        $q = $questiongenerator->create_question('essay', 'plain', ['category' => $cat->id]);
+        quiz_add_quiz_question($q->id, $quiz, 0 , 10);
+
         $engine = new \translateengine_aws\engine($course);
         $this->assertFalse($engine->is_configured());
         $this->assertIsArray($engine->supported_langs());
-        $this->assertNull($engine->translatetext('en', 'nl', 'boe'));
+        $this->assertStringContainsString('boe', $engine->translatetext('en', 'nl', 'boe'));
         $this->assertStringNotContainsString('Course  with id', $engine->translate_other());
         $this->assertEquals('', $engine->translate_section(1));
         $this->assertStringNotContainsString('Module with id', $engine->translate_module($book->cmid));
@@ -292,5 +299,21 @@ class other_test extends \advanced_testcase {
         $method = $reflection->getMethod('supported_langs');
         $this->expectExceptionMessage('supported_langs not configured for this engine');
         $method->invoke($engine);
+    }
+
+    /**
+     * Test the plugin translation.
+     */
+    public function test_plugin_tranalate() {
+        $this->resetAfterTest();
+        $this->setAdminUser();
+        $course = $this->getDataGenerator()->create_course();
+        $engine = new \translateengine_aws\engine($course);
+        $out = $engine->translate_plugin('tool_translate', 'en', 'fr');
+        $this->assertEquals('', $out);
+        $out = \tool_translate\util::dump_strings('tool_translate', 'en', ['a' => 'boe']);
+        $this->assertStringContainsString('string[\'a\'] = \'boe\';', $out);
+        $this->expectExceptionMessage('Plugin not found');
+        $out = $engine->translate_plugin('tool_translatefake', 'en', 'fr');
     }
 }

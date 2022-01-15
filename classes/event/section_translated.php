@@ -23,8 +23,9 @@
  * @author    info@iplusacademy.org
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-
 namespace tool_translate\event;
+
+use moodle_url;
 
 /**
  * The translate section translated event.
@@ -68,9 +69,9 @@ class section_translated extends \core\event\base {
     /**
      * Returns relevant URL.
      *
-     * @return \moodle_url
+     * @return moodle_url
      */
     public function get_url() {
-        return new \moodle_url('/admin/tool/translate/index.php', ['course' => $this->courseid]);
+        return new moodle_url('/admin/tool/translate/index.php', ['course' => $this->courseid]);
     }
 }

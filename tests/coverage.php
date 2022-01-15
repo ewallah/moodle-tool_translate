@@ -1,5 +1,5 @@
 <?php
-// This file is part of the tool_translate plugin for Moodle - http://moodle.org/
+// This file is part of Moodle - http://moodle.org/
 //
 // Moodle is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -15,37 +15,28 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Privacy main class.
+ * Coverage information for the translate tool.
  *
  * @package   tool_translate
- * @copyright 2021 eWallah
+ * @copyright 2022 eWallah
  * @author    Renaat Debleu <info@eWallah.net>
  * @author    info@iplusacademy.org
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-namespace tool_translate\privacy;
+defined('MOODLE_INTERNAL') || die();
 
-use core_privacy\local\metadata\null_provider;
+// Coverage class.
+return new class extends phpunit_coverage_info {
+    /** @var array The list of folders relative to the plugin root to include in coverage generation. */
+    protected $includelistfolders = ['classes'];
 
-/**
- * Privacy main class.
- *
- * @package   tool_translate
- * @copyright 2021 eWallah
- * @author    Renaat Debleu <info@eWallah.net>
- * @author    info@iplusacademy.org
- * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
- */
-class provider implements null_provider {
+    /** @var array The list of files relative to the plugin root to include in coverage generation. */
+    protected $includelistfiles = [];
 
-    /**
-     * Get the language string identifier with the component's language
-     * file to explain why this plugin stores no data.
-     *
-     * @return  string
-     */
-    public static function get_reason() : string {
-        return 'privacy:metadata';
-    }
-}
+    /** @var array The list of folders relative to the plugin root to exclude from coverage generation. */
+    protected $excludelistfolders = ['lang', 'cli'];
+
+    /** @var array The list of files relative to the plugin root to exclude from coverage generation. */
+    protected $excludelistfiles = [];
+};

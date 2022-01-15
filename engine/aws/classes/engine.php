@@ -26,9 +26,8 @@
 
 namespace translateengine_aws;
 
-defined('MOODLE_INTERNAL') || die();
+use moodle_exception;
 
-require_once($CFG->dirroot . '/local/aws/sdk/aws-autoloader.php');
 
 /**
  * AWS translate engine.
@@ -50,6 +49,8 @@ class engine extends \tool_translate\engine {
      * @param course $course
      */
     public function __construct($course) {
+        global $CFG;
+        require_once($CFG->dirroot . '/local/aws/sdk/aws-autoloader.php');
         parent::__construct($course);
         $r = get_config('translateengine_aws', 'region');
         $k = get_config('translateengine_aws', 'access_key');
@@ -77,12 +78,22 @@ class engine extends \tool_translate\engine {
     }
 
     /**
-     * Supported languges.
+     * Supported languages.
      *
      * @return string[] Array of suported source/target languages
      */
     public function supported_langs(): array {
-        return ['en', 'fr'];
+        return [
+            'afr' => 'af', 'sqi' => 'sq', 'amh' => 'am', 'ara' => 'ar', 'hye' => 'hy', 'aze' => 'az', 'ben' => 'bn', 'bos' => 'bs',
+            'bul' => 'bg', 'cat' => 'ca', 'zho' => 'zh', 'hrv' => 'hr', 'ces' => 'cs', 'dan' => 'da', 'nld' => 'nl', 'eng' => 'en',
+            'est' => 'et', 'fin' => 'fi', 'fra' => 'fr', 'kat' => 'ka', 'deu' => 'de', 'ell' => 'el', 'guj' => 'gu', 'hat' => 'ht',
+            'hau' => 'ha', 'heb' => 'he', 'hin' => 'hi', 'hun' => 'hu', 'isl' => 'is', 'ind' => 'id', 'ipk' => 'ik', 'ita' => 'it',
+            'jpn' => 'ja', 'kan' => 'kn', 'kaz' => 'kk', 'kor' => 'ko', 'lav' => 'lv', 'lit' => 'lt', 'mkd' => 'mk', 'msa' => 'ms',
+            'mlg' => 'mg', 'mlt' => 'mt', 'mon' => 'mn', 'nor' => 'no', 'pan' => 'pa', 'fas' => 'fa', 'pol' => 'pl', 'por' => 'pt',
+            'pus' => 'ps', 'que' => 'qu', 'ron' => 'ro', 'rus' => 'ru', 'sin' => 'si', 'slk' => 'sk', 'slv' => 'sl', 'som' => 'so',
+            'spa' => 'es', 'swa' => 'sw', 'swe' => 'sv', 'tam' => 'ta', 'tel' => 'te', 'tha' => 'th', 'tur' => 'tr', 'ukr' => 'uk',
+            'urd' => 'ur', 'uzb' => 'uz', 'vie' => 'vi', 'yid' => 'yi', 'mal' => 'ml', 'mar' => 'mr', 'mon' => 'mn', 'srp' => 'sr',
+            'tgl' => 'tl', 'gle' => 'ga'];
     }
 
     /**
@@ -95,6 +106,13 @@ class engine extends \tool_translate\engine {
      */
     public function translatetext(string $source, string $target, string $txt): ?string {
         if ($this->is_configured()) {
+            $values = array_values($this->supported_langs());
+            if (!in_array($source, $values, true)) {
+                throw new moodle_exception('language not supportd');
+            }
+            if (!in_array($target, $values, true)) {
+                throw new moodle_exception('language not supportd');
+            }
             try {
                 $arr = $this->awsclient->translateText([
                      'SourceLanguageCode' => $source,
@@ -102,9 +120,9 @@ class engine extends \tool_translate\engine {
                      'Text' => $txt]);
                 return html_entity_decode($arr['TranslatedText']);
             } catch (exception $e) {
-                return null;
+                throw new moodle_exception($e->get_message());
             }
         }
-        return null;
+        return $txt;
     }
 }

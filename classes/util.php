@@ -15,7 +15,7 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Privacy main class.
+ * This file contains the util class of the translate tool.
  *
  * @package   tool_translate
  * @copyright 2021 eWallah
@@ -23,13 +23,15 @@
  * @author    info@iplusacademy.org
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
+namespace tool_translate;
 
-namespace tool_translate\privacy;
+defined('MOODLE_INTERNAL') || die();
 
-use core_privacy\local\metadata\null_provider;
+require_once($CFG->dirroot . '/admin/tool/customlang/locallib.php');
+
 
 /**
- * Privacy main class.
+ * This file contains the util class of the translate tool.
  *
  * @package   tool_translate
  * @copyright 2021 eWallah
@@ -37,15 +39,27 @@ use core_privacy\local\metadata\null_provider;
  * @author    info@iplusacademy.org
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-class provider implements null_provider {
+class util extends \tool_customlang_utils {
 
     /**
-     * Get the language string identifier with the component's language
-     * file to explain why this plugin stores no data.
+     * Writes strings into a local language pack file
      *
-     * @return  string
+     * @param string $component the name of the component
+     * @param string $lang
+     * @param array $strings
+     * @return string filename
      */
-    public static function get_reason() : string {
-        return 'privacy:metadata';
+    public static function dump_strings($component, $lang, $strings) {
+        if (count($strings) > 0) {
+            parent::dump_strings($lang, $component, $strings);
+            $tmp = parent::get_localpack_location($lang) . '/' . $component . '.php';
+            $fd = fopen($tmp, 'r');
+            if ($fd != false) {
+                $value = fread($fd, filesize($tmp));
+                fclose($fd);
+                return $value;
+            }
+        }
+        return '';
     }
 }

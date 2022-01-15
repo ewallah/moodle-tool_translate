@@ -23,12 +23,13 @@
  * @author    info@iplusacademy.org
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-
 namespace tool_translate;
 
-defined('MOODLE_INTERNAL') || die();
-
-require_once($CFG->dirroot.'/lib/adminlib.php');
+use context_system;
+use flexible_table;
+use html_writer;
+use moodle_url;
+use pix_icon;
 
 /**
  * Manage engine plugins
@@ -45,7 +46,9 @@ class plugin_manager {
      * Constructor
      */
     public function __construct() {
-        $this->pageurl = new \moodle_url('/admin/tool/translate/adminmanageplugins.php');
+        global $CFG;
+        require_once($CFG->dirroot.'/lib/adminlib.php');
+        $this->pageurl = new moodle_url('/admin/tool/translate/adminmanageplugins.php');
     }
 
     /**
@@ -91,7 +94,7 @@ class plugin_manager {
         require_once($CFG->libdir . '/tablelib.php');
 
         // Set up the table.
-        $table = new \flexible_table('pluginsadminttable');
+        $table = new flexible_table('pluginsadminttable');
         $table->define_baseurl($this->pageurl);
         $table->define_columns(['pluginname', 'version', 'hideshow', 'order', 'settings', 'uninstall']);
         $table->define_headers([get_string('name'), get_string('version'), get_string('hideshow', 'tool_translate'),
@@ -131,7 +134,7 @@ class plugin_manager {
             $row[] = $movelinks;
 
             $exists = $row[1] != '' && file_exists($CFG->dirroot . "/$CFG->admin/tool/translate/engine/$plugin/settings.php");
-            $row[] = $exists ? \html_writer::link(new \moodle_url('/admin/settings.php', ['section' => $sub]), $s) : '&nbsp;';
+            $row[] = $exists ? html_writer::link(new moodle_url('/admin/settings.php', ['section' => $sub]), $s) : '&nbsp;';
 
             $row[] = $this->format_icon_link('delete', $plugin, 'i/trash', get_string('uninstallplugin', 'core_admin'));
             $table->add_data($row, $class);
@@ -146,7 +149,7 @@ class plugin_manager {
      */
     private function check_permissions() {
         require_login();
-        $systemcontext = \context_system::instance();
+        $systemcontext = context_system::instance();
         require_capability('moodle/site:config', $systemcontext);
     }
 
@@ -158,9 +161,7 @@ class plugin_manager {
     public function hide_plugin($plugin) {
         set_config('disabled', 1, 'translateengine_' . $plugin);
         \core_plugin_manager::reset_caches();
-        if (!PHPUNIT_TEST) {
-            redirect($this->pageurl);
-        }
+        PHPUNIT_TEST ? mtrace('Not redirected') : redirect($this->pageurl);
     }
 
     /**
@@ -171,9 +172,7 @@ class plugin_manager {
     public function show_plugin($plugin) {
         set_config('disabled', 0, 'translateengine_' . $plugin);
         \core_plugin_manager::reset_caches();
-        if (!PHPUNIT_TEST) {
-            redirect($this->pageurl);
-        }
+        PHPUNIT_TEST ? mtrace('Not redirected') : redirect($this->pageurl);
     }
 
     /**
@@ -184,15 +183,17 @@ class plugin_manager {
     public function get_sorted_plugins_list() {
         $names = \core_component::get_plugin_list('translateengine');
         $result = [];
-        foreach ($names as $name => $unused) {
-            $idx = get_config('translateengine_' . $name, 'sortorder');
-            if (!$idx) {
-                $idx = 0;
+        foreach ($names as $name => $location) {
+            if (file_exists($location)) {
+                $idx = get_config('translateengine_' . $name, 'sortorder');
+                if (!$idx) {
+                    $idx = 0;
+                }
+                while (array_key_exists($idx, $result)) {
+                    $idx += 1;
+                }
+                $result[$idx] = $name;
             }
-            while (array_key_exists($idx, $result)) {
-                $idx += 1;
-            }
-            $result[$idx] = $name;
         }
         ksort($result);
         return $result;
@@ -212,11 +213,11 @@ class plugin_manager {
         $url = $this->pageurl;
         if ($action === 'delete') {
             $url = \core_plugin_manager::instance()->get_uninstall_url('translateengine_'.$plugin, 'manage');
-            return ($url) ? \html_writer::link($url, get_string('uninstallplugin', 'core_admin')) : '&nbsp;';
+            return ($url) ? html_writer::link($url, get_string('uninstallplugin', 'core_admin')) : '&nbsp;';
         }
 
-        return $OUTPUT->action_icon(new \moodle_url($url, ['action' => $action, 'plugin' => $plugin, 'sesskey' => \sesskey()]),
-                new \pix_icon($icon, $alt, 'moodle', ['title' => $alt]), null, ['title' => $alt]) . ' ';
+        return $OUTPUT->action_icon(new moodle_url($url, ['action' => $action, 'plugin' => $plugin, 'sesskey' => sesskey()]),
+                new pix_icon($icon, $alt, 'moodle', ['title' => $alt]), null, ['title' => $alt]) . ' ';
     }
 
     /**
@@ -254,8 +255,6 @@ class plugin_manager {
         foreach ($plugins as $key => $plugin) {
             set_config('sortorder', $key, 'translateengine_' . $plugin);
         }
-        if (!PHPUNIT_TEST) {
-            redirect($this->pageurl);
-        }
+        PHPUNIT_TEST ? mtrace('Not redirected') : redirect($this->pageurl);
     }
 }

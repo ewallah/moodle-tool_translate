@@ -23,8 +23,9 @@
  * @author    info@iplusacademy.org
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-
 namespace tool_translate\event;
+
+use moodle_url;
 
 /**
  * The translate module translated event.
@@ -69,10 +70,10 @@ class module_translated extends \core\event\base {
     /**
      * Returns relevant URL.
      *
-     * @return \moodle_url
+     * @return moodle_url
      */
     public function get_url() {
         $cm = get_coursemodule_from_id(null, $this->contextinstanceid, $this->courseid, false, MUST_EXIST);
-        return new \moodle_url('/course/modedit.php', ['update' => $cm->id]);
+        return new moodle_url('/course/modedit.php', ['update' => $cm->id]);
     }
 }

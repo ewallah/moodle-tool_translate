@@ -69,12 +69,13 @@ class engine extends \tool_translate\engine {
     }
 
     /**
-     * Supported languges.
+     * Supported languages.
      *
      * @return string[] Array of suported source/target languages
      */
     public function supported_langs(): array {
-        return ['en', 'fr'];
+        // TODO:  Get GOOGLE supported languages.
+        return ['eng' => 'en', 'fra' => 'fr'];
     }
 
     /**
