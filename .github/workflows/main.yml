@@ -90,3 +90,7 @@ jobs:
       - name: phpunit
         if: ${{ always() }}
         run: moodle-plugin-ci --ansi phpunit --coverage-text --coverage-clover
+
+      - name: behat
+        if: ${{ always() }}
+        run: moodle-plugin-ci --ansi behat --profile=chrome

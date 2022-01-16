@@ -15,7 +15,7 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * This file contains the util class of the translate tool.
+ * Library tests for translate tool.
  *
  * @package   tool_translate
  * @copyright 2021 eWallah
@@ -23,15 +23,14 @@
  * @author    info@iplusacademy.org
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
+
 namespace tool_translate;
 
-defined('MOODLE_INTERNAL') || die();
-
-require_once($CFG->dirroot . '/admin/tool/customlang/locallib.php');
-
+use advanced_testcase;
+use context_course;
 
 /**
- * This file contains the util class of the translate tool.
+ * Other tests for translate tool.
  *
  * @package   tool_translate
  * @copyright 2021 eWallah
@@ -39,27 +38,20 @@ require_once($CFG->dirroot . '/admin/tool/customlang/locallib.php');
  * @author    info@iplusacademy.org
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-class util extends \tool_customlang_utils {
+class library_test extends advanced_testcase {
 
     /**
-     * Writes strings into a local language pack file
-     *
-     * @param string $component the name of the component
-     * @param string $lang
-     * @param array $strings
-     * @return string filename
+     * Test the library.
      */
-    public static function dump_strings($component, $lang, $strings) {
-        if (count($strings) > 0) {
-            parent::dump_strings($lang, $component, $strings);
-            $tmp = parent::get_localpack_location($lang) . '/' . $component . '.php';
-            $fd = fopen($tmp, 'r');
-            if ($fd != false) {
-                $value = fread($fd, filesize($tmp));
-                fclose($fd);
-                return $value;
-            }
-        }
-        return '';
+    public function test_library() {
+        global $CFG, $PAGE;
+        require_once($CFG->dirroot . '/admin/tool/translate/lib.php');
+        $this->setAdminUser();
+        $this->resetAfterTest();
+        $course = $this->getDataGenerator()->create_course();
+        $context = context_course::instance($course->id);
+        $PAGE->set_context($context);
+        $this->assertDebuggingNotCalled();
+        tool_translate_extend_navigation_course($PAGE->navigation, $course, $context);
     }
 }

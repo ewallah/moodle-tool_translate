@@ -72,9 +72,11 @@ class table_test extends \advanced_testcase {
         $generator->create_module('choice', ['course' => $course->id]);
         $generator->create_module('forum', ['course' => $course->id]);
 
+        ob_start();
         $table = new \tool_translate\output\translation_table($course);
         $table->filldata();
         $out = \html_writer::table($table);
+        ob_end_clean();
         $this->assertStringContainsString($lesson->name, $out);
     }
 }

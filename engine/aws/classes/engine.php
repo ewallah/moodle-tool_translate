@@ -27,8 +27,6 @@
 namespace translateengine_aws;
 
 use moodle_exception;
-
-
 /**
  * AWS translate engine.
  *
@@ -42,6 +40,25 @@ class engine extends \tool_translate\engine {
 
     /** @var \stdClass awsclient */
     protected $awsclient;
+
+    /**
+     * The name of this engine.
+     *
+     * @return string
+     */
+    public function get_name(): string {
+         return 'AWS';
+    }
+
+    /**
+     * Rough calculation of price.
+     *
+     * @param int $letters price per letters
+     * @return string
+     */
+    public function get_price(int $letters): string {
+        return format_float(15 / 1000000 * $letters, 5);
+    }
 
     /**
      * Constructor
@@ -102,7 +119,7 @@ class engine extends \tool_translate\engine {
      * @param string $source The source language
      * @param string $target The target language
      * @param string $txt The text that has to be translated
-     * @return string|null The translated text
+     * @return string The translated text
      */
     public function translatetext(string $source, string $target, string $txt): ?string {
         if ($this->is_configured()) {
@@ -123,6 +140,6 @@ class engine extends \tool_translate\engine {
                 throw new moodle_exception($e->get_message());
             }
         }
-        return $txt;
+        return 'Not configured';
     }
 }

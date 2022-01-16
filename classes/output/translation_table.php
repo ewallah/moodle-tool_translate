@@ -25,7 +25,7 @@
 
 namespace tool_translate\output;
 
-
+use \core\output\notification;
 use html_table;
 use html_table_cell;
 use html_table_row;
@@ -59,13 +59,21 @@ class translation_table extends html_table {
      * @param course $course
      */
     public function __construct($course) {
+        global $OUTPUT;
         parent::__construct('translate');
         $this->course = $course;
         $this->caption = get_string('pluginname', 'tool_translate');
         $this->head = ['', '', '' , 'Words', 'Price'];
         $this->colclasses = ['mdl-right', 'mdl-left', 'mdl-left', 'mdl-right', 'mdl-right'];
-        // TODO: Select engine that is first on the list.
-        $this->engine = new \translateengine_aws\engine($course);
+
+        $pluginmanager = new \tool_translate\plugin_manager();
+        $this->engine = $pluginmanager->get_enabled_plugin($course);
+        if (!$this->engine->is_configured()) {
+             $notify = new notification('No engine configured', notification::NOTIFY_ERROR);
+        } else {
+             $notify = new notification($this->engine->get_name() . ' translation', notification::NOTIFY_WARNING);
+        }
+        echo $OUTPUT->render($notify);
     }
 
     /**
@@ -97,7 +105,7 @@ class translation_table extends html_table {
                 }
             }
         }
-        $this->data[] = new html_table_row(['', '', get_string('total'), $this->words, $this->letters]);
+        $this->data[] = new html_table_row(['', '', get_string('total'), $this->words, $this->engine->get_price($this->letters)]);
     }
 
     /**
@@ -111,7 +119,8 @@ class translation_table extends html_table {
     private function addrow($icon, $text, $translation = '', $params = []) {
         $words = count_words($translation);
         $letters = count_letters($translation);
-        $this->data[] = new html_table_row([$this->ibutton($params), $icon, $text, $words, $letters]);
+        $calc = $this->engine->get_price($letters);
+        $this->data[] = new html_table_row([$this->ibutton($params), $icon, $text, $words, $calc]);
         $this->words += $words;
         $this->letters += $letters;
     }
@@ -126,9 +135,12 @@ class translation_table extends html_table {
     private function ibutton($params, $action = 'translate') {
         global $OUTPUT;
         $cell = '';
-        $params['course'] = $this->course->id;
-        $params['action'] = $action;
-        $cell = $OUTPUT->single_button(new moodle_url('/admin/tool/translate/index.php', $params), 'fr');
+        if ($this->engine->is_configured()) {
+            $params['course'] = $this->course->id;
+            $params['action'] = $action;
+            $s = get_string('translate', 'tool_translate');
+            $cell = $OUTPUT->single_button(new moodle_url('/admin/tool/translate/index.php', $params), $s);
+        }
         return new html_table_cell($cell);
     }
 }

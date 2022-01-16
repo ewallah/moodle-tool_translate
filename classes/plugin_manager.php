@@ -134,7 +134,8 @@ class plugin_manager {
             $row[] = $movelinks;
 
             $exists = $row[1] != '' && file_exists($CFG->dirroot . "/$CFG->admin/tool/translate/engine/$plugin/settings.php");
-            $row[] = $exists ? html_writer::link(new moodle_url('/admin/settings.php', ['section' => $sub]), $s) : '&nbsp;';
+            $url = new moodle_url('/admin/settings.php', ['section' => $sub . '_settings']);
+            $row[] = $exists ? html_writer::link($url, $s) : '&nbsp;';
 
             $row[] = $this->format_icon_link('delete', $plugin, 'i/trash', get_string('uninstallplugin', 'core_admin'));
             $table->add_data($row, $class);
@@ -197,6 +198,24 @@ class plugin_manager {
         }
         ksort($result);
         return $result;
+    }
+
+    /**
+     * Return the first enabled engine
+     *
+     * @param stdClass $course
+     * @return \tool/translate/engine A translation engine
+     */
+    public function get_enabled_plugin($course) {
+        $names = $this->get_sorted_plugins_list();
+        foreach ($names as $name) {
+            $engine = '\translateengine_' . $name . '\engine';
+            $engine = new $engine($course);
+            if ($engine->is_configured()) {
+                return $engine;
+            }
+        }
+        return new \translateengine_aws\engine($course);
     }
 
     /**

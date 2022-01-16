@@ -26,6 +26,13 @@
 
 namespace tool_translate;
 
+use advanced_testcase;
+use context_course;
+use context_module;
+use lang_string;
+use moodle_url;
+use stdClass;
+
 /**
  * Other tests for translate tool.
  *
@@ -35,121 +42,7 @@ namespace tool_translate;
  * @author    info@iplusacademy.org
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-class other_test extends \advanced_testcase {
-
-    /**
-     * Test the library.
-     */
-    public function test_library() {
-        global $CFG, $PAGE;
-        require_once($CFG->dirroot . '/admin/tool/translate/lib.php');
-        $this->setAdminUser();
-        $this->resetAfterTest();
-        $course = $this->getDataGenerator()->create_course();
-        $context = \context_course::instance($course->id);
-        $PAGE->set_context($context);
-        $this->assertDebuggingNotCalled();
-        tool_translate_extend_navigation_course($PAGE->navigation, $course, $context);
-    }
-
-    /**
-     * Test the tool viewed event.
-     */
-    public function test_tool_viewed() {
-        $this->resetAfterTest();
-        $this->setAdminUser();
-        $course = $this->getDataGenerator()->create_course();
-        $context = \context_course::instance($course->id);
-        $event = \tool_translate\event\tool_viewed::create(['context' => $context]);
-
-        // Trigger and capture the event.
-        $sink = $this->redirectEvents();
-        $event->trigger();
-        $events = $sink->get_events();
-        $event = reset($events);
-
-        $this->assertInstanceOf('\tool_translate\event\tool_viewed', $event);
-        $this->assertEquals($context, $event->get_context());
-        $this->assertEquals('Translate page viewed', $event->get_name());
-        $this->assertStringContainsString('viewed the tranlation page for the course', $event->get_description());
-        $url = new \moodle_url('/admin/tool/translate/index.php', ['course' => $course->id]);
-        $this->assertEquals($url, $event->get_url());
-    }
-
-    /**
-     * Test the course translated event.
-     */
-    public function test_course_translated() {
-        $this->resetAfterTest();
-        $this->setAdminUser();
-        $course = $this->getDataGenerator()->create_course();
-        $context = \context_course::instance($course->id);
-        $event = \tool_translate\event\course_translated::create(['context' => $context]);
-
-        // Trigger and capture the event.
-        $sink = $this->redirectEvents();
-        $event->trigger();
-        $events = $sink->get_events();
-        $event = reset($events);
-
-        $this->assertInstanceOf('\tool_translate\event\course_translated', $event);
-        $this->assertEquals($context, $event->get_context());
-        $this->assertEquals('Course elements translated', $event->get_name());
-        $url = new \moodle_url('/admin/tool/translate/index.php', ['course' => $course->id]);
-        $this->assertEquals($url, $event->get_url());
-        $this->assertEventContextNotUsed($event);
-    }
-
-    /**
-     * Test the section translated event.
-     */
-    public function test_section_translated() {
-        $this->resetAfterTest();
-        $this->setAdminUser();
-        $course = $this->getDataGenerator()->create_course();
-        $context = \context_course::instance($course->id);
-        $event = \tool_translate\event\section_translated::create(['context' => $context, 'other' => ['sectionid' => 1]]);
-
-        // Trigger and capture the event.
-        $sink = $this->redirectEvents();
-        $event->trigger();
-        $events = $sink->get_events();
-        $event = reset($events);
-
-        $this->assertInstanceOf('\tool_translate\event\section_translated', $event);
-        $this->assertEquals($context, $event->get_context());
-        $this->assertEquals('Section translated', $event->get_name());
-        $url = new \moodle_url('/admin/tool/translate/index.php', ['course' => $course->id]);
-        $this->assertEquals($url, $event->get_url());
-        $this->assertEventContextNotUsed($event);
-    }
-
-
-    /**
-     * Test the module translated event.
-     */
-    public function test_module_translated() {
-        $this->resetAfterTest();
-        $this->setAdminUser();
-        $course = $this->getDataGenerator()->create_course();
-        $lesson = $this->getDataGenerator()->create_module('lesson', ['course' => $course->id]);
-        $context = \context_module::instance($lesson->cmid);
-        $event = \tool_translate\event\module_translated::create(['context' => $context]);
-
-        // Trigger and capture the event.
-        $sink = $this->redirectEvents();
-        $event->trigger();
-        $events = $sink->get_events();
-        $event = reset($events);
-
-        $this->assertInstanceOf('\tool_translate\event\module_translated', $event);
-        $this->assertEquals($context, $event->get_context());
-        $this->assertEquals('Module translated', $event->get_name());
-        $url = new \moodle_url('/course/modedit.php', ['update' => $lesson->cmid]);
-        $this->assertEquals($url, $event->get_url());
-        $this->assertEventContextNotUsed($event);
-    }
-
+class other_test extends advanced_testcase {
 
     /**
      * Test the submodule translateengine.
@@ -159,11 +52,11 @@ class other_test extends \advanced_testcase {
         require_once($CFG->dirroot . '/lib/adminlib.php');
         $this->resetAfterTest();
         $this->setAdminUser();
-        $translateengine = new \tool_translate\plugininfo\translateengine();
+        $translateengine = new plugininfo\translateengine();
         $this->assertTrue($translateengine->is_uninstall_allowed());
         $this->assertTrue($translateengine->is_enabled());
         $this->assertEquals('translateengine_', $translateengine->get_settings_section_name());
-        $category = new \admin_category('translateengines', new \lang_string('settings', 'tool_translate'));
+        $category = new \admin_category('translateengines', new lang_string('settings', 'tool_translate'));
         $translateengine->load_settings($category, 'aws', true);
     }
 
@@ -213,7 +106,7 @@ class other_test extends \advanced_testcase {
         $this->setAdminUser();
         $generator = $this->getDataGenerator();
         $course = $generator->create_course();
-        $fordb = new \stdClass();
+        $fordb = new stdClass();
         $fordb->id = null;
         $fordb->name = "Test badge with 'apostrophe' and other friends &(";
         $fordb->description = "Testing badges";
@@ -267,7 +160,7 @@ class other_test extends \advanced_testcase {
         $engine = new \translateengine_aws\engine($course);
         $this->assertFalse($engine->is_configured());
         $this->assertIsArray($engine->supported_langs());
-        $this->assertStringContainsString('boe', $engine->translatetext('en', 'nl', 'boe'));
+        $this->assertStringContainsString('Not configured', $engine->translatetext('en', 'nl', 'boe'));
         $this->assertStringNotContainsString('Course  with id', $engine->translate_other());
         $this->assertEquals('', $engine->translate_section(1));
         $this->assertStringNotContainsString('Module with id', $engine->translate_module($book->cmid));
@@ -310,9 +203,13 @@ class other_test extends \advanced_testcase {
         $course = $this->getDataGenerator()->create_course();
         $engine = new \translateengine_aws\engine($course);
         $out = $engine->translate_plugin('tool_translate', 'en', 'fr');
-        $this->assertEquals('', $out);
-        $out = \tool_translate\util::dump_strings('tool_translate', 'en', ['a' => 'boe']);
-        $this->assertStringContainsString('string[\'a\'] = \'boe\';', $out);
+        $this->assertStringContainsString('tool_translate', $out);
+        $out = \phpunit_util::call_internal_method(
+            $engine,
+            'dump_strings',
+            ['fr', 'tool_translate', ['a' => 'boe']],
+            'tool_translate\engine');
+        $this->assertStringContainsString('Automatic translated strings (fr) for tool_translate', $out);
         $this->expectExceptionMessage('Plugin not found');
         $out = $engine->translate_plugin('tool_translatefake', 'en', 'fr');
     }

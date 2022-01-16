@@ -60,11 +60,26 @@ abstract class engine {
     }
 
     /**
+     * The name of this engine.
+     *
+     * @return string
+     */
+    abstract public function get_name(): string;
+
+    /**
      * Is the translate engine fully configured and ready to use.
      *
      * @return bool if the engine is ready for use
      */
     abstract public function is_configured(): bool;
+
+    /**
+     * Rough calculation of price.
+     *
+     * @param int $letters count of letters
+     * @return string
+     */
+    abstract public function get_price(int $letters): string;
 
     /**
      * Supported languages.
@@ -286,7 +301,7 @@ abstract class engine {
 
 
     /**
-     * Plugin
+     * Translate a plugin
      *
      * @param string $component
      * @param string $fromlanguage
@@ -309,6 +324,53 @@ abstract class engine {
                 $done[$key] = $this->translatetext($fromlanguage, $tolanguage, $value);
             }
         }
-        return \tool_translate\util::dump_strings($component, $tolanguage, $done);
+        return self::dump_strings($tolanguage, $component, $done);
     }
+
+    /**
+     * Writes strings into a local language pack file
+     *
+     * @param string $lang the language
+     * @param string $component the name of the component
+     * @param array $strings
+     * @return string
+     */
+    protected static function dump_strings($lang, $component, $strings) {
+        $admin = fullname(get_admin());
+        $year = date("Y");
+        $str = "<?php
+
+// This file is part of Moodle - http://moodle.org/
+//
+// Moodle is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// Moodle is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
+
+/**
+ * Automatic translated strings ($lang) for $component
+ *
+ * @package    $component
+ * @copyright  $year $admin
+ * @author     tool_translate
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
+
+";
+
+        foreach ($strings as $stringid => $text) {
+            $str .= '$string[\'' . $stringid . '\'] = \'' . var_export($text, true) . '\';
+';
+        }
+        return $str;
+    }
+
 }

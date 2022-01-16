@@ -76,6 +76,5 @@ $course = get_course(1);
 $engine = 'translateengine_' . $options['engine'] . '\engine';
 require_once($CFG->dirroot . '/admin/tool/translate/engine/' . $options['engine'] . '/classes/engine.php');
 require_once($CFG->dirroot . '/admin/tool/translate/classes/engine.php');
-require_once($CFG->dirroot . '/admin/tool/translate/classes/util.php');
 $translateengine = new $engine($course);
 echo $translateengine->translate_plugin($options['component'], $options['from'], $options['to']);

@@ -67,7 +67,14 @@ class other_test extends \advanced_testcase {
         $this->assertInstanceOf('\translateengine_google\engine', $class);
         $this->assertTrue($class->is_configured());
         $this->assertIsArray($class->supported_langs());
-        // TODO.
+        $this->assertSame('Google', $class->get_name());
+        $langs = $class->supported_langs();
+        $languages1 = get_string_manager()->get_list_of_languages('en', 'iso6391');
+        $languages2 = get_string_manager()->get_list_of_languages('en', 'iso6392');
+        foreach ($langs as $key => $value) {
+            $this->assertTrue(array_key_exists($value, $languages1));
+            $this->assertTrue(array_key_exists($key, $languages2));
+        }
         $this->assertSame(null, $class->translatetext('en', 'fr', 'boe'));
     }
 }

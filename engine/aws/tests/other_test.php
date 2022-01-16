@@ -57,9 +57,8 @@ class other_test extends \advanced_testcase {
         $class = new engine($course);
         $this->assertInstanceOf('\translateengine_aws\engine', $class);
         $this->assertFalse($class->is_configured());
-        $this->assertSame('boe', $class->translatetext('en', 'fr', 'boe'));
+        $this->assertSame('Not configured', $class->translatetext('en', 'fr', 'boe'));
         $this->assertIsArray($class->supported_langs());
-        // TODO: get price from https://pricing.us-east-1.amazonaws.com/offers/v1.0//translate/current/index.json.
     }
 
     /**
@@ -71,6 +70,7 @@ class other_test extends \advanced_testcase {
         $this->assertInstanceOf('\translateengine_aws\engine', $class);
         $this->assertTrue($class->is_configured());
         $this->assertIsArray($class->supported_langs());
+        $this->assertSame('AWS', $class->get_name());
         $langs = $class->supported_langs();
         $languages1 = get_string_manager()->get_list_of_languages('en', 'iso6391');
         $languages2 = get_string_manager()->get_list_of_languages('en', 'iso6392');
