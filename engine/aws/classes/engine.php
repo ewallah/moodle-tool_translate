@@ -74,9 +74,9 @@ class engine extends \tool_translate\engine {
         $s = get_config('translateengine_aws', 'secret_key');
         $arr = ['region' => $r, 'credentials' => ['key' => $k, 'secret' => $s], 'version' => '2017-07-01'];
         if ($r and $k and $s) {
-            if (defined('BEHAT_SITE_RUNNING') or PHPUNIT_TEST or CLI_SCRIPT) {
+            if (defined('BEHAT_SITE_RUNNING') or PHPUNIT_TEST) {
                 $mock = new \Aws\MockHandler();
-                for ($i = 1; $i < 10000; $i++) {
+                for ($i = 1; $i < 1000; $i++) {
                     $mock->append(new \Aws\Result(['TranslatedText' => "BEHAT $i"]));
                 }
                 $arr['handler'] = $mock;
@@ -125,10 +125,10 @@ class engine extends \tool_translate\engine {
         if ($this->is_configured()) {
             $values = array_values($this->supported_langs());
             if (!in_array($source, $values, true)) {
-                throw new moodle_exception('language not supportd');
+                throw new moodle_exception('language not supported');
             }
             if (!in_array($target, $values, true)) {
-                throw new moodle_exception('language not supportd');
+                throw new moodle_exception('language not supported');
             }
             try {
                 $arr = $this->awsclient->translateText([

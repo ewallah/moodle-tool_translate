@@ -50,6 +50,12 @@ abstract class engine {
     /** @var bool counting */
     public $counting = true;
 
+    /** @var string targetlang */
+    public $targetlang;
+
+    /** @var string sourcelang */
+    public $sourcelang;
+
     /**
      * Constructor
      *
@@ -252,6 +258,9 @@ abstract class engine {
      */
     private function translate_record($table, $id, $fields = []) {
         global $DB;
+        if (!$this->counting && (is_null($this->targetlang) || is_null($this->sourcelang))) {
+            throw new moodle_exception('Language not specified');
+        }
         $s = [];
         if ($record = $DB->get_record($table, ['id' => $id])) {
             $dbman = $DB->get_manager();
@@ -282,8 +291,7 @@ abstract class engine {
                         $result = $task;
                         if (!$this->counting) {
                             // TODO: What if max lenght > result.
-                            // TODO: translate the correct language.
-                            $result = $this->translatetext('en', 'fr', $task);
+                            $result = $this->translatetext($this->sourcelang, $this->targetlang, $task);
                             if (!is_null($result) && $task != $result) {
                                 $DB->set_field($table, $field, $result, ['id' => $id]);
                                 if ($updatetime) {
@@ -321,7 +329,7 @@ abstract class engine {
         foreach ($entries as $key => $value) {
             $s = $this->translatetext($fromlanguage, $tolanguage, $value);
             if ($s != $value) {
-                $done[$key] = $this->translatetext($fromlanguage, $tolanguage, $value);
+                $done[$key] = $s;
             }
         }
         return self::dump_strings($tolanguage, $component, $done);

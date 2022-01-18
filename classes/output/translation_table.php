@@ -47,10 +47,12 @@ class translation_table extends html_table {
     protected $course;
     /** @var stdClass engine */
     protected $engine;
-    /** @var stdClass words */
+    /** @var int words */
     protected $words = 0;
-    /** @var stdClass letters */
+    /** @var int letters */
     protected $letters = 0;
+    /** @var int counter */
+    protected $counter = 0;
 
 
     /**
@@ -59,15 +61,18 @@ class translation_table extends html_table {
      * @param course $course
      */
     public function __construct($course) {
-        global $OUTPUT;
+        global $CFG, $OUTPUT;
         parent::__construct('translate');
         $this->course = $course;
         $this->caption = get_string('pluginname', 'tool_translate');
         $this->head = ['', '', '' , 'Words', 'Price'];
         $this->colclasses = ['mdl-right', 'mdl-left', 'mdl-left', 'mdl-right', 'mdl-right'];
-
         $pluginmanager = new \tool_translate\plugin_manager();
         $this->engine = $pluginmanager->get_enabled_plugin($course);
+        if ($CFG->lang != current_language()) {
+            $this->engine->sourcelang = $CFG->lang;
+            $this->engine->targetlang = current_language();
+        }
         if (!$this->engine->is_configured()) {
              $notify = new notification('No engine configured', notification::NOTIFY_ERROR);
         } else {
@@ -120,7 +125,9 @@ class translation_table extends html_table {
         $words = count_words($translation);
         $letters = count_letters($translation);
         $calc = $this->engine->get_price($letters);
-        $this->data[] = new html_table_row([$this->ibutton($params), $icon, $text, $words, $calc]);
+        $row = new html_table_row([$this->ibutton($params), $icon, $text, $words, $calc]);
+        $row->attributes['class'] = 'rowid' . $this->counter++;
+        $this->data[] = $row;
         $this->words += $words;
         $this->letters += $letters;
     }
@@ -138,9 +145,38 @@ class translation_table extends html_table {
         if ($this->engine->is_configured()) {
             $params['course'] = $this->course->id;
             $params['action'] = $action;
-            $s = get_string('translate', 'tool_translate');
-            $cell = $OUTPUT->single_button(new moodle_url('/admin/tool/translate/index.php', $params), $s);
+            $params['target'] = current_language();
+            $cell = $OUTPUT->single_button(new moodle_url('/admin/tool/translate/index.php', $params), current_language());
         }
         return new html_table_cell($cell);
+    }
+
+    /**
+     * Translate all other fields
+     *
+     * @return string
+     */
+    public function translate_other(): string {
+        return $this->engine->translate_other();
+    }
+
+    /**
+     * Translate section
+     *
+     * @param int $sectionid
+     * @return string
+     */
+    public function translate_section($sectionid): string {
+        return $this->engine->translate_section($sectionid);
+    }
+
+    /**
+     * Translate module
+     *
+     * @param int $moduleid
+     * @return string
+     */
+    public function translate_module($moduleid): string {
+        return $this->engine->translate_section($moduleid);
     }
 }

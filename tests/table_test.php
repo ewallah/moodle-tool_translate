@@ -50,27 +50,27 @@ class table_test extends \advanced_testcase {
      * Test the library.
      */
     public function test_table() {
-        $generator = $this->getDataGenerator();
-        $course = $generator->create_course(['lang' => 'fr']);
-        $generator->create_module('page',
+        $gen = $this->getDataGenerator();
+        $course = $gen->create_course(['lang' => 'fr']);
+        $gen->create_module('page',
            ['course' => $course->id,
             'name' => 'Lesson',
             'content' => ' before [after] already']);
-        $generator->create_module('book', ['course' => $course->id]);
-        $lesson = $generator->create_module('lesson', ['course' => $course->id]);
-        $lessongenerator = $generator->get_plugin_generator('mod_lesson');
+        $gen->create_module('book', ['course' => $course->id]);
+        $lesson = $gen->create_module('lesson', ['course' => $course->id]);
+        $lessongenerator = $gen->get_plugin_generator('mod_lesson');
         $lessongenerator->create_content($lesson);
         $lessongenerator->create_question_truefalse($lesson);
-        $feedback = $generator->create_module('feedback', ['course' => $course->id]);
-        $fg = $generator->get_plugin_generator('mod_feedback');
+        $feedback = $gen->create_module('feedback', ['course' => $course->id]);
+        $fg = $gen->get_plugin_generator('mod_feedback');
         $fg->create_item_numeric($feedback);
         $fg->create_item_multichoice($feedback);
-        $glossary = $generator->create_module('glossary', ['course' => $course->id]);
-        $glossarygenerator = $generator->get_plugin_generator('mod_glossary');
+        $glossary = $gen->create_module('glossary', ['course' => $course->id]);
+        $glossarygenerator = $gen->get_plugin_generator('mod_glossary');
         $glossarygenerator->create_content($glossary);
         $glossarygenerator->create_content($glossary, ['concept' => 'Custom concept']);
-        $generator->create_module('choice', ['course' => $course->id]);
-        $generator->create_module('forum', ['course' => $course->id]);
+        $gen->create_module('choice', ['course' => $course->id]);
+        $gen->create_module('forum', ['course' => $course->id]);
 
         ob_start();
         $table = new \tool_translate\output\translation_table($course);
@@ -78,5 +78,17 @@ class table_test extends \advanced_testcase {
         $out = \html_writer::table($table);
         ob_end_clean();
         $this->assertStringContainsString($lesson->name, $out);
+        set_config('region', 'eu-west-3', 'translateengine_aws');
+        set_config('access_key', 'key', 'translateengine_aws');
+        set_config('secret_key', 'secret', 'translateengine_aws');
+        ob_start();
+        $table = new \tool_translate\output\translation_table($course);
+        $table->filldata();
+        $out = \html_writer::table($table);
+        ob_end_clean();
+        $this->assertStringContainsString($lesson->name, $out);
+        $table->translate_other();
+        $table->translate_section(1);
+        $table->translate_module($glossary->id);
     }
 }

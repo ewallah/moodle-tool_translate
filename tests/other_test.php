@@ -157,14 +157,19 @@ class other_test extends advanced_testcase {
         $q = $questiongenerator->create_question('essay', 'plain', ['category' => $cat->id]);
         quiz_add_quiz_question($q->id, $quiz, 0 , 10);
 
+        set_config('region', 'eu-west-3', 'translateengine_aws');
+        set_config('access_key', 'key', 'translateengine_aws');
+        set_config('secret_key', 'secret', 'translateengine_aws');
         $engine = new \translateengine_aws\engine($course);
-        $this->assertFalse($engine->is_configured());
+        $this->assertTrue($engine->is_configured());
         $this->assertIsArray($engine->supported_langs());
-        $this->assertStringContainsString('Not configured', $engine->translatetext('en', 'nl', 'boe'));
+        $this->assertStringNotContainsString('Not configured', $engine->translatetext('en', 'nl', 'boe'));
         $this->assertStringNotContainsString('Course  with id', $engine->translate_other());
         $this->assertEquals('', $engine->translate_section(1));
         $this->assertStringNotContainsString('Module with id', $engine->translate_module($book->cmid));
         $engine->counting = false;
+        $engine->sourcelang = 'en';
+        $engine->targetlang = 'fr';
         $this->assertStringContainsString('Course with id', $engine->translate_other());
         $this->assertEquals('Topic with id 1 translated', $engine->translate_section(1));
         $this->assertStringContainsString('Module with id', $engine->translate_module($book->cmid));
@@ -175,6 +180,9 @@ class other_test extends advanced_testcase {
         $this->assertStringContainsString('Module with id', $engine->translate_module($forum->cmid));
         $this->assertStringContainsString('Module with id', $engine->translate_module($glossary->cmid));
         $this->assertStringContainsString('Module with id', $engine->translate_module($quiz->cmid));
+        $engine->sourcelang = null;
+        $this->expectExceptionMessage('Language not specified');
+        $this->assertStringContainsString('Course with id', $engine->translate_other());
     }
 
     /**
