@@ -135,7 +135,7 @@ class event_test extends advanced_testcase {
         $this->assertInstanceOf('\tool_translate\event\module_translated', $event);
         $this->assertEquals($context, $event->get_context());
         $this->assertEquals('Module translated', $event->get_name());
-        $url = new moodle_url('/course/modedit.php', ['update' => $lesson->cmid]);
+        $url = new moodle_url('/course/modedit.php', ['update' => $context->instanceid]);
         $this->assertEquals($url, $event->get_url());
         $this->assertEventContextNotUsed($event);
     }

@@ -9,8 +9,8 @@ Feature: Translate a course
       | secret_key | fake_secret | translateengine_aws |
       | region     | eu-north-1  | translateengine_aws |
     And the following "courses" exist:
-      | fullname | shortname |
-      | Course 1 | C1        |
+      | fullname | shortname | lang |
+      | Course 1 | C1        | fr   |
     And the following "activities" exist:
       | activity | name | intro    | course | idnumber |
       | page     | modA | page     | C1     | modA     |
@@ -31,8 +31,8 @@ Feature: Translate a course
     Then I should not see "no engine configured"
     And I should see "AWS translation"
     And I should see "Course" in the ".rowid0" "css_element"
-    And I click on "en" "button" in the ".rowid0" "css_element"
-    And I click on "en" "button" in the ".rowid1" "css_element"
-    And I click on "en" "button" in the ".rowid2" "css_element"
-    And I click on "en" "button" in the ".rowid3" "css_element"
-    And I click on "en" "button" in the ".rowid4" "css_element"
+    And I click on "fr" "button" in the ".rowid0" "css_element"
+    And I click on "fr" "button" in the ".rowid1" "css_element"
+    And I click on "fr" "button" in the ".rowid2" "css_element"
+    And I click on "fr" "button" in the ".rowid3" "css_element"
+    And I click on "fr" "button" in the ".rowid4" "css_element"

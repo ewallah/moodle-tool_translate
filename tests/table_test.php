@@ -87,8 +87,9 @@ class table_test extends \advanced_testcase {
         $out = \html_writer::table($table);
         ob_end_clean();
         $this->assertStringContainsString($lesson->name, $out);
+        $table->translate_all('fr', 'en');
+        $table->translate_module($glossary->cmid);
         $table->translate_other();
         $table->translate_section(1);
-        $table->translate_module($glossary->id);
     }
 }

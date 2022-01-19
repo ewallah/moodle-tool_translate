@@ -26,6 +26,8 @@
 namespace tool_translate\output;
 
 use \core\output\notification;
+use context_course;
+use context_module;
 use html_table;
 use html_table_cell;
 use html_table_row;
@@ -46,11 +48,11 @@ class translation_table extends html_table {
     /** @var stdClass course */
     protected $course;
     /** @var stdClass engine */
-    protected $engine;
+    public $engine;
     /** @var int words */
     protected $words = 0;
     /** @var int letters */
-    protected $letters = 0;
+    public $letters = 0;
     /** @var int counter */
     protected $counter = 0;
 
@@ -61,7 +63,7 @@ class translation_table extends html_table {
      * @param course $course
      */
     public function __construct($course) {
-        global $CFG, $OUTPUT;
+        global $OUTPUT;
         parent::__construct('translate');
         $this->course = $course;
         $this->caption = get_string('pluginname', 'tool_translate');
@@ -69,10 +71,6 @@ class translation_table extends html_table {
         $this->colclasses = ['mdl-right', 'mdl-left', 'mdl-left', 'mdl-right', 'mdl-right'];
         $pluginmanager = new \tool_translate\plugin_manager();
         $this->engine = $pluginmanager->get_enabled_plugin($course);
-        if ($CFG->lang != current_language()) {
-            $this->engine->sourcelang = $CFG->lang;
-            $this->engine->targetlang = current_language();
-        }
         if (!$this->engine->is_configured()) {
              $notify = new notification('No engine configured', notification::NOTIFY_ERROR);
         } else {
@@ -140,11 +138,12 @@ class translation_table extends html_table {
      * @return html_table_cell
      */
     private function ibutton($params, $action = 'translate') {
-        global $OUTPUT;
+        global $CFG, $OUTPUT;
         $cell = '';
         if ($this->engine->is_configured()) {
             $params['course'] = $this->course->id;
             $params['action'] = $action;
+            $params['source'] = $CFG->lang;
             $params['target'] = current_language();
             $cell = $OUTPUT->single_button(new moodle_url('/admin/tool/translate/index.php', $params), current_language());
         }
@@ -157,7 +156,12 @@ class translation_table extends html_table {
      * @return string
      */
     public function translate_other(): string {
-        return $this->engine->translate_other();
+        $this->engine->counting = false;
+        $this->engine->targetlang = optional_param('target', 'fr', PARAM_ALPHA);
+        $this->engine->sourcelang = optional_param('source', 'en', PARAM_ALPHA);
+        $s = $this->engine->translate_other();
+        $this->engine->counting = true;
+        return $s;
     }
 
     /**
@@ -167,7 +171,12 @@ class translation_table extends html_table {
      * @return string
      */
     public function translate_section($sectionid): string {
-        return $this->engine->translate_section($sectionid);
+        $this->engine->counting = false;
+        $this->engine->targetlang = optional_param('target', 'fr', PARAM_ALPHA);
+        $this->engine->sourcelang = optional_param('source', 'en', PARAM_ALPHA);
+        $s = $this->engine->translate_section($sectionid);
+        $this->engine->counting = true;
+        return $s;
     }
 
     /**
@@ -177,6 +186,39 @@ class translation_table extends html_table {
      * @return string
      */
     public function translate_module($moduleid): string {
-        return $this->engine->translate_section($moduleid);
+        $this->engine->counting = false;
+        $this->engine->targetlang = optional_param('target', 'fr', PARAM_ALPHA);
+        $this->engine->sourcelang = optional_param('source', 'en', PARAM_ALPHA);
+        $s = $this->engine->translate_module($moduleid);
+        $this->engine->counting = true;
+        return $s;
     }
+
+    /**
+     * Translate full course
+     *
+     * @param string $sourcelang
+     * @param string $targetlang
+     * @return string
+     */
+    public function translate_all($sourcelang, $targetlang): string {
+        $this->engine->counting = false;
+        $this->engine->targetlang = $targetlang;
+        $this->engine->sourcelang = $sourcelang;
+        $s = $this->engine->translate_other();
+        $modinfo = get_fast_modinfo($this->course->id, -1);
+        $sections = $modinfo->get_section_info_all();
+        $modinfosections = $modinfo->get_sections();
+        foreach ($sections as $key => $section) {
+            if (isset($modinfosections[$section->section])) {
+                $s .= $this->engine->translate_section($section->id);
+                foreach ($modinfosections[$key] as $cmid) {
+                    $s .= $this->engine->translate_module($cmid);
+                }
+            }
+        }
+        $this->engine->counting = true;
+        return $s;
+    }
+
 }

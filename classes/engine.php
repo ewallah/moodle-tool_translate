@@ -138,7 +138,8 @@ abstract class engine {
         if ($this->counting) {
             return $s;
         }
-        event\course_translated::create(['context' => $context])->trigger();
+        $event = event\course_translated::create(['context' => $context]);
+        $event->trigger();
         rebuild_course_cache($id);
         return "$s <br/>Course with id $id translated all extra elements.";
     }
@@ -155,7 +156,8 @@ abstract class engine {
             return $s;
         }
         $context = context_course::instance($this->course->id);
-        event\module_translated::create(['context' => $context, 'other' => ['sectionid' => $sectionid]])->trigger();
+        $event = event\module_translated::create(['context' => $context, 'other' => ['sectionid' => $sectionid]]);
+        $event->trigger();
         rebuild_course_cache($this->course->id);
         $courseformat = course_get_format($this->course)->get_format();
         return $s . get_string('sectionname', 'format_' . $courseformat) . " with id $sectionid translated";
@@ -219,7 +221,8 @@ abstract class engine {
             return $s;
         }
         $context = context_module::instance($cm->id);
-        event\module_translated::create(['context' => $context])->trigger();
+        $event = event\module_translated::create(['context' => $context]);
+        $event->trigger();
         rebuild_course_cache($this->course->id);
         $cm = $modinfo->cms[$moduleid];
         $url = html_writer::link($cm->url, $cm->get_formatted_name());
