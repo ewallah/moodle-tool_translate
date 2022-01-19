@@ -70,7 +70,10 @@ abstract class engine {
      *
      * @return string
      */
-    abstract public function get_name(): string;
+    public function get_name(): string {
+        $classname = str_ireplace('\engine', '', get_class($this));
+        return get_string('pluginname', $classname);
+    }
 
     /**
      * Is the translate engine fully configured and ready to use.

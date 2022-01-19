@@ -18,7 +18,7 @@
  * Version details
  *
  * @package   tool_translate
- * @copyright 2021 eWallah
+ * @copyright 2022 eWallah
  * @author    Renaat Debleu <info@eWallah.net>
  * @author    info@iplusacademy.org
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
@@ -26,8 +26,9 @@
 
 defined('MOODLE_INTERNAL') || die;
 
-$plugin->version = 2021052600;
-$plugin->release = '3.9+';
+$plugin->version = 2022011900;
+$plugin->release = '3.11+';
 $plugin->requires = 2020061504;
 $plugin->component = 'tool_translate';
-$plugin->maturity = 'MATURITY_ALFA';
+$plugin->maturity = 'MATURITY_BETA';
+$plugin->dependencies = ['local_aws' => ANY_VERSION];

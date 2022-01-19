@@ -67,14 +67,14 @@ class translation_table extends html_table {
         parent::__construct('translate');
         $this->course = $course;
         $this->caption = get_string('pluginname', 'tool_translate');
-        $this->head = ['', '', '' , 'Words', 'Price'];
+        $this->head = ['', '', '' , get_string('words', 'tool_translate'), get_string('price', 'tool_translate')];
         $this->colclasses = ['mdl-right', 'mdl-left', 'mdl-left', 'mdl-right', 'mdl-right'];
         $pluginmanager = new \tool_translate\plugin_manager();
         $this->engine = $pluginmanager->get_enabled_plugin($course);
         if (!$this->engine->is_configured()) {
-             $notify = new notification('No engine configured', notification::NOTIFY_ERROR);
+             $notify = new notification(get_string('noengine', 'tool_translate'), notification::NOTIFY_ERROR);
         } else {
-             $notify = new notification($this->engine->get_name() . ' translation', notification::NOTIFY_WARNING);
+             $notify = new notification($this->engine->get_name(), notification::NOTIFY_WARNING);
         }
         echo $OUTPUT->render($notify);
     }

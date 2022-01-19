@@ -23,7 +23,6 @@
  * @author    info@iplusacademy.org
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-
 namespace translateengine_aws;
 
 use moodle_exception;
@@ -40,15 +39,6 @@ class engine extends \tool_translate\engine {
 
     /** @var \stdClass awsclient */
     protected $awsclient;
-
-    /**
-     * The name of this engine.
-     *
-     * @return string
-     */
-    public function get_name(): string {
-         return 'AWS';
-    }
 
     /**
      * Rough calculation of price.

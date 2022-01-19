@@ -29,7 +29,7 @@ Feature: Translate a course
     Given I am on "Course 1" course homepage
     And I navigate to "Translate" in current page administration
     Then I should not see "no engine configured"
-    And I should see "AWS translation"
+    And I should see "AWS translate"
     And I should see "Course" in the ".rowid0" "css_element"
     And I click on "fr" "button" in the ".rowid0" "css_element"
     And I click on "fr" "button" in the ".rowid1" "css_element"

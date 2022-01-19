@@ -70,7 +70,7 @@ class other_test extends \advanced_testcase {
         $this->assertInstanceOf('\translateengine_aws\engine', $class);
         $this->assertTrue($class->is_configured());
         $this->assertIsArray($class->supported_langs());
-        $this->assertSame('AWS', $class->get_name());
+        $this->assertSame('AWS translate', $class->get_name());
         $langs = $class->supported_langs();
         $languages1 = get_string_manager()->get_list_of_languages('en', 'iso6391');
         $languages2 = get_string_manager()->get_list_of_languages('en', 'iso6392');

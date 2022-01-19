@@ -43,15 +43,6 @@ class engine extends \tool_translate\engine {
     protected $service;
 
     /**
-     * The name of this engine.
-     *
-     * @return string
-     */
-    public function get_name(): string {
-         return 'Google';
-    }
-
-    /**
      * Rough calculation of price.
      *
      * @param int $letters price per letters

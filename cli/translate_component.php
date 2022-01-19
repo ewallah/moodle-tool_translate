@@ -77,4 +77,14 @@ $engine = 'translateengine_' . $options['engine'] . '\engine';
 require_once($CFG->dirroot . '/admin/tool/translate/engine/' . $options['engine'] . '/classes/engine.php');
 require_once($CFG->dirroot . '/admin/tool/translate/classes/engine.php');
 $translateengine = new $engine($course);
-echo $translateengine->translate_plugin($options['component'], $options['from'], $options['to']);
+if ($translateengine->isconfigured()) {
+    cli_writeln("Are you sure to translate the plugin?");
+    $prompt = get_string('cliyesnoprompt', 'admin');
+    $input = cli_input($prompt, '', [get_string('clianswerno', 'admin'), get_string('cliansweryes', 'admin')]);
+    if ($input == get_string('clianswerno', 'admin')) {
+        exit(1);
+    }
+    cli_write($translateengine->translate_plugin($options['component'], $options['from'], $options['to']));
+} else {
+    cli_problem(get_string('noengine', 'tool_translate'));
+}
