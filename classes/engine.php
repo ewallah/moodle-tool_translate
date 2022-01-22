@@ -372,16 +372,16 @@ abstract class engine {
 /**
  * Automatic translated strings ($lang) for $component
  *
- * @package    $component
- * @copyright  $year $admin
- * @author     tool_translate
- * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ * @package   $component
+ * @copyright $year $admin
+ * @author    tool_translate
+ * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
 ";
 
         foreach ($strings as $stringid => $text) {
-            $str .= '$string[\'' . $stringid . '\'] = \'' . var_export($text, true) . '\';
+            $str .= '$string[\'' . $stringid . '\'] =  ' . var_export($text, true) . ';
 ';
         }
         return $str;

@@ -29,7 +29,7 @@ define('CLI_SCRIPT', true);
 require(__DIR__ . '/../../../../config.php');
 require_once($CFG->libdir . '/clilib.php');
 
-$usage = "Put a one line summary of what the script does here.
+$usage = "This script translates a Moodle plugin.
 
 Usage:
     # php translate_component.php --engine=aws --component=tool_translate --from=en --to=fr
@@ -77,7 +77,7 @@ $engine = 'translateengine_' . $options['engine'] . '\engine';
 require_once($CFG->dirroot . '/admin/tool/translate/engine/' . $options['engine'] . '/classes/engine.php');
 require_once($CFG->dirroot . '/admin/tool/translate/classes/engine.php');
 $translateengine = new $engine($course);
-if ($translateengine->isconfigured()) {
+if ($translateengine->is_configured()) {
     cli_writeln("Are you sure to translate the plugin?");
     $prompt = get_string('cliyesnoprompt', 'admin');
     $input = cli_input($prompt, '', [get_string('clianswerno', 'admin'), get_string('cliansweryes', 'admin')]);
