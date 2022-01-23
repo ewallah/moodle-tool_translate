@@ -98,3 +98,15 @@ jobs:
       - name: behat
         if: ${{ always() }}
         run: moodle-plugin-ci --ansi behat --profile=chrome
+
+      - name: classic
+        if: ${{ always() }}
+        run: moodle-plugin-ci --ansi behat --suite="classic" --profile=chrome
+
+      - name: AWS engine
+        if: ${{ always() }}
+        run: moodle-plugin-ci --ansi phpunit --coverage-text --coverage-clover moodle/admin/tool/translate/engine/aws
+
+      - name: Google engine
+        if: ${{ always() }}
+        run: moodle-plugin-ci --ansi phpunit --coverage-text --coverage-clover moodle/admin/tool/translate/engine/google

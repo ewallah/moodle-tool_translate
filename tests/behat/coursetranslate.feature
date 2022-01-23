@@ -22,8 +22,6 @@ Feature: Translate a course
     When I set the field "Available language packs" to "en_ar"
     And I press "Install selected language pack(s)"
     Then I should see "Language pack 'en_ar' was successfully installed"
-    When I navigate to "Language > Translation settings > AWS translate" in site administration
-    Then I should see "Europe"
 
   Scenario: Tranlate course to french
     Given I am on "Course 1" course homepage
