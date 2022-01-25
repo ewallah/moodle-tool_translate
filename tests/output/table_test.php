@@ -24,7 +24,10 @@
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-namespace tool_translate;
+namespace tool_translate\output;
+
+use advanced_testcase;
+use html_writer;
 
 /**
  * Table tests for translate tool.
@@ -36,7 +39,7 @@ namespace tool_translate;
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  * @coversDefaultClass \tool_translate\translation_table
  */
-class table_test extends \advanced_testcase {
+class table_test extends advanced_testcase {
 
     /**
      * Setup testcase.
@@ -73,18 +76,18 @@ class table_test extends \advanced_testcase {
         $gen->create_module('forum', ['course' => $course->id]);
 
         ob_start();
-        $table = new \tool_translate\output\translation_table($course);
+        $table = new translation_table($course);
         $table->filldata();
-        $out = \html_writer::table($table);
+        $out = html_writer::table($table);
         ob_end_clean();
         $this->assertStringContainsString($lesson->name, $out);
         set_config('region', 'eu-west-3', 'translateengine_aws');
         set_config('access_key', 'key', 'translateengine_aws');
         set_config('secret_key', 'secret', 'translateengine_aws');
         ob_start();
-        $table = new \tool_translate\output\translation_table($course);
+        $table = new translation_table($course);
         $table->filldata();
-        $out = \html_writer::table($table);
+        $out = html_writer::table($table);
         ob_end_clean();
         $this->assertStringContainsString($lesson->name, $out);
         $table->translate_all('fr', 'en');
