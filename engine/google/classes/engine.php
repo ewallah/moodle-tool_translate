@@ -84,8 +84,19 @@ class engine extends \tool_translate\engine {
      * @return string[] Array of suported source/target languages
      */
     public function supported_langs(): array {
-        // TODO:  Get GOOGLE supported languages.
-        return ['eng' => 'en', 'fra' => 'fr'];
+        return [
+            'afr' => 'af', 'sqi' => 'sq', 'amh' => 'am', 'ara' => 'ar', 'hye' => 'hy', 'aze' => 'az', 'eus' => 'eu', 'bel' => 'be',
+            'ben' => 'bn', 'bos' => 'bs', 'bul' => 'bg', 'cat' => 'ca', 'cos' => 'co', 'hrv' => 'hr', 'ces' => 'cs', 'dan' => 'da',
+            'nld' => 'nl', 'eng' => 'en', 'epo' => 'eo', 'est' => 'et', 'fin' => 'fi', 'fra' => 'fr', 'glg' => 'gl', 'kat' => 'ka',
+            'deu' => 'de', 'ell' => 'el', 'guj' => 'gu', 'hat' => 'ht', 'hau' => 'ha', 'heb' => 'he', 'hin' => 'hi', 'hun' => 'hu',
+            'isl' => 'is', 'ibo' => 'ig', 'ind' => 'id', 'ipk' => 'ik', 'ita' => 'it', 'jpn' => 'ja', 'jav' => 'jv', 'kan' => 'kn',
+            'kaz' => 'kk', 'kin' => 'rw', 'kor' => 'ko', 'kur' => 'ku', 'kir' => 'ki', 'lao' => 'lo', 'lav' => 'lv', 'lit' => 'lt',
+            'ltz' => 'lb', 'mkd' => 'mk', 'msa' => 'ms', 'mlg' => 'mg', 'mri' => 'mi', 'mar' => 'mr', 'mya' => 'my', 'mon' => 'mn',
+            'nep' => 'ne', 'nor' => 'no', 'nya' => 'ny', 'ori' => 'or', 'pus' => 'ps', 'fas' => 'fa', 'pol' => 'pl', 'por' => 'pt',
+            'pan' => 'pa', 'ron' => 'ro', 'rus' => 'ru', 'sin' => 'si', 'slk' => 'sk', 'slv' => 'sl', 'som' => 'so', 'spa' => 'es',
+            'swa' => 'sw', 'swe' => 'sv', 'tam' => 'ta', 'tel' => 'te', 'tha' => 'th', 'tur' => 'tr', 'ukr' => 'uk', 'urd' => 'ur',
+            'uzb' => 'uz', 'vie' => 'vi', 'yid' => 'yi', 'mal' => 'ml', 'mar' => 'mr', 'mon' => 'mn', 'srp' => 'sr', 'tgl' => 'tl',
+            'gle' => 'ga'];
     }
 
     /**
