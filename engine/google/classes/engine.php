@@ -26,6 +26,8 @@
 
 namespace translateengine_google;
 
+use moodle_exception;
+
 /**
  * google translating engine.
  *
@@ -96,7 +98,7 @@ class engine extends \tool_translate\engine {
             'pan' => 'pa', 'ron' => 'ro', 'rus' => 'ru', 'sin' => 'si', 'slk' => 'sk', 'slv' => 'sl', 'som' => 'so', 'spa' => 'es',
             'swa' => 'sw', 'swe' => 'sv', 'tam' => 'ta', 'tel' => 'te', 'tha' => 'th', 'tur' => 'tr', 'ukr' => 'uk', 'urd' => 'ur',
             'uzb' => 'uz', 'vie' => 'vi', 'yid' => 'yi', 'mal' => 'ml', 'mar' => 'mr', 'mon' => 'mn', 'srp' => 'sr', 'tgl' => 'tl',
-            'gle' => 'ga'];
+            'gle' => 'ga', 'zul' => 'zu'];
     }
 
     /**
@@ -108,7 +110,8 @@ class engine extends \tool_translate\engine {
      * @return string|null The translated text
      */
     public function translatetext(string $source, string $target, string $txt): ?string {
-        if ($this->service) {
+        $return = null;
+        if ($this->service && $this->lang_supported($source) && $this->lang_supported($target)) {
             try {
                 // TODO: Configure Google.
                 $url = 'https://www.googleapis.com/language/translate/v2?key=';
@@ -125,14 +128,11 @@ class engine extends \tool_translate\engine {
                 $responsed = json_decode($response, true);
                 $responsecode = curl_getinfo($handle, CURLINFO_HTTP_CODE);
                 curl_close($handle);
-                if ($responsecode != 200) {
-                     return null;
-                }
-                return $responsed;
+                $return = ($responsecode == 200) ? $responsed : null;
             } catch (exception $e) {
                 return null;
             }
         }
-        return null;
+        return $return;
     }
 }

@@ -34,6 +34,9 @@
         <exclude>
             <directory suffix=".php">cli</directory>
             <directory suffix=".php">tests</directory>
+            <directory suffix="test.php">engine</directory>
+            <directory suffix="coverage.php">engine</directory>
+            <file>tests/coverage.php</file>
             <file>version.php</file>
             <file>settings.php</file>
             <file>index.php</file>

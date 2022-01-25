@@ -100,6 +100,20 @@ abstract class engine {
     }
 
     /**
+     * Is language supported.
+     *
+     * @param string $lang
+     * @return bool
+     */
+    public function lang_supported($lang): bool {
+        $values = array_values($this->supported_langs());
+        if (!in_array($lang, $values, true)) {
+            throw new moodle_exception('language not supported');
+        }
+        return true;
+    }
+
+    /**
      * Translate text.
      *
      * @param string $source The source language

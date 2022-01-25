@@ -109,17 +109,10 @@ class engine extends \tool_translate\engine {
      * @param string $source The source language
      * @param string $target The target language
      * @param string $txt The text that has to be translated
-     * @return string The translated text
+     * @return string|null The translated text
      */
     public function translatetext(string $source, string $target, string $txt): ?string {
-        if ($this->is_configured()) {
-            $values = array_values($this->supported_langs());
-            if (!in_array($source, $values, true)) {
-                throw new moodle_exception('language not supported');
-            }
-            if (!in_array($target, $values, true)) {
-                throw new moodle_exception('language not supported');
-            }
+        if ($this->is_configured() && $this->lang_supported($source) && $this->lang_supported($target)) {
             try {
                 $arr = $this->awsclient->translateText([
                      'SourceLanguageCode' => $source,
@@ -130,6 +123,6 @@ class engine extends \tool_translate\engine {
                 throw new moodle_exception($e->get_message());
             }
         }
-        return 'Not configured';
+        return null;
     }
 }

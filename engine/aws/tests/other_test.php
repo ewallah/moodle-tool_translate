@@ -37,12 +37,16 @@ namespace translateengine_aws;
  */
 class other_test extends \advanced_testcase {
 
+    /** @var \stdClass course */
+    private $course;
+
     /**
      * Setup testcase.
      */
     public function setUp(): void {
         $this->setAdminUser();
         $this->resetAfterTest();
+        $this->course = $this->getDataGenerator()->create_course();
         set_config('region', 'eu-west-3', 'translateengine_aws');
         set_config('access_key', 'key', 'translateengine_aws');
         set_config('secret_key', 'secret', 'translateengine_aws');
@@ -52,26 +56,26 @@ class other_test extends \advanced_testcase {
      * Test the empty class.
      */
     public function test_notconfigured() {
-        $course = $this->getDataGenerator()->create_course();
         set_config('access_key', '', 'translateengine_aws');
-        $class = new engine($course);
+        $class = new engine($this->course);
         $this->assertInstanceOf('\translateengine_aws\engine', $class);
         $this->assertFalse($class->is_configured());
-        $this->assertSame('Not configured', $class->translatetext('en', 'fr', 'boe'));
+        $this->assertSame(null, $class->translatetext('en', 'fr', 'boe'));
         $this->assertIsArray($class->supported_langs());
+        $this->assertNotEmpty($class->get_price(10));
     }
 
     /**
      * Test the class.
      */
     public function test_class() {
-        $course = $this->getDataGenerator()->create_course();
-        $class = new engine($course);
+        $class = new engine($this->course);
         $this->assertInstanceOf('\translateengine_aws\engine', $class);
         $this->assertTrue($class->is_configured());
         $this->assertIsArray($class->supported_langs());
         $this->assertSame('AWS translate', $class->get_name());
         $langs = $class->supported_langs();
+        $this->assertEquals($langs, array_unique($langs));
         $languages1 = get_string_manager()->get_list_of_languages('en', 'iso6391');
         $languages2 = get_string_manager()->get_list_of_languages('en', 'iso6392');
         foreach ($langs as $key => $value) {
@@ -79,5 +83,23 @@ class other_test extends \advanced_testcase {
             $this->assertTrue(array_key_exists($key, $languages2));
         }
         $this->assertSame('BEHAT 1', $class->translatetext('en', 'fr', 'boe'));
+    }
+
+    /**
+     * Test the errors.
+     */
+    public function test_error1() {
+        $class = new engine($this->course);
+        $this->expectExceptionMessage('language not supported');
+        $this->assertSame('BEHAT 1', $class->translatetext('en', 'xx', 'boe'));
+    }
+
+    /**
+     * Test the errors.
+     */
+    public function test_error2() {
+        $class = new engine($this->course);
+        $this->expectExceptionMessage('language not supported');
+        $this->assertSame('BEHAT 1', $class->translatetext('xx', 'en', 'boe'));
     }
 }

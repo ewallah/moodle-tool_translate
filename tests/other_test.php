@@ -55,6 +55,7 @@ class other_test extends advanced_testcase {
         $translateengine = new plugininfo\translateengine();
         $this->assertTrue($translateengine->is_uninstall_allowed());
         $this->assertTrue($translateengine->is_enabled());
+        $this->assertNotEmpty($translateengine->get_manage_url());
         $this->assertEquals('translateengine_', $translateengine->get_settings_section_name());
         $category = new \admin_category('translateengines', new lang_string('settings', 'tool_translate'));
         $translateengine->load_settings($category, 'aws', true);
@@ -162,7 +163,9 @@ class other_test extends advanced_testcase {
         set_config('secret_key', 'secret', 'translateengine_aws');
         $engine = new \translateengine_aws\engine($course);
         $this->assertTrue($engine->is_configured());
-        $this->assertIsArray($engine->supported_langs());
+        $arr = $engine->supported_langs();
+        $this->assertIsArray($arr);
+        $this->assertEquals($arr, array_unique($arr));
         $this->assertStringNotContainsString('Not configured', $engine->translatetext('en', 'nl', 'boe'));
         $this->assertStringNotContainsString('Course  with id', $engine->translate_other());
         $this->assertEquals('', $engine->translate_section(1));

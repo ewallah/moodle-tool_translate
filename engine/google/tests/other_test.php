@@ -37,24 +37,28 @@ namespace translateengine_google;
  */
 class other_test extends \advanced_testcase {
 
+    /** @var \stdClass course */
+    private $course;
+
     /**
      * Setup testcase.
      */
     public function setUp(): void {
         $this->setAdminUser();
         $this->resetAfterTest();
+        $this->course = $this->getDataGenerator()->create_course();
     }
 
     /**
      * Test the empty class.
      */
     public function test_notconfigured() {
-        $course = $this->getDataGenerator()->create_course();
-        $class = new \translateengine_google\engine($course);
+        $class = new \translateengine_google\engine($this->course);
         $this->assertInstanceOf('\translateengine_google\engine', $class);
         $this->assertFalse($class->is_configured());
         set_config('googleapikey', 'key', 'translateengine_google');
         $this->assertTrue($class->is_configured());
+        $this->assertNotEmpty($class->get_price(10));
     }
 
     /**
@@ -62,13 +66,14 @@ class other_test extends \advanced_testcase {
      */
     public function test_class() {
         set_config('googleapikey', 'key', 'translateengine_google');
-        $course = $this->getDataGenerator()->create_course();
-        $class = new \translateengine_google\engine($course);
+        $class = new \translateengine_google\engine($this->course);
         $this->assertInstanceOf('\translateengine_google\engine', $class);
         $this->assertTrue($class->is_configured());
         $this->assertIsArray($class->supported_langs());
         $this->assertSame('Google translate', $class->get_name());
         $langs = $class->supported_langs();
+        $this->assertEquals($langs, array_unique($langs));
+        $this->assertNotEmpty($class->get_price(10));
         $languages1 = get_string_manager()->get_list_of_languages('en', 'iso6391');
         $languages2 = get_string_manager()->get_list_of_languages('en', 'iso6392');
         foreach ($langs as $key => $value) {
@@ -76,5 +81,25 @@ class other_test extends \advanced_testcase {
             $this->assertTrue(array_key_exists($key, $languages2));
         }
         $this->assertSame(null, $class->translatetext('en', 'fr', 'boe'));
+    }
+
+    /**
+     * Test the errors.
+     */
+    public function test_error1() {
+        set_config('googleapikey', 'key', 'translateengine_google');
+        $class = new engine($this->course);
+        $this->expectExceptionMessage('language not supported');
+        $this->assertSame(null, $class->translatetext('en', 'xx', 'boe'));
+    }
+
+    /**
+     * Test the errors.
+     */
+    public function test_error2() {
+        set_config('googleapikey', 'key', 'translateengine_google');
+        $class = new engine($this->course);
+        $this->expectExceptionMessage('language not supported');
+        $this->assertSame(null, $class->translatetext('xx', 'en', 'boe'));
     }
 }
