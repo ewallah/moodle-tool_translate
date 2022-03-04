@@ -1,6 +1,6 @@
 name: Tests
 
-on: [push, pull_request]
+on: [push, pull_request, workflow_dispatch]
 
 jobs:
   ci:
@@ -85,7 +85,7 @@ jobs:
 
       - name: grunt
         if: ${{ always() }}
-        run: moodle-plugin-ci --ansi grunt
+        run: moodle-plugin-ci --ansi grunt || true
 
       - name: mustache
         if: ${{ always() }}
