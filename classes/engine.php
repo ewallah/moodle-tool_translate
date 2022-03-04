@@ -234,7 +234,7 @@ abstract class engine {
                          $s .= $this->add_records($qt . '_subquestions' , 'questionid', $slot->questionid);
                     }
                 } else {
-                    $context = \context_module::instance($cm->instance);
+                    $context = \context_module::instance($cm->id);
                     // TODO: Handle slots without questionid.
 
                 }
