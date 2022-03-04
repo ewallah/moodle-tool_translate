@@ -187,7 +187,7 @@ abstract class engine {
      * @return string
      */
     public function translate_module($moduleid): string {
-        global $DB;
+        global $CFG, $DB;
         $modinfo = get_fast_modinfo($this->course->id, -1);
         $cm = $modinfo->cms[$moduleid];
         $s = $this->translate_record($cm->modname, $cm->instance);
@@ -217,20 +217,26 @@ abstract class engine {
             case 'quiz':
                 $s .= $this->add_records('quiz_sections', 'quizid', $cm->instance, ['heading']);
                 $s .= $this->add_records('quiz_feedback', 'quizid', $cm->instance);
-                $slots = $DB->get_records('quiz_slots', ['quizid' => $cm->instance]);
-                foreach ($slots as $slot) {
-                     $s .= $this->add_records('question', 'id', $slot->questionid);
-                     $s .= $this->add_records('question_answers', 'question', $slot->questionid);
-                     $s .= $this->add_records('question_hints', 'questionid', $slot->questionid);
-                     $s .= $this->add_records('question_order', 'question', $slot->questionid);
-                     $s .= $this->add_records('question_order_sub', 'question', $slot->questionid);
-                     $q = \question_bank::load_question($slot->questionid);
-                     $qt = get_class($q->qtype);
-                     // Brute force collect feedback.
-                     $s .= $this->add_records($qt, 'questionid', $slot->questionid);
-                     $s .= $this->add_records($qt . '_options' , 'questionid', $slot->questionid);
-                     $s .= $this->add_records($qt . '_answers' , 'questionid', $slot->questionid);
-                     $s .= $this->add_records($qt . '_subquestions' , 'questionid', $slot->questionid);
+                if ($CFG->version < 2022020300) {
+                    $slots = $DB->get_records('quiz_slots', ['quizid' => $cm->instance]);
+                    foreach ($slots as $slot) {
+                         $s .= $this->add_records('question', 'id', $slot->questionid);
+                         $s .= $this->add_records('question_answers', 'question', $slot->questionid);
+                         $s .= $this->add_records('question_hints', 'questionid', $slot->questionid);
+                         $s .= $this->add_records('question_order', 'question', $slot->questionid);
+                         $s .= $this->add_records('question_order_sub', 'question', $slot->questionid);
+                         $q = \question_bank::load_question($slot->questionid);
+                         $qt = get_class($q->qtype);
+                         // Brute force collect feedback.
+                         $s .= $this->add_records($qt, 'questionid', $slot->questionid);
+                         $s .= $this->add_records($qt . '_options' , 'questionid', $slot->questionid);
+                         $s .= $this->add_records($qt . '_answers' , 'questionid', $slot->questionid);
+                         $s .= $this->add_records($qt . '_subquestions' , 'questionid', $slot->questionid);
+                    }
+                } else {
+                    $context = \context_module::instance($cm->instance);
+                    // TODO: Handle slots without questionid.
+
                 }
                 break;
         }
