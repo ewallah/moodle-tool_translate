@@ -51,6 +51,7 @@ class other_test extends \advanced_testcase {
 
     /**
      * Test the empty class.
+     * @covers \translateengine_google\engine
      */
     public function test_notconfigured() {
         $class = new \translateengine_google\engine($this->course);
@@ -63,6 +64,7 @@ class other_test extends \advanced_testcase {
 
     /**
      * Test the class.
+     * @covers \translateengine_google\engine
      */
     public function test_class() {
         set_config('googleapikey', 'key', 'translateengine_google');
@@ -85,6 +87,7 @@ class other_test extends \advanced_testcase {
 
     /**
      * Test the errors.
+     * @covers \translateengine_google\engine
      */
     public function test_error1() {
         set_config('googleapikey', 'key', 'translateengine_google');
@@ -95,6 +98,7 @@ class other_test extends \advanced_testcase {
 
     /**
      * Test the errors.
+     * @covers \translateengine_google\engine
      */
     public function test_error2() {
         set_config('googleapikey', 'key', 'translateengine_google');

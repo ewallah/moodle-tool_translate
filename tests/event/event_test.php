@@ -44,6 +44,7 @@ class event_test extends advanced_testcase {
 
     /**
      * Test the tool viewed event.
+     * @covers \tool_translate\event\tool_viewed
      */
     public function test_tool_viewed() {
         $this->resetAfterTest();
@@ -68,6 +69,7 @@ class event_test extends advanced_testcase {
 
     /**
      * Test the course translated event.
+     * @covers \tool_translate\event\course_translated
      */
     public function test_course_translated() {
         $this->resetAfterTest();
@@ -92,6 +94,7 @@ class event_test extends advanced_testcase {
 
     /**
      * Test the section translated event.
+     * @covers \tool_translate\event\section_translated
      */
     public function test_section_translated() {
         $this->resetAfterTest();
@@ -117,6 +120,7 @@ class event_test extends advanced_testcase {
 
     /**
      * Test the module translated event.
+     * @covers \tool_translate\event\module_translated
      */
     public function test_module_translated() {
         $this->resetAfterTest();

@@ -41,6 +41,7 @@ class privacy_test extends provider_testcase {
 
     /**
      * Test returning metadata.
+     * @covers \translateengine_aws\privacy\provider
      */
     public function test_get_metadata() {
         $this->resetAfterTest(true);

@@ -42,6 +42,7 @@ class library_test extends advanced_testcase {
 
     /**
      * Test the library.
+     * @coversNothing
      */
     public function test_library() {
         global $CFG, $PAGE;

@@ -39,6 +39,7 @@ class include_test extends \advanced_testcase {
 
     /**
      * Test the adminmanageplugins.
+     * @coversNothing
      */
     public function test_adminmanagepluginss() {
         global $CFG, $PAGE;
@@ -53,6 +54,7 @@ class include_test extends \advanced_testcase {
 
     /**
      * Test the access.
+     * @coversNothing
      */
     public function test_access() {
         global $CFG;
@@ -61,6 +63,7 @@ class include_test extends \advanced_testcase {
 
     /**
      * Test the version.
+     * @coversNothing
      */
     public function test_version() {
         global $CFG;

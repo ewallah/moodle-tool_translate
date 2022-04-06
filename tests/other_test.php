@@ -46,6 +46,7 @@ class other_test extends advanced_testcase {
 
     /**
      * Test the submodule translateengine.
+     * @covers \tool_translate\plugininfo\translateengine
      */
     public function test_translate_engine() {
         global $CFG;
@@ -64,6 +65,7 @@ class other_test extends advanced_testcase {
 
     /**
      * Test the plugin manager.
+     * @covers \tool_translate\plugin_manager
      */
     public function test_plugin_manager() {
         global $CFG;
@@ -99,6 +101,8 @@ class other_test extends advanced_testcase {
 
     /**
      * Test an engine.
+     * @covers \tool_translate\plugininfo\translateengine
+     * @covers \tool_translate\engine
      */
     public function test_engine() {
         global $CFG, $DB, $USER;
@@ -190,6 +194,9 @@ class other_test extends advanced_testcase {
 
     /**
      * Test an abstract engine.
+     * @covers \tool_translate\plugininfo\translateengine
+     * @covers \tool_translate\engine
+     * @covers \translateengine_aws\engine
      */
     public function test_abstract_engine() {
         global $CFG;
@@ -207,6 +214,9 @@ class other_test extends advanced_testcase {
 
     /**
      * Test the plugin translation.
+     * @covers \tool_translate\plugininfo\translateengine
+     * @covers \tool_translate\engine
+     * @covers \translateengine_aws\engine
      */
     public function test_plugin_tranalate() {
         $this->resetAfterTest();

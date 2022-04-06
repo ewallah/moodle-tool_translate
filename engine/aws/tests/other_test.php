@@ -54,6 +54,7 @@ class other_test extends \advanced_testcase {
 
     /**
      * Test the empty class.
+     * @covers \translateengine_aws\engine
      */
     public function test_notconfigured() {
         set_config('access_key', '', 'translateengine_aws');
@@ -67,6 +68,7 @@ class other_test extends \advanced_testcase {
 
     /**
      * Test the class.
+     * @covers \translateengine_aws\engine
      */
     public function test_class() {
         $class = new engine($this->course);
@@ -87,6 +89,7 @@ class other_test extends \advanced_testcase {
 
     /**
      * Test the errors.
+     * @covers \translateengine_aws\engine
      */
     public function test_error1() {
         $class = new engine($this->course);
@@ -96,6 +99,7 @@ class other_test extends \advanced_testcase {
 
     /**
      * Test the errors.
+     * @covers \translateengine_aws\engine
      */
     public function test_error2() {
         $class = new engine($this->course);
