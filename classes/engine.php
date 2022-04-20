@@ -239,8 +239,8 @@ abstract class engine {
                     // @codeCoverageIgnoreStart
                     \core_question\local\bank\helper::require_plugin_enabled('qbank_exporttoxml');
                     $contexts = new \core_question\local\bank\question_edit_contexts($context);
-                    $questiondata = question_bank::load_question_data($questionid);
-                    $qformat = new qformat_xml();
+                    $questiondata = \question_bank::load_question_data($questionid);
+                    $qformat = new \qformat_xml();
                     $qformat->setContexts($contexts->having_one_edit_tab_cap('export'));
                     $qformat->setCourse($COURSE);
                     $qformat->setQuestions([$questiondata]);
