@@ -219,7 +219,7 @@ abstract class engine {
                 $s .= $this->add_records('quiz_sections', 'quizid', $cm->instance, ['heading']);
                 $s .= $this->add_records('quiz_feedback', 'quizid', $cm->instance);
                 $slots = $CFG->version < 2022020300 ? $DB->get_records('quiz_slots', ['quizid' => $cm->instance]) :
-+                  \mod_quiz\question\bank\qbank_helper::get_question_structure($cm->instance, $context);
+                     \mod_quiz\question\bank\qbank_helper::get_question_structure($cm->instance, $context);
                 foreach ($slots as $slot) {
                      $s .= $this->add_records('question', 'id', $slot->questionid);
                      $s .= $this->add_records('question_answers', 'question', $slot->questionid);
