@@ -190,6 +190,7 @@ abstract class engine {
         global $CFG, $DB;
         $modinfo = get_fast_modinfo($this->course->id, -1);
         $cm = $modinfo->cms[$moduleid];
+        $context = context_module::instance($cm->id);
         $s = $this->translate_record($cm->modname, $cm->instance);
         switch ($cm->modname) {
             case 'book':
@@ -234,16 +235,31 @@ abstract class engine {
                          $s .= $this->add_records($qt . '_subquestions' , 'questionid', $slot->questionid);
                     }
                 } else {
-                    $context = \context_module::instance($cm->id);
                     // TODO: Handle slots without questionid.
-
+                    // @codeCoverageIgnoreStart
+                    \core_question\local\bank\helper::require_plugin_enabled('qbank_exporttoxml');
+                    $contexts = new \core_question\local\bank\question_edit_contexts($context);
+                    $questiondata = question_bank::load_question_data($questionid);
+                    $qformat = new qformat_xml();
+                    $qformat->setContexts($contexts->having_one_edit_tab_cap('export'));
+                    $qformat->setCourse($COURSE);
+                    $qformat->setQuestions([$questiondata]);
+                    $qformat->setCattofile(false);
+                    $qformat->setContexttofile(false);
+                    if ($qformat->exportpreprocess()) {
+                        if ($content = $qformat->exportprocess(true)) {
+                             $qformat->importpreprocess();
+                             $qformat->importprocess();
+                             $qformat->importpostprocess();
+                        }
+                    }
+                    // @codeCoverageIgnoreEnd
                 }
                 break;
         }
         if ($this->counting) {
             return $s;
         }
-        $context = context_module::instance($cm->id);
         $event = event\module_translated::create(['context' => $context]);
         $event->trigger();
         rebuild_course_cache($this->course->id);

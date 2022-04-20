@@ -72,7 +72,14 @@ class other_test extends advanced_testcase {
         require_once($CFG->dirroot . '/lib/adminlib.php');
         $this->resetAfterTest();
         $this->setAdminUser();
+        $generator = $this->getDataGenerator();
+        $course = $generator->create_course();
         $pluginmanager = new plugin_manager();
+        $pluginmanager->get_enabled_plugin($course);
+        set_config('region', 'eu-west-3', 'translateengine_aws');
+        set_config('access_key', 'key', 'translateengine_aws');
+        set_config('secret_key', 'secret', 'translateengine_aws');
+        $pluginmanager->get_enabled_plugin($course);
         $pluginmanager->get_sorted_plugins_list();
         ob_start();
         \phpunit_util::call_internal_method($pluginmanager, 'view_plugins_table', [], 'tool_translate\plugin_manager');
@@ -160,7 +167,11 @@ class other_test extends advanced_testcase {
         $questiongenerator = $generator->get_plugin_generator('core_question');
         $cat = $questiongenerator->create_question_category();
         $q = $questiongenerator->create_question('essay', 'plain', ['category' => $cat->id]);
-        quiz_add_quiz_question($q->id, $quiz, 0 , 10);
+        quiz_add_quiz_question($q->id, $quiz, 0, 10);
+        $q = $questiongenerator->create_question('match', null, ['category' => $cat->id]);
+        quiz_add_quiz_question($q->id, $quiz, 1, 10);
+        $q = $questiongenerator->create_question('multichoice', 'one_of_four', ['category' => $cat->id]);
+        quiz_add_quiz_question($q->id, $quiz, 2, 10);
 
         set_config('region', 'eu-west-3', 'translateengine_aws');
         set_config('access_key', 'key', 'translateengine_aws');
@@ -205,6 +216,8 @@ class other_test extends advanced_testcase {
         $this->setAdminUser();
         $course = $this->getDataGenerator()->create_course();
         $engine = new \translateengine_aws\engine($course);
+        $this->expectExceptionMessage('language not supported');
+        $engine->lang_supported('xx');
         $reflection = new \ReflectionClass('\tool_translate\engine');
         $this->assertTrue($reflection->isAbstract());
         $method = $reflection->getMethod('supported_langs');
@@ -223,6 +236,7 @@ class other_test extends advanced_testcase {
         $this->setAdminUser();
         $course = $this->getDataGenerator()->create_course();
         $engine = new \translateengine_aws\engine($course);
+        $this->assertStringContainsString('AWS', $engine->get_name());
         $out = $engine->translate_plugin('tool_translate', 'en', 'fr');
         $this->assertStringContainsString('tool_translate', $out);
         $out = \phpunit_util::call_internal_method(
