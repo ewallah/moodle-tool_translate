@@ -172,7 +172,8 @@ class other_test extends advanced_testcase {
         quiz_add_quiz_question($q->id, $quiz, 1, 10);
         $q = $questiongenerator->create_question('multichoice', 'one_of_four', ['category' => $cat->id]);
         quiz_add_quiz_question($q->id, $quiz, 2, 10);
-
+        $q = $questiongenerator->create_question('gapselect', 'missingchoiceno', ['category' => $cat->id]);
+        quiz_add_quiz_question($q->id, $quiz, 2, 10);
         set_config('region', 'eu-west-3', 'translateengine_aws');
         set_config('access_key', 'key', 'translateengine_aws');
         set_config('secret_key', 'secret', 'translateengine_aws');
