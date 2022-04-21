@@ -110,3 +110,7 @@ jobs:
       - name: Google engine
         if: ${{ always() }}
         run: moodle-plugin-ci --ansi phpunit --coverage-text --coverage-clover moodle/admin/tool/translate/engine/google
+
+      - name: Deepl engine
+        if: ${{ always() }}
+        run: moodle-plugin-ci --ansi phpunit --coverage-text --coverage-clover moodle/admin/tool/translate/engine/deepl
