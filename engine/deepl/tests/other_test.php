@@ -15,21 +15,21 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Other tests for Google translate engine.
+ * Other tests for deepl translate engine.
  *
- * @package   translateengine_google
+ * @package   translateengine_deepl
  * @copyright 2021 eWallah
  * @author    Renaat Debleu <info@eWallah.net>
  * @author    info@iplusacademy.org
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-namespace translateengine_google;
+namespace translateengine_deepl;
 
 /**
- * Other tests for Google translate engine.
+ * Other tests for deepl translate engine.
  *
- * @package   translateengine_google
+ * @package   translateengine_deepl
  * @copyright 2021 eWallah
  * @author    Renaat Debleu <info@eWallah.net>
  * @author    info@iplusacademy.org
@@ -47,35 +47,35 @@ class other_test extends \advanced_testcase {
         $this->setAdminUser();
         $this->resetAfterTest();
         $this->course = $this->getDataGenerator()->create_course();
+        set_config('access_key', 'key', 'translateengine_deepl');
     }
 
     /**
      * Test the empty class.
-     * @covers \translateengine_google\engine
+     * @covers \translateengine_deepl\engine
      */
     public function test_notconfigured() {
-        $class = new \translateengine_google\engine($this->course);
-        $this->assertInstanceOf('\translateengine_google\engine', $class);
+        set_config('access_key', '', 'translateengine_deepl');
+        $class = new engine($this->course);
+        $this->assertInstanceOf('\translateengine_deepl\engine', $class);
         $this->assertFalse($class->is_configured());
-        set_config('googleapikey', 'key', 'translateengine_google');
-        $this->assertTrue($class->is_configured());
+        $this->assertSame(null, $class->translatetext('en', 'fr', 'boe'));
+        $this->assertIsArray($class->supported_langs());
         $this->assertNotEmpty($class->get_price(10));
     }
 
     /**
      * Test the class.
-     * @covers \translateengine_google\engine
+     * @covers \translateengine_deepl\engine
      */
     public function test_class() {
-        set_config('googleapikey', 'key', 'translateengine_google');
-        $class = new \translateengine_google\engine($this->course);
-        $this->assertInstanceOf('\translateengine_google\engine', $class);
+        $class = new engine($this->course);
+        $this->assertInstanceOf('\translateengine_deepl\engine', $class);
         $this->assertTrue($class->is_configured());
         $this->assertIsArray($class->supported_langs());
-        $this->assertSame('Google translate', $class->get_name());
+        $this->assertSame('Deepl translate', $class->get_name());
         $langs = $class->supported_langs();
         $this->assertEquals($langs, array_unique($langs));
-        $this->assertNotEmpty($class->get_price(10));
         $languages1 = get_string_manager()->get_list_of_languages('en', 'iso6391');
         $languages2 = get_string_manager()->get_list_of_languages('en', 'iso6392');
         foreach ($langs as $key => $value) {
@@ -87,23 +87,21 @@ class other_test extends \advanced_testcase {
 
     /**
      * Test the errors.
-     * @covers \translateengine_google\engine
+     * @covers \translateengine_deepl\engine
      */
     public function test_error1() {
-        set_config('googleapikey', 'key', 'translateengine_google');
         $class = new engine($this->course);
         $this->expectExceptionMessage('language not supported');
-        $this->assertSame(null, $class->translatetext('en', 'xx', 'boe'));
+        $this->assertSame('BEHAT 1', $class->translatetext('en', 'xx', 'boe'));
     }
 
     /**
      * Test the errors.
-     * @covers \translateengine_google\engine
+     * @covers \translateengine_deepl\engine
      */
     public function test_error2() {
-        set_config('googleapikey', 'key', 'translateengine_google');
         $class = new engine($this->course);
         $this->expectExceptionMessage('language not supported');
-        $this->assertSame(null, $class->translatetext('xx', 'en', 'boe'));
+        $this->assertSame('BEHAT 1', $class->translatetext('xx', 'en', 'boe'));
     }
 }

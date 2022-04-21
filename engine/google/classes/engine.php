@@ -112,6 +112,9 @@ class engine extends \tool_translate\engine {
     public function translatetext(string $source, string $target, string $txt): ?string {
         $return = null;
         if ($this->service && $this->lang_supported($source) && $this->lang_supported($target)) {
+            if (defined('BEHAT_SITE_RUNNING') or PHPUNIT_TEST) {
+                return 'Behat';
+            }
             try {
                 // TODO: Configure Google.
                 $url = 'https://www.googleapis.com/language/translate/v2?key=';
