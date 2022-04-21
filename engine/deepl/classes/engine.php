@@ -26,6 +26,7 @@
 namespace translateengine_deepl;
 
 use moodle_exception;
+
 /**
  * deepl translate engine.
  *
@@ -87,7 +88,7 @@ class engine extends \tool_translate\engine {
                 // Build new curl request.
                 $curl = new \curl();
                 $params = [
-                    'text' => urlencode($txt);,
+                    'text' => urlencode($txt),
                     'source_lang' => $source,
                     'target_lang' => $target,
                     'preserve_formatting' => 1,
