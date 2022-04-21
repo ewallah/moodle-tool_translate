@@ -234,7 +234,7 @@ abstract class engine {
                      $s .= $this->add_records($qt . '_answers' , 'questionid', $slot->questionid);
                      $s .= $this->add_records($qt . '_subquestions' , 'questionid', $slot->questionid);
                      $qt = str_ireplace('qtype', 'question', $qt);
-                     $s .= $this->add_records($qt, 'questionid', $slot->questionid);
+                     // $s .= $this->add_records($qt, 'questionid', $slot->questionid);
                      $s .= $this->add_records($qt . '_options' , 'questionid', $slot->questionid);
                      $s .= $this->add_records($qt . '_answers' , 'questionid', $slot->questionid);
                      $s .= $this->add_records($qt . '_subquestions' , 'questionid', $slot->questionid);
