@@ -112,9 +112,6 @@ class engine extends \tool_translate\engine {
     public function translatetext(string $source, string $target, string $txt): ?string {
         $return = null;
         if ($this->service && $this->lang_supported($source) && $this->lang_supported($target)) {
-            if (defined('BEHAT_SITE_RUNNING') or PHPUNIT_TEST) {
-                return 'Behat';
-            }
             try {
                 // TODO: Configure Google.
                 $url = 'https://www.googleapis.com/language/translate/v2?key=';
@@ -127,9 +124,14 @@ class engine extends \tool_translate\engine {
                 curl_setopt($handle, CURLOPT_SSL_VERIFYPEER, false);
                 curl_setopt($handle, CURLOPT_SSL_VERIFYHOST, false);
                 curl_setopt($handle, CURLOPT_RETURNTRANSFER, true);
-                $response = curl_exec($handle);
-                $responsed = json_decode($response, true);
-                $responsecode = curl_getinfo($handle, CURLINFO_HTTP_CODE);
+                if (defined('BEHAT_SITE_RUNNING') or PHPUNIT_TEST) {
+                    $responsecode = 200;
+                    $responsed = 'Behat';
+                } else {
+                    $response = curl_exec($handle);
+                    $responsecode = curl_getinfo($handle, CURLINFO_HTTP_CODE);
+                    $responsed = json_decode($response, true);
+                }
                 curl_close($handle);
                 $return = ($responsecode == 200) ? $responsed : null;
             } catch (exception $e) {

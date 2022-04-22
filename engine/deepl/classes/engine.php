@@ -80,10 +80,6 @@ class engine extends \tool_translate\engine {
      */
     public function translatetext(string $source, string $target, string $txt): ?string {
         if ($this->is_configured() && $this->lang_supported($source) && $this->lang_supported($target)) {
-            if (defined('BEHAT_SITE_RUNNING') or PHPUNIT_TEST) {
-                return 'Behat';
-            }
-
             try {
                 // Build new curl request.
                 $curl = new \curl();
@@ -96,9 +92,12 @@ class engine extends \tool_translate\engine {
                     'tag_handling' => 'xml',
                     'split_sentences' => 'nonewlines'
                 ];
-                $resp = $curl->post('https://api.deepl.com/v2/translate?', $params);
+                if (defined('BEHAT_SITE_RUNNING') or PHPUNIT_TEST) {
+                    $resp = json_encode(['translations' => [['text' => 'Behat', 'detected_source_language' => $target]]]);
+                } else {
+                    $resp = $curl->post('https://api.deepl.com/v2/translate?', $params);
+                }
                 $resp = json_decode($resp);
-
                 // Get the translation and return translation.
                 if (!empty($resp->translations[0]->text) && $resp->translations[0]->detected_source_language !== $source) {
                     return html_entity_decode($resp->translations[0]->text);

@@ -83,6 +83,7 @@ class other_test extends \advanced_testcase {
             $this->assertTrue(array_key_exists($key, $languages2));
         }
         $this->assertSame('Behat', $class->translatetext('en', 'fr', 'boe'));
+        $this->assertSame('boe', $class->translatetext('en', 'en', 'boe'));
     }
 
     /**
@@ -92,7 +93,7 @@ class other_test extends \advanced_testcase {
     public function test_error1() {
         $class = new engine($this->course);
         $this->expectExceptionMessage('language not supported');
-        $this->assertSame('BEHAT 1', $class->translatetext('en', 'xx', 'boe'));
+        $this->assertSame('boe', $class->translatetext('en', 'xx', 'boe'));
     }
 
     /**
@@ -102,6 +103,6 @@ class other_test extends \advanced_testcase {
     public function test_error2() {
         $class = new engine($this->course);
         $this->expectExceptionMessage('language not supported');
-        $this->assertSame('BEHAT 1', $class->translatetext('xx', 'en', 'boe'));
+        $this->assertSame('boe', $class->translatetext('xx', 'en', 'boe'));
     }
 }

@@ -27,8 +27,6 @@
 namespace tool_translate;
 
 use advanced_testcase;
-use context_course;
-use context_module;
 use lang_string;
 use moodle_url;
 use stdClass;
@@ -44,22 +42,32 @@ use stdClass;
  */
 class other_test extends advanced_testcase {
 
+    /** @var \stdClass course */
+    private $course;
+
+    /**
+     * Setup testcase.
+     */
+    public function setUp(): void {
+        global $CFG;
+        require_once($CFG->dirroot . '/lib/adminlib.php');
+        $this->setAdminUser();
+        $this->resetAfterTest();
+        $this->course = $this->getDataGenerator()->create_course();
+    }
+
     /**
      * Test the submodule translateengine.
      * @covers \tool_translate\plugininfo\translateengine
      */
     public function test_translate_engine() {
-        global $CFG;
-        require_once($CFG->dirroot . '/lib/adminlib.php');
-        $this->resetAfterTest();
-        $this->setAdminUser();
         $translateengine = new plugininfo\translateengine();
         $this->assertTrue($translateengine->is_uninstall_allowed());
         $this->assertTrue($translateengine->is_enabled());
         $this->assertNotEmpty($translateengine->get_manage_url());
         $this->assertEquals('translateengine_', $translateengine->get_settings_section_name());
         $category = new \admin_category('translateengines', new lang_string('settings', 'tool_translate'));
-        $translateengine->load_settings($category, 'aws', true);
+        $translateengine->load_settings($category, 'aws', false);
     }
 
 
@@ -68,18 +76,12 @@ class other_test extends advanced_testcase {
      * @covers \tool_translate\plugin_manager
      */
     public function test_plugin_manager() {
-        global $CFG;
-        require_once($CFG->dirroot . '/lib/adminlib.php');
-        $this->resetAfterTest();
-        $this->setAdminUser();
-        $generator = $this->getDataGenerator();
-        $course = $generator->create_course();
         $pluginmanager = new plugin_manager();
-        $pluginmanager->get_enabled_plugin($course);
+        $pluginmanager->get_enabled_plugin($this->course);
         set_config('region', 'eu-west-3', 'translateengine_aws');
         set_config('access_key', 'key', 'translateengine_aws');
         set_config('secret_key', 'secret', 'translateengine_aws');
-        $pluginmanager->get_enabled_plugin($course);
+        $pluginmanager->get_enabled_plugin($this->course);
         $pluginmanager->get_sorted_plugins_list();
         ob_start();
         \phpunit_util::call_internal_method($pluginmanager, 'view_plugins_table', [], 'tool_translate\plugin_manager');
@@ -206,24 +208,24 @@ class other_test extends advanced_testcase {
 
     /**
      * Test an abstract engine.
-     * @covers \tool_translate\plugininfo\translateengine
      * @covers \tool_translate\engine
-     * @covers \translateengine_aws\engine
      */
     public function test_abstract_engine() {
-        global $CFG;
-        require_once($CFG->dirroot . '/lib/adminlib.php');
-        $this->resetAfterTest();
-        $this->setAdminUser();
-        $course = $this->getDataGenerator()->create_course();
-        $engine = new \translateengine_aws\engine($course);
-        $this->expectExceptionMessage('language not supported');
-        $engine->lang_supported('xx');
+        $engine = new \translateengine_aws\engine($this->course);
         $reflection = new \ReflectionClass('\tool_translate\engine');
-        $this->assertTrue($reflection->isAbstract());
-        $method = $reflection->getMethod('supported_langs');
         $this->expectExceptionMessage('supported_langs not configured for this engine');
-        $method->invoke($engine);
+        $reflection->getMethod('supported_langs')->invoke($engine);
+    }
+
+    /**
+     * Test an abstract engine2.
+     * @covers \tool_translate\engine
+     */
+    public function test_abstract_engine2() {
+        $engine = new \translateengine_aws\engine($this->course);
+        $reflection = new \ReflectionClass('\tool_translate\engine');
+        $this->expectExceptionMessage('language not supported');
+        $reflection->getMethod('lang_supported')->invoke($engine, ['xx']);
     }
 
     /**
@@ -232,11 +234,8 @@ class other_test extends advanced_testcase {
      * @covers \tool_translate\engine
      * @covers \translateengine_aws\engine
      */
-    public function test_plugin_tranalate() {
-        $this->resetAfterTest();
-        $this->setAdminUser();
-        $course = $this->getDataGenerator()->create_course();
-        $engine = new \translateengine_aws\engine($course);
+    public function test_plugin_translate() {
+        $engine = new \translateengine_aws\engine($this->course);
         $this->assertStringContainsString('AWS', $engine->get_name());
         $out = $engine->translate_plugin('tool_translate', 'en', 'fr');
         $this->assertStringContainsString('tool_translate', $out);
