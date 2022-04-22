@@ -234,6 +234,8 @@ abstract class engine {
                      $s .= $this->add_records($qt . '_answers' , 'questionid', $slot->questionid);
                      $s .= $this->add_records($qt . '_subquestions' , 'questionid', $slot->questionid);
                      $qt = str_ireplace('qtype', 'question', $qt);
+                     $s .= $this->add_records($qt, 'questionid', $slot->questionid);
+                     $s .= $this->add_records($qt, 'question', $slot->questionid);
                      $s .= $this->add_records($qt . '_options' , 'questionid', $slot->questionid);
                      $s .= $this->add_records($qt . '_answers' , 'questionid', $slot->questionid);
                      $s .= $this->add_records($qt . '_subquestions' , 'questionid', $slot->questionid);
@@ -265,9 +267,11 @@ abstract class engine {
         $s = '';
         $dbman = $DB->get_manager();
         if ($dbman->table_exists($tablename)) {
-            $items = $DB->get_records($tablename, [$fieldname => $id]);
-            foreach ($items as $item) {
-                $s .= $this->translate_record($tablename, $item->id, $extra);
+            if ($dbman->field_exists($tablename, $fieldname)) {
+                $items = $DB->get_records($tablename, [$fieldname => $id]);
+                foreach ($items as $item) {
+                    $s .= $this->translate_record($tablename, $item->id, $extra);
+                }
             }
         }
         return $s;
