@@ -52,7 +52,7 @@ We are always interested to read about your feature proposals or even get a pull
 # Moodle release support
 This plugin requires Moodle 3.11+
 
-#TODO
+# TODO
   - Implement list of terms ()
   - Translate in background (overnight)
   - Translate plugins
