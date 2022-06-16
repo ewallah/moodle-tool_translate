@@ -6,7 +6,7 @@ Translating a course is a difficult process. We tried a translation bureau, but 
 So we moved to Neural Machine translations to have our content available to students who do not speak our language. With this plugin, the results were the same: "All text has to be reviewed by a native speaker.", but this at a fraction of the cost (the AWS free tier translate engine even let you translate 2 million characters free/month).
 This plugin helps admins translate a course or course module using Neural Machine Engines at a minimum cost. All parts of a course are handled: course fields - enrolment methods - sections - questions....
 
-#Currently supported translate engines:
+# Currently supported translate engines:
   - Google
   - AWS
   - Deepl
