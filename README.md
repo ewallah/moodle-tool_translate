@@ -70,7 +70,7 @@ We are always interested to read about your feature proposals or even get a pull
 
 ## Status ##
 
-[![Build Status](https://github.com/ewallah/moodle-tool_translate/Tests/badge.svg)](https://github.com/ewallah/moodle-tool_translate/actions)
+[![Build Status](https://github.com/ewallah/moodle-tool_translate/workflows/Tests/badge.svg)](https://github.com/ewallah/moodle-tool_translate/actions)
 
 ## Copyright ##
 
