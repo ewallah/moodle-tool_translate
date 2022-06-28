@@ -55,7 +55,7 @@ class engine extends \tool_translate\engine {
      * @return bool if the engine is ready for use
      */
     public function is_configured(): bool {
-        return get_config('translateengine_deepl', 'access_key') != '';
+        return get_config('translateengine_deepl', 'api_key') != '';
     }
 
     /**
@@ -88,7 +88,7 @@ class engine extends \tool_translate\engine {
                     'source_lang' => $source,
                     'target_lang' => $target,
                     'preserve_formatting' => 1,
-                    'auth_key' => get_config('translateengine_deepl', 'access_key'),
+                    'auth_key' => get_config('translateengine_deepl', 'api_key'),
                     'tag_handling' => 'xml',
                     'split_sentences' => 'nonewlines'
                 ];

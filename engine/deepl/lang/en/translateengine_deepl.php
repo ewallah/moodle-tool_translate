@@ -25,4 +25,4 @@
  */
 $string['pluginname'] = 'Deepl translate';
 $string['privacy:metadata'] = 'The Deepl translate engine plugin does not store any personal data.';
-$string['access_key'] = 'AWS access key';
+$string['api_key'] = 'Deepl API key';

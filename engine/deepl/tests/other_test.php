@@ -47,7 +47,7 @@ class other_test extends \advanced_testcase {
         $this->setAdminUser();
         $this->resetAfterTest();
         $this->course = $this->getDataGenerator()->create_course();
-        set_config('access_key', 'key', 'translateengine_deepl');
+        set_config('api_key', 'key', 'translateengine_deepl');
     }
 
     /**
@@ -55,7 +55,7 @@ class other_test extends \advanced_testcase {
      * @covers \translateengine_deepl\engine
      */
     public function test_notconfigured() {
-        set_config('access_key', '', 'translateengine_deepl');
+        set_config('api_key', '', 'translateengine_deepl');
         $class = new engine($this->course);
         $this->assertInstanceOf('\translateengine_deepl\engine', $class);
         $this->assertFalse($class->is_configured());

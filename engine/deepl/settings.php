@@ -30,9 +30,9 @@ if (is_siteadmin()) {
     $trans = get_string_manager()->get_list_of_translations();
     if (count($trans) > 1 or PHPUNIT_TEST) {
         $s = 'translateengine_deepl';
-        $t = get_strings(['pluginname', 'access_key'], $s);
+        $t = get_strings(['pluginname', 'api_key'], $s);
         $settings = new admin_settingpage($s . '_settings', $t->pluginname);
-        $setting = new admin_setting_configtext("$s/access_key", $t->access_key, '', '');
+        $setting = new admin_setting_configtext("$s/api_key", $t->api_key, '', '');
         $settings->add($setting);
     }
 }
