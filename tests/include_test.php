@@ -18,7 +18,7 @@
  * Include tests for translate tool.
  *
  * @package   tool_translate
- * @copyright 2021 eWallah
+ * @copyright 2022 iplusacademy
  * @author    Renaat Debleu <info@eWallah.net>
  * @author    info@iplusacademy.org
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
@@ -30,7 +30,7 @@ namespace tool_translate;
  * Include tests for translate tool.
  *
  * @package   tool_translate
- * @copyright 2021 eWallah
+ * @copyright 2022 iplusacademy
  * @author    Renaat Debleu <info@eWallah.net>
  * @author    info@iplusacademy.org
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later

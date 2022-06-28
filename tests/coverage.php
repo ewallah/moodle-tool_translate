@@ -18,7 +18,7 @@
  * Coverage information for the translate tool.
  *
  * @package   tool_translate
- * @copyright 2022 eWallah
+ * @copyright 2022 iplusacademy
  * @author    Renaat Debleu <info@eWallah.net>
  * @author    info@iplusacademy.org
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
