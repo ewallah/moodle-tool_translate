@@ -92,7 +92,7 @@ class engine extends \tool_translate\engine {
                     'tag_handling' => 'xml',
                     'split_sentences' => 'nonewlines'
                 ];
-                if (defined('BEHAT_SITE_RUNNING') or PHPUNIT_TEST) {
+                if (defined('BEHAT_SITE_RUNNING') || PHPUNIT_TEST) {
                     $resp = json_encode(['translations' => [['text' => 'Behat', 'detected_source_language' => $target]]]);
                 } else {
                     $resp = $curl->post('https://api.deepl.com/v2/translate?', $params);

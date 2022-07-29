@@ -28,7 +28,7 @@ defined('MOODLE_INTERNAL') || die();
 
 if (is_siteadmin()) {
     $trans = get_string_manager()->get_list_of_translations();
-    if (count($trans) > 1 or PHPUNIT_TEST) {
+    if (count($trans) > 1 || PHPUNIT_TEST) {
         $s = 'translateengine_deepl';
         $t = get_strings(['pluginname', 'api_key'], $s);
         $settings = new admin_settingpage($s . '_settings', $t->pluginname);

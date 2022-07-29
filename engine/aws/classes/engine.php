@@ -63,8 +63,8 @@ class engine extends \tool_translate\engine {
         $k = get_config('translateengine_aws', 'access_key');
         $s = get_config('translateengine_aws', 'secret_key');
         $arr = ['region' => $r, 'credentials' => ['key' => $k, 'secret' => $s], 'version' => '2017-07-01'];
-        if ($r and $k and $s) {
-            if (defined('BEHAT_SITE_RUNNING') or PHPUNIT_TEST) {
+        if ($r && $k && $s) {
+            if (defined('BEHAT_SITE_RUNNING') || PHPUNIT_TEST) {
                 $mock = new \Aws\MockHandler();
                 for ($i = 1; $i < 1000; $i++) {
                     $mock->append(new \Aws\Result(['TranslatedText' => "BEHAT $i"]));

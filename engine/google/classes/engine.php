@@ -124,7 +124,7 @@ class engine extends \tool_translate\engine {
                 curl_setopt($handle, CURLOPT_SSL_VERIFYPEER, false);
                 curl_setopt($handle, CURLOPT_SSL_VERIFYHOST, false);
                 curl_setopt($handle, CURLOPT_RETURNTRANSFER, true);
-                if (defined('BEHAT_SITE_RUNNING') or PHPUNIT_TEST) {
+                if (defined('BEHAT_SITE_RUNNING') || PHPUNIT_TEST) {
                     $responsecode = 200;
                     $responsed = 'Behat';
                 } else {
