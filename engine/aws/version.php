@@ -30,5 +30,5 @@ $plugin->version = 2022011900;
 $plugin->release = '3.11+';
 $plugin->requires = 2020061504;
 $plugin->component = 'translateengine_aws';
-$plugin->maturity = 'MATURITY_BETA';
+$plugin->maturity = MATURITY_BETA;
 $plugin->dependencies = ['tool_translate' => ANY_VERSION];
