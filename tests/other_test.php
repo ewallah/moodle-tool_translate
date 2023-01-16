@@ -67,7 +67,7 @@ class other_test extends advanced_testcase {
         $this->assertNotEmpty($translateengine->get_manage_url());
         $this->assertEquals('translateengine_', $translateengine->get_settings_section_name());
         $category = new \admin_category('translateengines', new lang_string('settings', 'tool_translate'));
-        $translateengine->load_settings($category, 'aws', false);
+        $translateengine->load_settings($category, 'aws', true);
     }
 
 

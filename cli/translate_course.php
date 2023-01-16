@@ -28,18 +28,18 @@ define('CLI_SCRIPT', true);
 
 require(__DIR__ . '/../../../../config.php');
 require_once($CFG->libdir . '/clilib.php');
-require_once($CFG->dirroot . '/course/format/lib.php');
+require_once($CFG->libdir . '/adminlib.php');
 
-$usage = "This script translates a Moodle plugin.
+$usage = "This script translates a complete Moodle course.
 
 Usage:
-    # php translate_component.php --engine=aws --component=tool_translate --from=en --to=fr
-    # php translate_component.php [--help|-h]
+    # php translate_course.php --engine=aws --courseid=22 --from=en --to=fr
+    # php translate_course.php [--help|-h]
 
 Options:
     -h --help               Print this help.
     --engine=<value>        The engine to be used (default aws).
-    --component=<value>     The plugin that has to be translated.
+    --courseid=<value>      The course that has to be translated.
     --from=<value>          The source language (default en).
     --to=<value>            The target language.
 ";
@@ -47,13 +47,13 @@ Options:
 list($options, $unrecognised) = cli_get_params([
     'help' => false,
     'engine' => 'aws',
-    'component' => null,
+    'courseid' => null,
     'from' => 'en',
     'to' => null
 ], [
     'h' => 'help',
     'e' => 'engine',
-    'c' => 'component',
+    'c' => 'courseid',
     'f' => 'from',
     't' => 'to'
 ]);
@@ -69,26 +69,32 @@ if ($options['help']) {
 }
 
 
-if (empty($options['component'])) {
-    cli_error('Missing mandatory argument component.', 2);
+if (empty($options['courseid'])) {
+    cli_error('Missing mandatory argument courseid.', 2);
 }
 
 if (empty($options['to'])) {
     cli_error('Missing mandatory argument to.', 2);
 }
-$course = get_course(1);
+$course = get_course($options['courseid']);
 $engine = 'translateengine_' . $options['engine'] . '\engine';
 require_once($CFG->dirroot . '/admin/tool/translate/engine/' . $options['engine'] . '/classes/engine.php');
 require_once($CFG->dirroot . '/admin/tool/translate/classes/engine.php');
 $translateengine = new $engine($course);
 if ($translateengine->is_configured()) {
-    cli_writeln("Are you sure to translate the plugin?");
+    cli_writeln("Are you sure to translate this course?");
     $prompt = get_string('cliyesnoprompt', 'admin');
     $input = cli_input($prompt, '', [get_string('clianswerno', 'admin'), get_string('cliansweryes', 'admin')]);
     if ($input == get_string('clianswerno', 'admin')) {
         exit(1);
     }
-    cli_write($translateengine->translate_plugin($options['component'], $options['from'], $options['to']));
+    if ($translateengine->lang_supported($options['to'])) {
+        $translateengine->sourcelang = $options['from'];
+        $translateengine->targetlang = $options['to'];
+
+        $table = new \tool_translate\output\translation_table($course);
+        $x  = $table->translate_all($options['from'], $options['to']);
+    }
 } else {
     cli_problem(get_string('noengine', 'tool_translate'));
 }

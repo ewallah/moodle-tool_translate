@@ -96,9 +96,10 @@ class plugin_manager {
         // Set up the table.
         $table = new flexible_table('pluginsadminttable');
         $table->define_baseurl($this->pageurl);
-        $table->define_columns(['pluginname', 'version', 'hideshow', 'order', 'settings', 'uninstall']);
-        $table->define_headers([get_string('name'), get_string('version'), get_string('hideshow', 'tool_translate'),
-                get_string('order'), get_string('settings'), get_string('uninstallplugin', 'core_admin')]);
+        $table->define_columns(['pluginname', 'version', 'languages', 'hideshow', 'order', 'settings', 'uninstall']);
+        $table->define_headers([get_string('name'), get_string('version'), get_string('supportedlangs', 'tool_translate'),
+            get_string('hideshow', 'tool_translate'), get_string('order'), get_string('settings'),
+            get_string('uninstallplugin', 'core_admin')]);
         $table->set_attribute('id', 'plugins');
         $table->set_attribute('class', 'admintable generaltable');
         $table->setup();
@@ -112,6 +113,14 @@ class plugin_manager {
 
             $row[] = get_string('pluginname', $sub);
             $row[] = get_config($sub, 'version');
+
+            $engine = '\translateengine_' . $plugin . '\engine';
+            $engine = new $engine(null);
+            $alllangs = [];
+            foreach (array_keys($engine->supported_langs()) as $key) {
+                $alllangs[] = get_string($key, 'core_iso6392');
+            }
+            $row[] = implode('; ', $alllangs);
 
             $visible = !get_config($sub, 'disabled');
 

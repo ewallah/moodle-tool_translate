@@ -35,6 +35,7 @@ use html_writer;
 use moodle_url;
 use stdClass;
 
+
 /**
  * Translation of modules.
  *
@@ -67,8 +68,8 @@ class translation_table extends html_table {
         parent::__construct('translate');
         $this->course = $course;
         $this->caption = get_string('pluginname', 'tool_translate');
-        $this->head = ['', '', '' , get_string('words', 'tool_translate'), get_string('price', 'tool_translate')];
-        $this->colclasses = ['mdl-right', 'mdl-left', 'mdl-left', 'mdl-right', 'mdl-right'];
+        $this->head = ['', '' , '', get_string('words', 'tool_translate'), get_string('price', 'tool_translate')];
+        $this->colclasses = ['mdl-left', 'mdl-left', 'mdl-right', 'mdl-right'];
         $pluginmanager = new \tool_translate\plugin_manager();
         $this->engine = $pluginmanager->get_enabled_plugin($course);
         if (!$this->engine->is_configured()) {
@@ -84,31 +85,42 @@ class translation_table extends html_table {
      *
      */
     public function filldata() {
+        global $OUTPUT;
         rebuild_course_cache($this->course->id, true);
+        $icon = $OUTPUT->pix_icon('i/course', '', 'moodle', ['class' => 'icon']);
+        $this->addrow($icon, get_string('course'), true, $this->engine->translate_other(), 'course', $this->course->id);
         get_fast_modinfo($this->course, -1, true);
-
+        $spacer = $OUTPUT->pix_icon('spacer', '', 'moodle', ['class' => 'icon']);
         $courseformat = course_get_format($this->course);
         $modinfo = get_fast_modinfo($this->course->id, -1);
-        $this->addrow('', get_string('course'), $this->engine->translate_other(), []);
         $sections = $modinfo->get_section_info_all();
         $modinfosections = $modinfo->get_sections();
         $options = new stdClass();
         $options->noclean = true;
         $options->overflowdiv = true;
+        $files = [];
         foreach ($sections as $key => $section) {
-            if (isset($modinfosections[$section->section])) {
-                $url = new moodle_url('/course/editsection.php', ['id' => $section->id]);
+            $secid = $section->section;
+            if (isset($modinfosections[$secid])) {
+                $url = new moodle_url('/course/editsection.php', ['id' => $secid]);
                 $url = html_writer::link($url, $courseformat->get_section_name($key));
-                $this->addrow('', $url, $this->engine->translate_section($section->id), ['sectionid' => $section->id]);
+                $icon = $OUTPUT->pix_icon('i/section', '', 'moodle', ['class' => 'icon']);
+                $this->addrow($icon, $url, true, $this->engine->translate_section($section->id), 'section', $secid);
                 foreach ($modinfosections[$key] as $cmid) {
                     $cm = $modinfo->cms[$cmid];
                     $icon = html_writer::empty_tag('img', ['src' => $cm->get_icon_url(), 'class' => 'icon']);
                     $url = html_writer::link($cm->url, $cm->get_formatted_name());
-                    $this->addrow($icon, $url, $this->engine->translate_module($cmid), ['cmid' => $cmid]);
+                    $this->addrow($spacer . $icon, $url, true, $this->engine->translate_module($cmid), 'module', $cmid);
+                    if ($cm->modname == 'resource') {
+                        $files[] = new html_table_row(['', $cm->get_formatted_name(), 0, 0]);
+                    }
                 }
             }
         }
-        $this->data[] = new html_table_row(['', '', get_string('total'), $this->words, $this->engine->get_price($this->letters)]);
+        $icon = $OUTPUT->pix_icon('i/folder', '', 'moodle', ['class' => 'icon']);
+        $this->addrow($icon, get_string('files'), false);
+        //$this->data[] = $files;
+        $this->data[] = new html_table_row(['', get_string('total'), $this->words, $this->engine->get_price($this->letters)]);
     }
 
     /**
@@ -116,14 +128,17 @@ class translation_table extends html_table {
      *
      * @param string $icon
      * @param string $text
+     * @param boolean $enabled
      * @param string $translation
-     * @param array $params
+     * @param string $id
+     * @param string $value
      */
-    private function addrow($icon, $text, $translation = '', $params = []) {
+    private function addrow($icon, $text, $enabled = true, $translation = '', $id = '', $value = '') {
         $words = count_words($translation);
         $letters = count_letters($translation);
         $calc = $this->engine->get_price($letters);
-        $row = new html_table_row([$this->ibutton($params), $icon, $text, $words, $calc]);
+        $cell = html_writer::checkbox($id, $letters, $enabled, null, ['id' => $id . $value]);
+        $row = new html_table_row([$cell, $icon . ' ' . $text, $this->ibutton([]), $words, $calc]);
         $row->attributes['class'] = 'rowid' . $this->counter++;
         $this->data[] = $row;
         $this->words += $words;

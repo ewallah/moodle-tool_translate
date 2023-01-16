@@ -41,6 +41,7 @@ $string['price'] = 'Price';
 $string['privacy:metadata'] = 'The tool_translate plugin does not store any personal data.';
 $string['settings'] = 'Translation settings';
 $string['subplugintype_translateengine_plural'] = 'Engines';
+$string['supportedlangs'] = 'Languages supported';
 $string['to'] = 'Target language';
 $string['translate'] = 'Translate';
 $string['translate:translate'] = 'Translate a course';
