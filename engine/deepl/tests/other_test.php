@@ -20,7 +20,7 @@
  * @package   translateengine_deepl
  * @copyright 2022 iplusacademy
  * @author    Renaat Debleu <info@eWallah.net>
- * @author    info@iplusacademy.org
+ * @author    Renaat Debleu <info@eWallah.net>
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
@@ -32,7 +32,7 @@ namespace translateengine_deepl;
  * @package   translateengine_deepl
  * @copyright 2022 iplusacademy
  * @author    Renaat Debleu <info@eWallah.net>
- * @author    info@iplusacademy.org
+ * @author    Renaat Debleu <info@eWallah.net>
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class other_test extends \advanced_testcase {

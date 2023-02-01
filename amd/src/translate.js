@@ -18,7 +18,7 @@
  *
  * @copyright 2022 iplusacademy
  * @author    Renaat Debleu <info@eWallah.net>
- * @author    info@iplusacademy.org
+ * @author    Renaat Debleu <info@eWallah.net>
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 import DynamicForm from 'core_form/dynamicform';
