@@ -106,12 +106,12 @@ jobs:
 
       - name: AWS engine
         if: ${{ always() }}
-        run: moodle-plugin-ci --ansi parallel moodle/admin/tool/translate/engine/aws
+        run: moodle-plugin-ci --ansi phpunit --coverage-text moodle/admin/tool/translate/engine/aws
 
       - name: Google engine
         if: ${{ always() }}
-        run: moodle-plugin-ci --ansi parallel moodle/admin/tool/translate/engine/google
+        run: moodle-plugin-ci --ansi phpunit --coverage-text moodle/admin/tool/translate/engine/google
 
       - name: Deepl engine
         if: ${{ always() }}
-        run: moodle-plugin-ci --ansi parallel moodle/admin/tool/translate/engine/deepl
+        run: moodle-plugin-ci --ansi phpunit --coverage-text moodle/admin/tool/translate/engine/deepl
