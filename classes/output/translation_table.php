@@ -119,7 +119,7 @@ class translation_table extends html_table {
         }
         $icon = $OUTPUT->pix_icon('i/folder', '', 'moodle', ['class' => 'icon']);
         $this->addrow($icon, get_string('files'), false);
-        // TODO:  $this->data[] = $files;.
+        // TODO: Translate PDF - DOC - $this->data[] = $files;.
         $this->data[] = new html_table_row(['', get_string('total'), $this->words, $this->engine->get_price($this->letters)]);
     }
 

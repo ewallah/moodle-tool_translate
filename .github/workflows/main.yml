@@ -9,7 +9,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        moodle-branch: ['MOODLE_401_STABLE']
+        moodle-branch: ['MOODLE_400_STABLE', 'MOODLE_401_STABLE']
         php: ['8.0']
         database: ['mysqli']
 
@@ -27,7 +27,7 @@ jobs:
           php-version: ${{ matrix.php }}
           extensions: mbstring, mysqli, gd, zip
           ini-values: max_input_vars=5000
-          coverage: xdebug3
+          coverage: xdebug
 
       - name: add plugin
         uses: actions/checkout@v3
@@ -88,7 +88,13 @@ jobs:
 
       - name: phpunit
         if: ${{ always() }}
-        run: moodle-plugin-ci --ansi phpunit --coverage-text
+        run: moodle-plugin-ci --ansi phpunit --coverage-text --coverage-clover
+
+      - name: coveralls
+        if: ${{ always() }}
+        run: moodle-plugin-ci coveralls-upload
+        env:
+          COVERALLS_REPO_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: behat
         if: ${{ always() }}
@@ -100,12 +106,12 @@ jobs:
 
       - name: AWS engine
         if: ${{ always() }}
-        run: moodle-plugin-ci --ansi phpunit --coverage-text moodle/admin/tool/translate/engine/aws
+        run: moodle-plugin-ci --ansi parallel moodle/admin/tool/translate/engine/aws
 
       - name: Google engine
         if: ${{ always() }}
-        run: moodle-plugin-ci --ansi phpunit --coverage-text moodle/admin/tool/translate/engine/google
+        run: moodle-plugin-ci --ansi parallel moodle/admin/tool/translate/engine/google
 
       - name: Deepl engine
         if: ${{ always() }}
-        run: moodle-plugin-ci --ansi phpunit --coverage-text moodle/admin/tool/translate/engine/deepl
+        run: moodle-plugin-ci --ansi parallel moodle/admin/tool/translate/engine/deepl

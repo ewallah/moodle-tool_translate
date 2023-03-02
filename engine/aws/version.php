@@ -25,7 +25,7 @@
 
 defined('MOODLE_INTERNAL') || die;
 
-$plugin->version = 20220119$plugin->version = 2023030200;
+$plugin->version = 2023030200;
 $plugin->release = 'v3.0.1';
 $plugin->requires = 2020061504;
 $plugin->component = 'translateengine_aws';
