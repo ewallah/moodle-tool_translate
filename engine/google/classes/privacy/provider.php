@@ -18,8 +18,7 @@
  * Privacy main class.
  *
  * @package   translateengine_google
- * @copyright 2022 iplusacademy
- * @author    Renaat Debleu <info@eWallah.net>
+ * @copyright 2023 iplusacademy
  * @author    Renaat Debleu <info@eWallah.net>
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
@@ -30,8 +29,7 @@ namespace translateengine_google\privacy;
  * Privacy main class.
  *
  * @package   translateengine_google
- * @copyright 2022 iplusacademy
- * @author    Renaat Debleu <info@eWallah.net>
+ * @copyright 2023 iplusacademy
  * @author    Renaat Debleu <info@eWallah.net>
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */

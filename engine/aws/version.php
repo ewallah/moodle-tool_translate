@@ -18,16 +18,15 @@
  * Version details
  *
  * @package   translateengine_aws
- * @copyright 2022 iplusacademy
- * @author    Renaat Debleu <info@eWallah.net>
+ * @copyright 2023 iplusacademy
  * @author    Renaat Debleu <info@eWallah.net>
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
 defined('MOODLE_INTERNAL') || die;
 
-$plugin->version = 2022011900;
-$plugin->release = '3.11+';
+$plugin->version = 20220119$plugin->version = 2023030200;
+$plugin->release = 'v3.0.1';
 $plugin->requires = 2020061504;
 $plugin->component = 'translateengine_aws';
 $plugin->maturity = MATURITY_BETA;
