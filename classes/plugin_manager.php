@@ -140,7 +140,7 @@ class plugin_manager {
             }
             $row[] = $movelinks;
 
-            $exists = $row[1] != '' && file_exists($CFG->dirroot . "/$CFG->admin/tool/translate/engine/$plugin/settings.php");
+            $exists = $row[1] != '' && file_exists($CFG->dirroot . "/admin/tool/translate/engine/$plugin/settings.php");
             $url = new moodle_url('/admin/settings.php', ['section' => $sub . '_settings']);
             $row[] = $exists ? html_writer::link($url, $s) : '&nbsp;';
 
