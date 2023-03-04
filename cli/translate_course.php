@@ -92,7 +92,7 @@ if ($translateengine->is_configured()) {
         $translateengine->targetlang = $options['to'];
 
         $table = new \tool_translate\output\translation_table($course);
-        $x  = $table->translate_all($options['from'], $options['to']);
+        $x = $table->translate_all($options['from'], $options['to']);
     }
 } else {
     cli_problem(get_string('noengine', 'tool_translate'));
