@@ -9,9 +9,15 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        moodle-branch: ['MOODLE_400_STABLE', 'MOODLE_401_STABLE']
+        moodle-branch: ['MOODLE_400_STABLE', 'MOODLE_401_STABLE', 'MOODLE_402_STABLE']
         php: ['8.0']
-        database: ['mysqli']
+        database: ['mariadb', 'pgsql']
+        composer: ['^3']
+        include:
+          - php: '8.1'
+            moodle-branch: 'MOODLE_402_STABLE'
+            database: 'pgsql'
+            composer: 'dev-master'
 
     name: ${{ matrix.moodle-branch }}  php ${{ matrix.php }}  ${{ matrix.database }}
 
@@ -25,27 +31,35 @@ jobs:
         uses: shivammathur/setup-php@v2
         with:
           php-version: ${{ matrix.php }}
-          extensions: mbstring, mysqli, gd, zip
+          extensions: mbstring, pgsql, mysqli, gd, xmlrpc, zip, intl-70.1
           ini-values: max_input_vars=5000
           coverage: xdebug
 
       - name: add plugin
+        if: ${{ matrix.moodle-branch == 'MOODLE_400_STABLE' || matrix.moodle-branch == 'MOODLE_401_STABLE' }}
         uses: actions/checkout@v3
         with:
           repository: ewallah/moodle-local_aws.git
           ref: 'main'
           path: extras/local_aws
 
+      - name: add plugin
+        if: ${{ matrix.moodle-branch == 'MOODLE_402_STABLE' }}
+        uses: actions/checkout@v3
+        with:
+          repository: ewallah/moodle-local_aws.git
+          ref: 'dev'
+          path: extras/local_aws
+
       - name: composer
         run: |
-           composer create-project -n --no-dev --prefer-dist moodlehq/moodle-plugin-ci ci ^3
+           composer create-project -n --no-dev --prefer-dist moodlehq/moodle-plugin-ci ci ${{ matrix.composer }}
            echo $(cd ci/bin; pwd) >> $GITHUB_PATH
            echo $(cd ci/vendor/bin; pwd) >> $GITHUB_PATH
            sudo locale-gen en_AU.UTF-8
-           sudo systemctl start mysql.service
 
       - name: install Moodle
-        run: moodle-plugin-ci install --db-user=root --db-pass=root --db-host=127.0.0.1 --plugin this-plugin --extra-plugins=extras
+        run: moodle-plugin-ci install --db-host=127.0.0.1 --plugin this-plugin --extra-plugins=extras
         env:
           DB: ${{ matrix.database }}
           MOODLE_BRANCH: ${{ matrix.moodle-branch }}
