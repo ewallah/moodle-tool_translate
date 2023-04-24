@@ -316,7 +316,7 @@ abstract class engine {
             foreach ($fields as $field) {
                 if ($dbman->field_exists($table, $field)) {
                     $task = $record->{$field};
-                    if (strlen($task) > 0) {
+                    if (strlen($task ?? '') > 0) {
                         $result = $task;
                         if (!$this->counting) {
                             // TODO: What if max lenght > result.
