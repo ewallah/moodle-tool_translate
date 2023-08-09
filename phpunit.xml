@@ -33,13 +33,25 @@
         </include>
         <exclude>
             <directory suffix=".php">cli</directory>
+            <directory suffix=".php">lang</directory>
+            <directory suffix=".php">db</directory>
             <directory suffix=".php">tests</directory>
+            <directory suffix=".php">engine/aws/lang</directory>
+            <directory suffix=".php">engine/deepl/lang</directory>
+            <directory suffix=".php">engine/google/lang</directory>
             <directory suffix="test.php">engine</directory>
             <directory suffix="coverage.php">engine</directory>
             <file>tests/coverage.php</file>
             <file>version.php</file>
+            <file>engine/aws/version.php</file>
+            <file>engine/deepl/version.php</file>
+            <file>engine/google/version.php</file>
             <file>settings.php</file>
+            <file>engine/aws/settings.php</file>
+            <file>engine/deepl/settings.php</file>
+            <file>engine/google/settings.php</file>
             <file>index.php</file>
+            <file>adminmanageplugins.php</file>
         </exclude>
     </coverage>
 </phpunit>
