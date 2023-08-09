@@ -40,6 +40,9 @@ use pix_icon;
  */
 class plugin_manager {
 
+    /** @var moodle_url pageurl */
+    private $pageurl;
+
     /**
      * Constructor
      */
