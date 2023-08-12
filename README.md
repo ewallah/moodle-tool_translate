@@ -32,7 +32,7 @@ But language pairs can have better translation performance with other engines, s
 From the command line, it is possible to translate a complete
 
  - course: php admin/tool/translate/cli/translate_course.php --engine=aws --courseid=22 --from=en --to=fr
- - plugin: php admin/tool/translate/cli/translate_component.php --engine=aws --component=tool_translate --from=en --to=fr
+ - plugin: php admin/tool/translate/cli/translate_component.php --engine=aws --component=tool_translate --from=en --to=nl
 
 ## Admin tools ##
 
@@ -78,7 +78,7 @@ We are always interested to read about your feature proposals or even get a pull
 
  - implement Active Custom Translation (Extra parallel data to customize the machine translated output)
  - implement Custom Terminology so specific terms get translated better
- - better Moodle 4.00 question handling
+ - Moodle 4.00 question handling
  - support translation of Microsoft Word / PDF documents
 
 ## Status ##
