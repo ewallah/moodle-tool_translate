@@ -57,7 +57,7 @@ class table_test extends advanced_testcase {
         $gen->create_module('page',
            ['course' => $course->id,
             'name' => 'Lesson',
-            'content' => ' before [after] already']);
+            'content' => ' before [after] already', ]);
         $gen->create_module('book', ['course' => $course->id]);
         $lesson = $gen->create_module('lesson', ['course' => $course->id]);
         $lessongenerator = $gen->get_plugin_generator('mod_lesson');

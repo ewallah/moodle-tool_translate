@@ -48,13 +48,13 @@ list($options, $unrecognised) = cli_get_params([
     'engine' => 'aws',
     'component' => null,
     'from' => 'en',
-    'to' => null
+    'to' => null,
 ], [
     'h' => 'help',
     'e' => 'engine',
     'c' => 'component',
     'f' => 'from',
-    't' => 'to'
+    't' => 'to',
 ]);
 
 if ($unrecognised) {

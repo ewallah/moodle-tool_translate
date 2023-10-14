@@ -84,31 +84,31 @@ jobs:
         working-directory: moodle/local/aws/sdk/GuzzleHttp
 
       - name: phplint
-        if: ${{ always() }}
+        if: ${{ !cancelled() }}
         run: moodle-plugin-ci --ansi phplint
 
       - name: phpcpd
-        if: ${{ always() }}
+        if: ${{ !cancelled() }}
         run: moodle-plugin-ci --ansi phpcpd
 
       - name: phpmd
-        if: ${{ always() }}
+        if: ${{ !cancelled() }}
         run: moodle-plugin-ci --ansi phpmd
 
       - name: phpdoc
-        if: ${{ always() }}
+        if: ${{ !cancelled() }}
         run: moodle-plugin-ci --ansi phpdoc
 
       - name: codechecker
-        if: ${{ always() }}
+        if: ${{ !cancelled() }}
         run: moodle-plugin-ci --ansi codechecker
 
       - name: validate
-        if: ${{ always() }}
+        if: ${{ !cancelled() }}
         run: moodle-plugin-ci --ansi validate
 
       - name: savepoints
-        if: ${{ always() }}
+        if: ${{ !cancelled() }}
         run: moodle-plugin-ci --ansi savepoints
 
       - name: grunt
@@ -116,35 +116,35 @@ jobs:
         run: moodle-plugin-ci --ansi grunt || true
 
       - name: mustache
-        if: ${{ always() }}
+        if: ${{ !cancelled() }}
         run: moodle-plugin-ci --ansi mustache
 
       - name: phpunit
-        if: ${{ always() }}
+        if: ${{ !cancelled() }}
         run: moodle-plugin-ci --ansi phpunit --coverage-text --coverage-clover
 
       - name: coveralls
-        if: ${{ always() }}
+        if: ${{ !cancelled() }}
         run: moodle-plugin-ci coveralls-upload
         env:
           COVERALLS_REPO_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: behat
-        if: ${{ always() }}
+        if: ${{ !cancelled() }}
         run: moodle-plugin-ci --ansi behat --profile=chrome
 
       - name: classic
-        if: ${{ always() }}
+        if: ${{ !cancelled() }}
         run: moodle-plugin-ci --ansi behat --suite="classic" --profile=chrome
 
       - name: AWS engine
-        if: ${{ always() }}
+        if: ${{ !cancelled() }}
         run: moodle-plugin-ci --ansi phpunit --coverage-text moodle/admin/tool/translate/engine/aws
 
       - name: Google engine
-        if: ${{ always() }}
+        if: ${{ !cancelled() }}
         run: moodle-plugin-ci --ansi phpunit --coverage-text moodle/admin/tool/translate/engine/google
 
       - name: Deepl engine
-        if: ${{ always() }}
+        if: ${{ !cancelled() }}
         run: moodle-plugin-ci --ansi phpunit --coverage-text moodle/admin/tool/translate/engine/deepl

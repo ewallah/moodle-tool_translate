@@ -25,7 +25,7 @@
 
 namespace tool_translate\output;
 
-use \core\output\notification;
+use core\output\notification;
 use context_course;
 use context_module;
 use html_table;

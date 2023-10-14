@@ -100,7 +100,7 @@ class plugin_manager {
         $table->define_columns(['pluginname', 'version', 'languages', 'hideshow', 'order', 'settings', 'uninstall']);
         $table->define_headers([get_string('name'), get_string('version'), get_string('supportedlangs', 'tool_translate'),
             get_string('hideshow', 'tool_translate'), get_string('order'), get_string('settings'),
-            get_string('uninstallplugin', 'core_admin')]);
+            get_string('uninstallplugin', 'core_admin'), ]);
         $table->set_attribute('id', 'plugins');
         $table->set_attribute('class', 'admintable generaltable');
         $table->setup();

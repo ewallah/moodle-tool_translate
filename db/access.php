@@ -30,4 +30,4 @@ $capabilities = [
         'riskbitmask' => RISK_PERSONAL,
         'captype' => 'read',
         'contextlevel' => CONTEXT_COURSE,
-        'archetypes' => ['manager' => CAP_ALLOW]]];
+        'archetypes' => ['manager' => CAP_ALLOW], ], ];

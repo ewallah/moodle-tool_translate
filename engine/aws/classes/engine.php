@@ -98,7 +98,7 @@ class engine extends \tool_translate\engine {
             'pus' => 'ps', 'que' => 'qu', 'ron' => 'ro', 'rus' => 'ru', 'sin' => 'si', 'slk' => 'sk', 'slv' => 'sl', 'som' => 'so',
             'spa' => 'es', 'swa' => 'sw', 'swe' => 'sv', 'tam' => 'ta', 'tel' => 'te', 'tha' => 'th', 'tur' => 'tr', 'ukr' => 'uk',
             'urd' => 'ur', 'uzb' => 'uz', 'vie' => 'vi', 'yid' => 'yi', 'mal' => 'ml', 'mar' => 'mr', 'mon' => 'mn', 'srp' => 'sr',
-            'tgl' => 'tl', 'gle' => 'ga'];
+            'tgl' => 'tl', 'gle' => 'ga', ];
     }
 
     /**
@@ -115,7 +115,7 @@ class engine extends \tool_translate\engine {
                 $arr = $this->awsclient->translateText([
                      'SourceLanguageCode' => $source,
                      'TargetLanguageCode' => $target,
-                     'Text' => $txt]);
+                     'Text' => $txt, ]);
                 return html_entity_decode($arr['TranslatedText']);
             } catch (exception $e) {
                 throw new moodle_exception($e->get_message());

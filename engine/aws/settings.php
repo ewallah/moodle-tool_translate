@@ -36,7 +36,7 @@ if (is_siteadmin()) {
             'ap-southeast-2' => 'Asia Pacific (Sydney)',
             'eu-north-1' => 'Europe (Stockholm)',
             'eu-west-2' => 'Europe (London)',
-            'eu-west-3' => 'Europe (Paris)'];
+            'eu-west-3' => 'Europe (Paris)', ];
 
         $settings = new admin_settingpage($s . '_settings', $t->pluginname);
         $setting = new admin_setting_configtext("$s/access_key", $t->access_key, '', '');

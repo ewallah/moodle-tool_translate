@@ -65,7 +65,7 @@ class engine extends \tool_translate\engine {
         return [
             'bul' => 'bg', 'cat' => 'ca', 'dan' => 'da', 'deu' => 'de', 'ell' => 'el', 'eng' => 'en', 'spa' => 'es', 'est' => 'et',
             'fin' => 'fi', 'fra' => 'fr', 'hun' => 'hu', 'ita' => 'it', 'lav' => 'lv', 'nld' => 'nl', 'pol' => 'pl', 'ron' => 'ro',
-            'rus' => 'ru', 'slk' => 'sk', 'slv' => 'sl', 'swe' => 'sv', 'zho' => 'zh'];
+            'rus' => 'ru', 'slk' => 'sk', 'slv' => 'sl', 'swe' => 'sv', 'zho' => 'zh', ];
     }
 
     /**
@@ -88,7 +88,7 @@ class engine extends \tool_translate\engine {
                     'preserve_formatting' => 1,
                     'auth_key' => get_config('translateengine_deepl', 'api_key'),
                     'tag_handling' => 'xml',
-                    'split_sentences' => 'nonewlines'
+                    'split_sentences' => 'nonewlines',
                 ];
                 if (defined('BEHAT_SITE_RUNNING') || PHPUNIT_TEST) {
                     $resp = json_encode(['translations' => [['text' => 'Behat', 'detected_source_language' => $target]]]);
