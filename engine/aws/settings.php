@@ -43,7 +43,7 @@ if (is_siteadmin()) {
         $settings->add($setting);
         $setting = new admin_setting_configpasswordunmask("$s/secret_key", $t->secret_key, '', '');
         $settings->add($setting);
-        $setting = new admin_setting_configselect("$s/region", $t->region, '', '', $regions);
+        $setting = new admin_setting_configselect("$s/region", $t->region, '', 'us-west-1', $regions);
         $settings->add($setting);
     }
 }
