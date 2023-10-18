@@ -158,7 +158,7 @@ class translation_table extends html_table {
         if ($this->engine->is_configured()) {
             $params['course'] = $this->course->id;
             $params['action'] = $action;
-            $params['source'] = strtolower($CFG->trlang);
+            $params['source'] = strtolower($CFG->lang);
             $params['target'] = current_language();
             $cell = $OUTPUT->single_button(new moodle_url('/admin/tool/translate/index.php', $params), current_language());
         }
