@@ -31,8 +31,14 @@
  * @param stdClass $context The context of the course
  */
 function tool_translate_extend_navigation_course($navigation, $course, $context) {
+    global $CFG;
     if (has_capability('tool/translate:translate', $context)) {
-        $url = new \moodle_url('/admin/tool/translate/index.php', ['course' => $course->id]);
+        $arr = [
+            'course' => $course->id,
+            'target' => strtolower(current_language()),
+            'source' => strtolower($CFG->lang),
+        ];
+        $url = new \moodle_url('/admin/tool/translate/index.php', $arr);
         $txt = get_string('translate', 'tool_translate');
         $navigation->add($txt, $url, navigation_node::NODETYPE_LEAF, null, null, new \pix_icon('i/edit', ''));
     }

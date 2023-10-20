@@ -221,24 +221,28 @@ abstract class engine {
                 $slots = $CFG->version < 2022020300 ? $DB->get_records('quiz_slots', ['quizid' => $cm->instance]) :
                      \mod_quiz\question\bank\qbank_helper::get_question_structure($cm->instance, $context);
                 foreach ($slots as $slot) {
-                    $s .= $this->add_records('question', 'id', $slot->questionid);
-                    $s .= $this->add_records('question_answers', 'question', $slot->questionid);
-                    $s .= $this->add_records('question_hints', 'questionid', $slot->questionid);
-                    $s .= $this->add_records('question_order', 'question', $slot->questionid);
-                    $s .= $this->add_records('question_order_sub', 'question', $slot->questionid);
-                    $q = \question_bank::load_question($slot->questionid);
+                    $sid = $slot->questionid;
+                    if (!is_integer($sid)) {
+                        continue;
+                    }
+                    $s .= $this->add_records('question', 'id', $sid);
+                    $s .= $this->add_records('question_answers', 'question', $sid);
+                    $s .= $this->add_records('question_hints', 'questionid', $sid);
+                    $s .= $this->add_records('question_order', 'question', $sid);
+                    $s .= $this->add_records('question_order_sub', 'question', $sid);
+                    $q = \question_bank::load_question($sid);
                     $qt = get_class($q->qtype);
                     // Brute force collect feedback.
-                    $s .= $this->add_records($qt, 'questionid', $slot->questionid);
-                    $s .= $this->add_records($qt . '_options' , 'questionid', $slot->questionid);
-                    $s .= $this->add_records($qt . '_answers' , 'questionid', $slot->questionid);
-                    $s .= $this->add_records($qt . '_subquestions' , 'questionid', $slot->questionid);
+                    $s .= $this->add_records($qt, 'questionid', $sid);
+                    $s .= $this->add_records($qt . '_options' , 'questionid', $sid);
+                    $s .= $this->add_records($qt . '_answers' , 'questionid', $sid);
+                    $s .= $this->add_records($qt . '_subquestions' , 'questionid', $sid);
                     $qt = str_ireplace('qtype', 'question', $qt);
-                    $s .= $this->add_records($qt, 'questionid', $slot->questionid);
-                    $s .= $this->add_records($qt, 'question', $slot->questionid);
-                    $s .= $this->add_records($qt . '_options' , 'questionid', $slot->questionid);
-                    $s .= $this->add_records($qt . '_answers' , 'questionid', $slot->questionid);
-                    $s .= $this->add_records($qt . '_subquestions' , 'questionid', $slot->questionid);
+                    $s .= $this->add_records($qt, 'questionid', $sid);
+                    $s .= $this->add_records($qt, 'question', $sid);
+                    $s .= $this->add_records($qt . '_options' , 'questionid', $sid);
+                    $s .= $this->add_records($qt . '_answers' , 'questionid', $sid);
+                    $s .= $this->add_records($qt . '_subquestions' , 'questionid', $sid);
                 }
                 break;
         }

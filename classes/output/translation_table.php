@@ -56,6 +56,10 @@ class translation_table extends html_table {
     public $letters = 0;
     /** @var int counter */
     protected $counter = 0;
+    /** @var string source */
+    protected $source = 'en';
+    /** @var string target */
+    protected $target = 'fr';
 
 
     /**
@@ -64,8 +68,12 @@ class translation_table extends html_table {
      * @param course $course
      */
     public function __construct($course) {
-        global $OUTPUT;
+        global $CFG, $OUTPUT;
         parent::__construct('translate');
+        $this->source = optional_param('source', $CFG->lang, PARAM_ALPHA);
+        $this->source = strtolower($this->source);
+        $this->target = optional_param('target', current_language(), PARAM_ALPHA);
+        $this->target = strtolower($this->target);
         $this->course = $course;
         $this->caption = get_string('pluginname', 'tool_translate');
         $this->head = ['', '' , '', get_string('words', 'tool_translate'), get_string('price', 'tool_translate')];
@@ -153,14 +161,14 @@ class translation_table extends html_table {
      * @return html_table_cell
      */
     private function ibutton($params, $action = 'translate') {
-        global $CFG, $OUTPUT;
+        global $OUTPUT;
         $cell = '';
         if ($this->engine->is_configured()) {
             $params['course'] = $this->course->id;
             $params['action'] = $action;
-            $params['source'] = strtolower($CFG->lang);
-            $params['target'] = current_language();
-            $cell = $OUTPUT->single_button(new moodle_url('/admin/tool/translate/index.php', $params), current_language());
+            $params['source'] = $this->source;
+            $params['target'] = $this->target;
+            $cell = $OUTPUT->single_button(new moodle_url('/admin/tool/translate/index.php', $params), $this->target);
         }
         return new html_table_cell($cell);
     }
@@ -172,8 +180,8 @@ class translation_table extends html_table {
      */
     public function translate_other(): string {
         $this->engine->counting = false;
-        $this->engine->targetlang = optional_param('target', 'fr', PARAM_ALPHA);
-        $this->engine->sourcelang = optional_param('source', 'en', PARAM_ALPHA);
+        $this->engine->targetlang = $this->target;
+        $this->engine->sourcelang = $this->source;
         $s = $this->engine->translate_other();
         $this->engine->counting = true;
         return $s;
@@ -187,8 +195,8 @@ class translation_table extends html_table {
      */
     public function translate_section($sectionid): string {
         $this->engine->counting = false;
-        $this->engine->targetlang = optional_param('target', 'fr', PARAM_ALPHA);
-        $this->engine->sourcelang = optional_param('source', 'en', PARAM_ALPHA);
+        $this->engine->targetlang = $this->target;
+        $this->engine->sourcelang = $this->source;
         $s = $this->engine->translate_section($sectionid);
         $this->engine->counting = true;
         return $s;
@@ -202,8 +210,8 @@ class translation_table extends html_table {
      */
     public function translate_module($moduleid): string {
         $this->engine->counting = false;
-        $this->engine->targetlang = optional_param('target', 'en', PARAM_ALPHA);
-        $this->engine->sourcelang = optional_param('source', 'fr', PARAM_ALPHA);
+        $this->engine->targetlang = $this->target;
+        $this->engine->sourcelang = $this->source;
         $s = $this->engine->translate_module($moduleid);
         $this->engine->counting = true;
         return $s;

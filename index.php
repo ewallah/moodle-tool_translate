@@ -31,13 +31,20 @@ $course = get_course($courseid);
 $context = context_course::instance($courseid);
 $action = optional_param('action', '', PARAM_ALPHA);
 $title = get_string('pluginname', 'tool_translate');
+$source = optional_param('source', $CFG->lang, PARAM_ALPHA);
+$target = optional_param('target', current_language(), PARAM_ALPHA);
 
 // Check permissions.
 require_login($course);
 require_capability('tool/translate:translate', $context);
 
-$ur = '/admin/tool/translate/index.php';
-$nourl = new \moodle_url($ur, ['course' => $courseid]);
+$url = '/admin/tool/translate/index.php';
+$arr = [
+    'course' => $course->id,
+    'target' => strtolower($source),
+    'source' => strtolower($target),
+];
+$nourl = new \moodle_url($url, $arr);
 $out = '';
 $PAGE->set_context($context);
 $PAGE->set_url($nourl);
