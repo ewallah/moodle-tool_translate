@@ -95,8 +95,8 @@ class engine extends \tool_translate\engine {
             'nep' => 'ne', 'nor' => 'no', 'nya' => 'ny', 'ori' => 'or', 'pus' => 'ps', 'fas' => 'fa', 'pol' => 'pl', 'por' => 'pt',
             'pan' => 'pa', 'ron' => 'ro', 'rus' => 'ru', 'sin' => 'si', 'slk' => 'sk', 'slv' => 'sl', 'som' => 'so', 'spa' => 'es',
             'swa' => 'sw', 'swe' => 'sv', 'tam' => 'ta', 'tel' => 'te', 'tha' => 'th', 'tur' => 'tr', 'ukr' => 'uk', 'urd' => 'ur',
-            'uzb' => 'uz', 'vie' => 'vi', 'yid' => 'yi', 'mal' => 'ml', 'mar' => 'mr', 'mon' => 'mn', 'srp' => 'sr', 'tgl' => 'tl',
-            'gle' => 'ga', 'zul' => 'zu', ];
+            'uzb' => 'uz', 'vie' => 'vi', 'yid' => 'yi', 'mal' => 'ml', 'srp' => 'sr', 'tgl' => 'tl', 'gle' => 'ga', 'zul' => 'zu',
+        ];
     }
 
     /**
