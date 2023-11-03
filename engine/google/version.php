@@ -25,9 +25,10 @@
 
 defined('MOODLE_INTERNAL') || die;
 
-$plugin->version = 2023030200;
-$plugin->release = 'v3.0.1';
-$plugin->requires = 2020061504;
 $plugin->component = 'translateengine_google';
-$plugin->maturity = MATURITY_BETA;
 $plugin->dependencies = ['tool_translate' => ANY_VERSION];
+$plugin->requires = 2022112800;
+$plugin->supported = [401, 403];
+$plugin->maturity = MATURITY_RC;
+$plugin->release = 'v4.0.2';
+$plugin->version = 2023102800;
