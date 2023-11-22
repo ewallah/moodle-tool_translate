@@ -51,7 +51,7 @@ class table_test extends advanced_testcase {
      * Test the library.
      * @covers \tool_translate\output\translation_table
      */
-    public function test_table() {
+    public function test_table(): void {
         $gen = $this->getDataGenerator();
         $course = $gen->create_course(['lang' => 'fr']);
         $gen->create_module('page',

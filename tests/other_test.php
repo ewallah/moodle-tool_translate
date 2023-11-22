@@ -58,7 +58,7 @@ class other_test extends advanced_testcase {
      * Test the submodule translateengine.
      * @covers \tool_translate\plugininfo\translateengine
      */
-    public function test_translate_engine() {
+    public function test_translate_engine(): void {
         $translateengine = new plugininfo\translateengine();
         $this->assertTrue($translateengine->is_uninstall_allowed());
         $this->assertTrue($translateengine->is_enabled());
@@ -73,7 +73,7 @@ class other_test extends advanced_testcase {
      * Test the plugin manager.
      * @covers \tool_translate\plugin_manager
      */
-    public function test_plugin_manager() {
+    public function test_plugin_manager(): void {
         $pluginmanager = new plugin_manager();
         $pluginmanager->get_enabled_plugin($this->course);
         set_config('region', 'eu-west-3', 'translateengine_aws');
@@ -111,7 +111,7 @@ class other_test extends advanced_testcase {
      * @covers \tool_translate\plugininfo\translateengine
      * @covers \tool_translate\engine
      */
-    public function test_engine() {
+    public function test_engine(): void {
         global $CFG, $DB, $USER;
         require_once($CFG->dirroot . '/lib/adminlib.php');
         $this->resetAfterTest();
@@ -208,7 +208,7 @@ class other_test extends advanced_testcase {
      * Test an abstract engine.
      * @covers \tool_translate\engine
      */
-    public function test_abstract_engine() {
+    public function test_abstract_engine(): void {
         $engine = new \translateengine_aws\engine($this->course);
         $reflection = new \ReflectionClass('\tool_translate\engine');
         $this->expectExceptionMessage('supported_langs not configured for this engine');
@@ -219,7 +219,7 @@ class other_test extends advanced_testcase {
      * Test an abstract engine2.
      * @covers \tool_translate\engine
      */
-    public function test_abstract_engine2() {
+    public function test_abstract_engine2(): void {
         $engine = new \translateengine_aws\engine($this->course);
         $reflection = new \ReflectionClass('\tool_translate\engine');
         $this->expectExceptionMessage('language not supported');
@@ -232,7 +232,7 @@ class other_test extends advanced_testcase {
      * @covers \tool_translate\engine
      * @covers \translateengine_aws\engine
      */
-    public function test_plugin_translate() {
+    public function test_plugin_translate(): void {
         $engine = new \translateengine_aws\engine($this->course);
         $this->assertStringContainsString('AWS', $engine->get_name());
         $out = $engine->translate_plugin('tool_translate', 'en', 'fr');

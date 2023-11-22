@@ -42,7 +42,7 @@ class library_test extends advanced_testcase {
      * Test the library.
      * @coversNothing
      */
-    public function test_library() {
+    public function test_library(): void {
         global $CFG, $PAGE;
         require_once($CFG->dirroot . '/admin/tool/translate/lib.php');
         $this->setAdminUser();

@@ -41,7 +41,7 @@ class privacy_test extends provider_testcase {
      * Test returning metadata.
      * @covers \translateengine_deepl\privacy\provider
      */
-    public function test_get_metadata() {
+    public function test_get_metadata(): void {
         $this->resetAfterTest(true);
         $collection = new \core_privacy\local\metadata\collection('translateengine_deepl');
         $reason = provider::get_reason($collection);

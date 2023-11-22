@@ -52,7 +52,7 @@ class other_test extends \advanced_testcase {
      * Test the empty class.
      * @covers \translateengine_deepl\engine
      */
-    public function test_notconfigured() {
+    public function test_notconfigured(): void {
         set_config('api_key', '', 'translateengine_deepl');
         $class = new engine($this->course);
         $this->assertInstanceOf('\translateengine_deepl\engine', $class);
@@ -66,7 +66,7 @@ class other_test extends \advanced_testcase {
      * Test the class.
      * @covers \translateengine_deepl\engine
      */
-    public function test_class() {
+    public function test_class(): void {
         $class = new engine($this->course);
         $this->assertInstanceOf('\translateengine_deepl\engine', $class);
         $this->assertTrue($class->is_configured());
@@ -88,7 +88,7 @@ class other_test extends \advanced_testcase {
      * Test the errors.
      * @covers \translateengine_deepl\engine
      */
-    public function test_error1() {
+    public function test_error1(): void {
         $class = new engine($this->course);
         $this->expectExceptionMessage('language not supported');
         $this->assertSame('boe', $class->translatetext('en', 'xx', 'boe'));
@@ -98,7 +98,7 @@ class other_test extends \advanced_testcase {
      * Test the errors.
      * @covers \translateengine_deepl\engine
      */
-    public function test_error2() {
+    public function test_error2(): void {
         $class = new engine($this->course);
         $this->expectExceptionMessage('language not supported');
         $this->assertSame('boe', $class->translatetext('xx', 'en', 'boe'));

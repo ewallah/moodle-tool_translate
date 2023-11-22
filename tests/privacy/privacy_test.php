@@ -42,7 +42,7 @@ class privacy_test extends provider_testcase {
      * Test returning metadata.
      * @covers \tool_translate\privacy\provider
      */
-    public function test_get_metadata() {
+    public function test_get_metadata(): void {
         $this->resetAfterTest(true);
         $collection = new collection('tool_translate');
         $reason = provider::get_reason($collection);

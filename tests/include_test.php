@@ -39,7 +39,7 @@ class include_test extends \advanced_testcase {
      * Test the adminmanageplugins.
      * @coversNothing
      */
-    public function test_adminmanagepluginss() {
+    public function test_adminmanagepluginss(): void {
         global $CFG, $PAGE;
         require_once($CFG->dirroot . '/admin/tool/translate/db/access.php');
         $this->resetAfterTest();
@@ -54,7 +54,7 @@ class include_test extends \advanced_testcase {
      * Test the access.
      * @coversNothing
      */
-    public function test_access() {
+    public function test_access(): void {
         global $CFG;
         include($CFG->dirroot . '/admin/tool/translate/db/access.php');
     }
@@ -63,7 +63,7 @@ class include_test extends \advanced_testcase {
      * Test the version.
      * @coversNothing
      */
-    public function test_version() {
+    public function test_version(): void {
         global $CFG;
         require_once($CFG->dirroot . '/admin/tool/translate/version.php');
     }

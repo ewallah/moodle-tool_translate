@@ -51,7 +51,7 @@ class other_test extends \advanced_testcase {
      * Test the empty class.
      * @covers \translateengine_google\engine
      */
-    public function test_notconfigured() {
+    public function test_notconfigured(): void {
         $class = new \translateengine_google\engine($this->course);
         $this->assertInstanceOf('\translateengine_google\engine', $class);
         $this->assertFalse($class->is_configured());
@@ -64,7 +64,7 @@ class other_test extends \advanced_testcase {
      * Test the class.
      * @covers \translateengine_google\engine
      */
-    public function test_class() {
+    public function test_class(): void {
         set_config('googleapikey', 'key', 'translateengine_google');
         $class = new \translateengine_google\engine($this->course);
         $this->assertInstanceOf('\translateengine_google\engine', $class);
@@ -88,7 +88,7 @@ class other_test extends \advanced_testcase {
      * Test the errors.
      * @covers \translateengine_google\engine
      */
-    public function test_error1() {
+    public function test_error1(): void {
         set_config('googleapikey', 'key', 'translateengine_google');
         $class = new engine($this->course);
         $this->expectExceptionMessage('language not supported');
@@ -99,7 +99,7 @@ class other_test extends \advanced_testcase {
      * Test the errors.
      * @covers \translateengine_google\engine
      */
-    public function test_error2() {
+    public function test_error2(): void {
         set_config('googleapikey', 'key', 'translateengine_google');
         $class = new engine($this->course);
         $this->expectExceptionMessage('language not supported');
