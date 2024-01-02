@@ -29,6 +29,6 @@ $plugin->component = 'translateengine_google';
 $plugin->dependencies = ['tool_translate' => ANY_VERSION];
 $plugin->requires = 2022112800;
 $plugin->supported = [401, 403];
-$plugin->maturity = MATURITY_RC;
+$plugin->maturity = MATURITY_STABLE;
 $plugin->release = 'v4.0.2';
-$plugin->version = 2023102800;
+$plugin->version = 2024010200;
