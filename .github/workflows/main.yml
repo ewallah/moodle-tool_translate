@@ -41,7 +41,7 @@ jobs:
 
     steps:
       - name: checkout plugin
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           path: this-plugin
 
@@ -53,7 +53,7 @@ jobs:
           coverage: pcov
 
       - name: add plugin
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           repository: catalyst/moodle-local_aws
           path: extras/local_aws
