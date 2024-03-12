@@ -37,7 +37,7 @@ use html_writer;
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  * @coversDefaultClass \tool_translate\translation_table
  */
-class table_test extends advanced_testcase {
+final class table_test extends advanced_testcase {
 
     /**
      * Setup testcase.
@@ -73,6 +73,7 @@ class table_test extends advanced_testcase {
         $glossarygenerator->create_content($glossary, ['concept' => 'Custom concept']);
         $gen->create_module('choice', ['course' => $course->id]);
         $gen->create_module('forum', ['course' => $course->id]);
+        $gen->create_module('resource', ['course' => $course->id]);
 
         ob_start();
         $table = new translation_table($course);

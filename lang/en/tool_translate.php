@@ -45,3 +45,4 @@ $string['to'] = 'Target language';
 $string['translate'] = 'Translate';
 $string['translate:translate'] = 'Translate a course';
 $string['words'] = 'Words';
+$string['subplugintype_translateengine'] = 'Translate engine';

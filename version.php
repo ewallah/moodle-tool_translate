@@ -26,9 +26,9 @@
 defined('MOODLE_INTERNAL') || die;
 
 $plugin->component = 'tool_translate';
-$plugin->requires = 2022112800;
-$plugin->supported = [401, 403];
+$plugin->requires = 2023042400;
+$plugin->supported = [402, 403];
 $plugin->maturity = MATURITY_STABLE;
-$plugin->release = 'v4.0.2';
-$plugin->version = 2024010200;
+$plugin->release = 'v4.2.1';
+$plugin->version = 2024031000;
 $plugin->dependencies = ['local_aws' => ANY_VERSION];

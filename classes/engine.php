@@ -186,7 +186,7 @@ abstract class engine {
      * @return string
      */
     public function translate_module($moduleid): string {
-        global $CFG, $DB;
+        global $CFG;
         require_once($CFG->libdir . '/questionlib.php');
         $modinfo = get_fast_modinfo($this->course->id, -1);
         $cm = $modinfo->cms[$moduleid];
@@ -218,31 +218,29 @@ abstract class engine {
             case 'quiz':
                 $s .= $this->add_records('quiz_sections', 'quizid', $cm->instance, ['heading']);
                 $s .= $this->add_records('quiz_feedback', 'quizid', $cm->instance);
-                $slots = $CFG->version < 2022020300 ? $DB->get_records('quiz_slots', ['quizid' => $cm->instance]) :
-                     \mod_quiz\question\bank\qbank_helper::get_question_structure($cm->instance, $context);
-                foreach ($slots as $slot) {
-                    $sid = $slot->questionid;
-                    if (!is_integer($sid)) {
-                        continue;
+                $questions = \mod_quiz\question\bank\qbank_helper::get_question_structure($cm->instance, $context);
+                foreach ($questions as $question) {
+                    if ($question->questionid) {
+                        $sid = $question->questionid;
+                        $s .= $this->add_records('question', 'id', $sid);
+                        $s .= $this->add_records('question_answers', 'question', $sid);
+                        $s .= $this->add_records('question_hints', 'questionid', $sid);
+                        $s .= $this->add_records('question_order', 'question', $sid);
+                        $s .= $this->add_records('question_order_sub', 'question', $sid);
+                        $q = \question_bank::load_question($sid);
+                        $qt = get_class($q->qtype);
+                        // Brute force collect feedback.
+                        $s .= $this->add_records($qt, 'questionid', $sid);
+                        $s .= $this->add_records($qt . '_options' , 'questionid', $sid);
+                        $s .= $this->add_records($qt . '_answers' , 'questionid', $sid);
+                        $s .= $this->add_records($qt . '_subquestions' , 'questionid', $sid);
+                        $qt = str_ireplace('qtype', 'question', $qt);
+                        $s .= $this->add_records($qt, 'questionid', $sid);
+                        $s .= $this->add_records($qt, 'question', $sid);
+                        $s .= $this->add_records($qt . '_options' , 'questionid', $sid);
+                        $s .= $this->add_records($qt . '_answers' , 'questionid', $sid);
+                        $s .= $this->add_records($qt . '_subquestions' , 'questionid', $sid);
                     }
-                    $s .= $this->add_records('question', 'id', $sid);
-                    $s .= $this->add_records('question_answers', 'question', $sid);
-                    $s .= $this->add_records('question_hints', 'questionid', $sid);
-                    $s .= $this->add_records('question_order', 'question', $sid);
-                    $s .= $this->add_records('question_order_sub', 'question', $sid);
-                    $q = \question_bank::load_question($sid);
-                    $qt = get_class($q->qtype);
-                    // Brute force collect feedback.
-                    $s .= $this->add_records($qt, 'questionid', $sid);
-                    $s .= $this->add_records($qt . '_options' , 'questionid', $sid);
-                    $s .= $this->add_records($qt . '_answers' , 'questionid', $sid);
-                    $s .= $this->add_records($qt . '_subquestions' , 'questionid', $sid);
-                    $qt = str_ireplace('qtype', 'question', $qt);
-                    $s .= $this->add_records($qt, 'questionid', $sid);
-                    $s .= $this->add_records($qt, 'question', $sid);
-                    $s .= $this->add_records($qt . '_options' , 'questionid', $sid);
-                    $s .= $this->add_records($qt . '_answers' , 'questionid', $sid);
-                    $s .= $this->add_records($qt . '_subquestions' , 'questionid', $sid);
                 }
                 break;
         }

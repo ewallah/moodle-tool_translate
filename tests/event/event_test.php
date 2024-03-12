@@ -38,7 +38,7 @@ use moodle_url;
  * @author    Renaat Debleu <info@eWallah.net>
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-class event_test extends advanced_testcase {
+final class event_test extends advanced_testcase {
 
     /**
      * Test the tool viewed event.

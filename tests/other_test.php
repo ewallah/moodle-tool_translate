@@ -38,7 +38,7 @@ use stdClass;
  * @author    Renaat Debleu <info@eWallah.net>
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-class other_test extends advanced_testcase {
+final class other_test extends advanced_testcase {
 
     /** @var \stdClass course */
     private $course;
@@ -190,7 +190,7 @@ class other_test extends advanced_testcase {
         $engine->sourcelang = 'en';
         $engine->targetlang = 'fr';
         $this->assertStringContainsString('Course with id', $engine->translate_other());
-        $this->assertEquals('Topic with id 1 translated', $engine->translate_section(1));
+        $this->assertStringContainsString('with id 1 translated', $engine->translate_section(1));
         $this->assertStringContainsString('Module with id', $engine->translate_module($book->cmid));
         $this->assertStringContainsString('Module with id', $engine->translate_module($lesson->cmid));
         $this->assertStringContainsString('Module with id', $engine->translate_module($page->cmid));
