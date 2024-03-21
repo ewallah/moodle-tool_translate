@@ -78,8 +78,8 @@ class translateengine extends base {
         $ADMIN = $adminroot;
         if ($this->is_installed_and_upgraded() && $hassiteconfig && file_exists($this->full_path('settings.php'))) {
             $settings = new admin_settingpage($this->get_settings_section_name(), $this->displayname, 'moodle/site:config');
-            include($this->full_path('settings.php'));
             if ($settings) {
+                include($this->full_path('settings.php'));
                 $ADMIN->add($parentnodename, $settings);
             }
         }

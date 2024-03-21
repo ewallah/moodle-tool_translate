@@ -41,7 +41,6 @@
       <directory suffix=".php">classes</directory>
       <directory suffix=".php">tests/generator</directory>
       <file>externallib.php</file>
-      <file>lib.php</file>
       <file>locallib.php</file>
       <file>renderer.php</file>
       <file>rsslib.php</file>
@@ -49,6 +48,7 @@
     <exclude>
       <directory suffix=".php">lang</directory>
       <directory suffix=".php">cli</directory>
+      <file>lib.php</file>
     </exclude>
   </coverage>
 

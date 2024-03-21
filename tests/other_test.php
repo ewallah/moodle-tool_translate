@@ -59,11 +59,18 @@ final class other_test extends advanced_testcase {
      * @covers \tool_translate\plugininfo\translateengine
      */
     public function test_translate_engine(): void {
+        global $CFG;
+        set_config('region', 'eu-west-3', 'translateengine_aws');
+        set_config('access_key', 'key', 'translateengine_aws');
+        set_config('secret_key', 'secret', 'translateengine_aws');
         $translateengine = new plugininfo\translateengine();
+        $translateengine->name = 'aws';
+        $translateengine->rootdir = $CFG->dirroot . '/admin/tool/translate/engine/aws';
         $this->assertTrue($translateengine->is_uninstall_allowed());
         $this->assertTrue($translateengine->is_enabled());
         $this->assertNotEmpty($translateengine->get_manage_url());
-        $this->assertEquals('translateengine_', $translateengine->get_settings_section_name());
+        $this->assertNotEmpty($translateengine->full_path('settings.php'));
+        $this->assertEquals('translateengine_aws', $translateengine->get_settings_section_name());
         $category = new \admin_category('translateengines', new lang_string('settings', 'tool_translate'));
         $translateengine->load_settings($category, 'aws', true);
     }
