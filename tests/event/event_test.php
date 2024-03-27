@@ -39,7 +39,6 @@ use moodle_url;
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 final class event_test extends advanced_testcase {
-
     /**
      * Test the tool viewed event.
      * @covers \tool_translate\event\tool_viewed

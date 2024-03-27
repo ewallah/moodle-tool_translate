@@ -38,7 +38,6 @@ use html_writer;
  * @coversDefaultClass \tool_translate\translation_table
  */
 final class table_test extends advanced_testcase {
-
     /**
      * Setup testcase.
      */
@@ -54,10 +53,13 @@ final class table_test extends advanced_testcase {
     public function test_table(): void {
         $gen = $this->getDataGenerator();
         $course = $gen->create_course(['lang' => 'fr']);
-        $gen->create_module('page',
-           ['course' => $course->id,
+        $gen->create_module(
+            'page',
+            ['course' => $course->id,
             'name' => 'Lesson',
-            'content' => ' before [after] already', ]);
+            'content' => ' before [after] already',
+            ]
+        );
         $gen->create_module('book', ['course' => $course->id]);
         $lesson = $gen->create_module('lesson', ['course' => $course->id]);
         $lessongenerator = $gen->get_plugin_generator('mod_lesson');

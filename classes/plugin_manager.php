@@ -39,7 +39,6 @@ use pix_icon;
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class plugin_manager {
-
     /** @var moodle_url pageurl */
     private $pageurl;
 
@@ -48,7 +47,7 @@ class plugin_manager {
      */
     public function __construct() {
         global $CFG;
-        require_once($CFG->dirroot.'/lib/adminlib.php');
+        require_once($CFG->dirroot . '/lib/adminlib.php');
         $this->pageurl = new moodle_url('/admin/tool/translate/adminmanageplugins.php');
     }
 
@@ -241,12 +240,16 @@ class plugin_manager {
         global $OUTPUT;
         $url = $this->pageurl;
         if ($action === 'delete') {
-            $url = \core_plugin_manager::instance()->get_uninstall_url('translateengine_'.$plugin, 'manage');
+            $url = \core_plugin_manager::instance()->get_uninstall_url('translateengine_' . $plugin, 'manage');
             return ($url) ? html_writer::link($url, get_string('uninstallplugin', 'core_admin')) : '&nbsp;';
         }
 
-        return $OUTPUT->action_icon(new moodle_url($url, ['action' => $action, 'plugin' => $plugin, 'sesskey' => sesskey()]),
-                new pix_icon($icon, $alt, 'moodle', ['title' => $alt]), null, ['title' => $alt]) . ' ';
+        return $OUTPUT->action_icon(
+            new moodle_url($url, ['action' => $action, 'plugin' => $plugin, 'sesskey' => sesskey()]),
+            new pix_icon($icon, $alt, 'moodle', ['title' => $alt]),
+            null,
+            ['title' => $alt]
+        ) . ' ';
     }
 
     /**

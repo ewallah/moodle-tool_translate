@@ -36,7 +36,6 @@ use moodle_exception;
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class engine extends \tool_translate\engine {
-
     /** @var \stdClass client */
     protected $client;
     /** @var \stdClass service */

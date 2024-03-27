@@ -39,7 +39,6 @@ use stdClass;
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 final class other_test extends advanced_testcase {
-
     /** @var \stdClass course */
     private $course;
 
@@ -248,7 +247,8 @@ final class other_test extends advanced_testcase {
             $engine,
             'dump_strings',
             ['fr', 'tool_translate', ['a' => 'boe']],
-            'tool_translate\engine');
+            'tool_translate\engine'
+        );
         $this->assertStringContainsString('Automatic translated strings (fr) for tool_translate', $out);
         $this->expectExceptionMessage('Plugin not found');
         $out = $engine->translate_plugin('tool_translatefake', 'en', 'fr');

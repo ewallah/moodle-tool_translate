@@ -45,7 +45,6 @@ use stdClass;
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class translation_table extends html_table {
-
     /** @var stdClass course */
     protected $course;
     /** @var stdClass engine */
@@ -76,7 +75,7 @@ class translation_table extends html_table {
         $this->target = strtolower($this->target);
         $this->course = $course;
         $this->caption = get_string('pluginname', 'tool_translate');
-        $this->head = ['', '' , '', get_string('words', 'tool_translate'), get_string('price', 'tool_translate')];
+        $this->head = ['', '', '', get_string('words', 'tool_translate'), get_string('price', 'tool_translate')];
         $this->colclasses = ['mdl-left', 'mdl-left', 'mdl-right', 'mdl-right'];
         $pluginmanager = new \tool_translate\plugin_manager();
         $this->engine = $pluginmanager->get_enabled_plugin($course);
@@ -243,5 +242,4 @@ class translation_table extends html_table {
         $this->engine->counting = true;
         return $s;
     }
-
 }

@@ -34,7 +34,6 @@ use moodle_exception;
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class engine extends \tool_translate\engine {
-
     /** @var \stdClass awsclient */
     protected $awsclient;
 
@@ -118,7 +117,8 @@ class engine extends \tool_translate\engine {
                         'SourceLanguageCode' => $source,
                         'TargetLanguageCode' => $target,
                         'Text' => $txt,
-                    ]);
+                    ]
+                );
                 return html_entity_decode($arr['TranslatedText']);
             } catch (exception $e) {
                 throw new moodle_exception($e->get_message());

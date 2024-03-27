@@ -37,7 +37,6 @@ use context_course;
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 final class library_test extends advanced_testcase {
-
     /**
      * Test the library.
      * @coversNothing

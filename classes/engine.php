@@ -41,7 +41,6 @@ use stdClass;
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 abstract class engine {
-
     /** @var stdClass course */
     protected $course;
 
@@ -231,15 +230,15 @@ abstract class engine {
                         $qt = get_class($q->qtype);
                         // Brute force collect feedback.
                         $s .= $this->add_records($qt, 'questionid', $sid);
-                        $s .= $this->add_records($qt . '_options' , 'questionid', $sid);
-                        $s .= $this->add_records($qt . '_answers' , 'questionid', $sid);
-                        $s .= $this->add_records($qt . '_subquestions' , 'questionid', $sid);
+                        $s .= $this->add_records($qt . '_options', 'questionid', $sid);
+                        $s .= $this->add_records($qt . '_answers', 'questionid', $sid);
+                        $s .= $this->add_records($qt . '_subquestions', 'questionid', $sid);
                         $qt = str_ireplace('qtype', 'question', $qt);
                         $s .= $this->add_records($qt, 'questionid', $sid);
                         $s .= $this->add_records($qt, 'question', $sid);
-                        $s .= $this->add_records($qt . '_options' , 'questionid', $sid);
-                        $s .= $this->add_records($qt . '_answers' , 'questionid', $sid);
-                        $s .= $this->add_records($qt . '_subquestions' , 'questionid', $sid);
+                        $s .= $this->add_records($qt . '_options', 'questionid', $sid);
+                        $s .= $this->add_records($qt . '_answers', 'questionid', $sid);
+                        $s .= $this->add_records($qt . '_subquestions', 'questionid', $sid);
                     }
                 }
                 break;
@@ -308,7 +307,7 @@ abstract class engine {
                     $fields[] = $prop->name;
                 }
                 $x = stripos($prop->name, 'format');
-                if ( $x > 1) {
+                if ($x > 1) {
                     $fields[] = substr($prop->name, 0, $x);
                 }
                 if ($prop->name === 'timemodified') {
@@ -411,5 +410,4 @@ abstract class engine {
         }
         return $str;
     }
-
 }

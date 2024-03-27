@@ -44,7 +44,7 @@ Options:
     --to=<value>            The target language.
 ";
 
-list($options, $unrecognised) = cli_get_params([
+[$options, $unrecognised] = cli_get_params([
     'help' => false,
     'engine' => 'aws',
     'courseid' => null,
