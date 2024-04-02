@@ -63,13 +63,13 @@ class plugin_manager {
         $this->check_permissions();
         if ($plugin != null) {
             switch ($action) {
-                case 'hide';
+                case 'hide':
                     $this->hide_plugin($plugin);
                     break;
-                case 'moveup';
+                case 'moveup':
                     $this->move_plugin($plugin, 'up');
                     break;
-                case 'movedown';
+                case 'movedown':
                     $this->move_plugin($plugin, 'down');
                     break;
                 case 'show':

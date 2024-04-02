@@ -22,8 +22,8 @@
  * @author    Renaat Debleu <info@eWallah.net>
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
+$string['access_key'] = 'AWS access key';
 $string['pluginname'] = 'AWS translate';
 $string['privacy:metadata'] = 'The AWS translate engine plugin does not store any personal data.';
-$string['access_key'] = 'AWS access key';
 $string['region'] = 'AWS region';
 $string['secret_key'] = 'AWS secret key';

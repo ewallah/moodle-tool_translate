@@ -22,6 +22,6 @@
  * @author    Renaat Debleu <info@eWallah.net>
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
+$string['api_key'] = 'Deepl API key';
 $string['pluginname'] = 'Deepl translate';
 $string['privacy:metadata'] = 'The Deepl translate engine plugin does not store any personal data.';
-$string['api_key'] = 'Deepl API key';

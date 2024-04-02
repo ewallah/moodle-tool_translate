@@ -214,6 +214,7 @@ abstract class engine {
             case 'lesson':
                 $s .= $this->add_records('lesson_pages', 'lessonid', $cm->instance);
                 $s .= $this->add_records('lesson_answers', 'lessonid', $cm->instance);
+                break;
             case 'quiz':
                 $s .= $this->add_records('quiz_sections', 'quizid', $cm->instance, ['heading']);
                 $s .= $this->add_records('quiz_feedback', 'quizid', $cm->instance);
