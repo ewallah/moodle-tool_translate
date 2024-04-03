@@ -25,7 +25,14 @@
 
 defined('MOODLE_INTERNAL') || die();
 
-// Coverage class.
+/**
+ * Coverage information for the deepl translate engine.
+ *
+ * @package   translateengine_deepl
+ * @copyright 2023 iplusacademy
+ * @author    Renaat Debleu <info@eWallah.net>
+ * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
 return new class extends phpunit_coverage_info {
     /** @var array The list of folders relative to the plugin root to include in coverage generation. */
     protected $includelistfolders = ['classes'];
