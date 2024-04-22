@@ -32,10 +32,6 @@ jobs:
         php: ['8.2']
         moodle-branch: ['MOODLE_402_STABLE', 'MOODLE_403_STABLE', 'MOODLE_404_STABLE']
         database: ['mariadb', 'pgsql']
-        include:
-          - php: '8.3'
-            moodle-branch: 'main'
-            database: 'pgsql'
 
     name: ${{ matrix.moodle-branch }}  php ${{ matrix.php }}  ${{ matrix.database }}
 

@@ -29,6 +29,6 @@ $plugin->component = 'tool_translate';
 $plugin->requires = 2023042400;
 $plugin->supported = [402, 404];
 $plugin->maturity = MATURITY_STABLE;
-$plugin->release = 'v4.2.1';
-$plugin->version = 2024031000;
+$plugin->release = 'v4.4.1';
+$plugin->version = 2024042200;
 $plugin->dependencies = ['local_aws' => ANY_VERSION];
