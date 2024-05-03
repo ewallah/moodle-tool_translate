@@ -105,7 +105,7 @@ jobs:
 
       - name: phpunit
         if: ${{ !cancelled() }}
-        run: moodle-plugin-ci --ansi phpunit --coverage-text --coverage-clover
+        run: moodle-plugin-ci --ansi phpunit --testdox --coverage-text --coverage-clover
 
       - name: privacy
         if: ${{ !cancelled() }}
@@ -133,15 +133,15 @@ jobs:
 
       - name: AWS engine
         if: ${{ !cancelled() }}
-        run: moodle-plugin-ci --ansi phpunit --coverage-text moodle/admin/tool/translate/engine/aws
+        run: moodle-plugin-ci --ansi phpunit --testdox --coverage-text moodle/admin/tool/translate/engine/aws
 
       - name: Google engine
         if: ${{ !cancelled() }}
-        run: moodle-plugin-ci --ansi phpunit --coverage-text moodle/admin/tool/translate/engine/google
+        run: moodle-plugin-ci --ansi phpunit --testdox --coverage-text moodle/admin/tool/translate/engine/google
 
       - name: Deepl engine
         if: ${{ !cancelled() }}
-        run: moodle-plugin-ci --ansi phpunit --coverage-text moodle/admin/tool/translate/engine/deepl
+        run: moodle-plugin-ci --ansi phpunit --testdox --coverage-text moodle/admin/tool/translate/engine/deepl
 
       - name: admin bookmarks
         if: ${{ !cancelled() }}
