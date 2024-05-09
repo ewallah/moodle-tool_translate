@@ -18,7 +18,7 @@
  * This file contains the classes for the admin settings of the translate tool.
  *
  * @package   tool_translate
- * @copyright 2023 iplusacademy
+ * @copyright iplusacademy (www.iplusacademy.org)
  * @author    Renaat Debleu <info@eWallah.net>
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
@@ -34,7 +34,7 @@ use pix_icon;
  * Manage engine plugins
  *
  * @package   tool_translate
- * @copyright 2023 iplusacademy
+ * @copyright iplusacademy (www.iplusacademy.org)
  * @author    Renaat Debleu <info@eWallah.net>
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */

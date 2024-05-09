@@ -18,7 +18,7 @@
  * Allows the admin to manage translation engine plugins
  *
  * @package   tool_translate
- * @copyright 2023 iplusacademy
+ * @copyright iplusacademy (www.iplusacademy.org)
  * @author    Renaat Debleu <info@eWallah.net>
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */

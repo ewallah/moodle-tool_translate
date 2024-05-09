@@ -18,7 +18,7 @@
  * Other tests for Google translate engine.
  *
  * @package   translateengine_google
- * @copyright 2023 iplusacademy
+ * @copyright iplusacademy (www.iplusacademy.org)
  * @author    Renaat Debleu <info@eWallah.net>
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
@@ -29,7 +29,7 @@ namespace translateengine_google;
  * Other tests for Google translate engine.
  *
  * @package   translateengine_google
- * @copyright 2023 iplusacademy
+ * @copyright iplusacademy (www.iplusacademy.org)
  * @author    Renaat Debleu <info@eWallah.net>
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */

@@ -18,7 +18,7 @@
  * Privacy tests for AWS translate engine.
  *
  * @package   translateengine_aws
- * @copyright 2023 iplusacademy
+ * @copyright iplusacademy (www.iplusacademy.org)
  * @author    Renaat Debleu <info@eWallah.net>
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
@@ -31,7 +31,7 @@ use core_privacy\tests\provider_testcase;
  * Privacy tests for AWS translate engine.
  *
  * @package   translateengine_aws
- * @copyright 2023 iplusacademy
+ * @copyright iplusacademy (www.iplusacademy.org)
  * @author    Renaat Debleu <info@eWallah.net>
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */

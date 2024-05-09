@@ -18,7 +18,7 @@
  * Coverage information for the aws translate engine.
  *
  * @package   translateengine_aws
- * @copyright 2023 iplusacademy
+ * @copyright iplusacademy (www.iplusacademy.org)
  * @author    Renaat Debleu <info@eWallah.net>
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
@@ -29,7 +29,7 @@ defined('MOODLE_INTERNAL') || die();
  * Coverage information for the aws translate engine.
  *
  * @package   translateengine_aws
- * @copyright 2023 iplusacademy
+ * @copyright iplusacademy (www.iplusacademy.org)
  * @author    Renaat Debleu <info@eWallah.net>
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
