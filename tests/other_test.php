@@ -48,6 +48,7 @@ final class other_test extends advanced_testcase {
     public function setUp(): void {
         global $CFG;
         require_once($CFG->dirroot . '/lib/adminlib.php');
+        parent::setUp();
         $this->setAdminUser();
         $this->resetAfterTest();
         $this->course = $this->getDataGenerator()->create_course();

@@ -42,6 +42,7 @@ final class table_test extends advanced_testcase {
      * Setup testcase.
      */
     public function setUp(): void {
+        parent::setUp();
         $this->resetAfterTest();
         $this->setAdminUser();
     }
