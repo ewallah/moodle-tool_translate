@@ -53,8 +53,6 @@ class engine extends \tool_translate\engine {
      * @param course $course
      */
     public function __construct($course) {
-        global $CFG;
-        require_once($CFG->dirroot . '/local/aws/sdk/aws-autoloader.php');
         parent::__construct($course);
         $r = get_config('translateengine_aws', 'region');
         $k = get_config('translateengine_aws', 'access_key');
