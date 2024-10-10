@@ -30,5 +30,5 @@ $plugin->dependencies = ['tool_translate' => ANY_VERSION];
 $plugin->requires = 2024042200;
 $plugin->maturity = MATURITY_STABLE;
 $plugin->supported = [404, 405];
-$plugin->release = 'v4.4.1';
+$plugin->release = 'v4.4.2';
 $plugin->version = 2024101000;
