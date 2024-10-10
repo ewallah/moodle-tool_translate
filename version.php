@@ -29,5 +29,5 @@ $plugin->component = 'tool_translate';
 $plugin->requires = 2024042200;
 $plugin->maturity = MATURITY_STABLE;
 $plugin->supported = [404, 405];
-$plugin->release = 'v4.4.1';
+$plugin->release = 'v4.4.3';
 $plugin->version = 2024101000;
