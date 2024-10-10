@@ -44,9 +44,13 @@ Check the global documentation about [admin tools](https://docs.moodle.org/400/e
  2. Go to Site administration > Notifications to complete the plugin installation.
  3. Configure at least 1 translation engine
 
+## TODO ##
+
+ - matching question not translated
+
 ## Requirements ##
 
-This plugin requires Moodle 3.11+
+This plugin requires Moodle 4.4+
 
 ## Troubleshooting ##
 

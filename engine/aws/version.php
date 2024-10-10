@@ -27,7 +27,7 @@ defined('MOODLE_INTERNAL') || die;
 
 $plugin->component = 'translateengine_aws';
 $plugin->requires = 2024042200;
-$plugin->supported = [404, 404];
 $plugin->maturity = MATURITY_STABLE;
-$plugin->release = 'v4.4.3';
-$plugin->version = 2024081600;
+$plugin->supported = [404, 405];
+$plugin->release = 'v4.4.1';
+$plugin->version = 2024101000;
