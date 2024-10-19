@@ -135,6 +135,6 @@ class engine extends \tool_translate\engine {
                 return null;
             }
         }
-        return $return;
+        return $return['data']['translations'][0]['translatedText'];
     }
 }
