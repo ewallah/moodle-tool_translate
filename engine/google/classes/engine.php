@@ -128,6 +128,7 @@ class engine extends \tool_translate\engine {
                     $response = curl_exec($handle);
                     $responsecode = curl_getinfo($handle, CURLINFO_HTTP_CODE);
                     $responsed = json_decode($response, true);
+                    $responsed = html_entity_decode($responsed['data']['translations'][0]['translatedText']);
                 }
                 curl_close($handle);
                 $return = ($responsecode == 200) ? $responsed : null;
