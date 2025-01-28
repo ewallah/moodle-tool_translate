@@ -36,7 +36,7 @@ namespace tool_translate;
 final class include_test extends \advanced_testcase {
     /**
      * Test the adminmanageplugins.
-     * @coversNothing
+     * #[CoversNothing]
      */
     public function test_adminmanagepluginss(): void {
         global $CFG, $PAGE;
@@ -51,7 +51,7 @@ final class include_test extends \advanced_testcase {
 
     /**
      * Test the access.
-     * @coversNothing
+     * #[CoversNothing]
      */
     public function test_access(): void {
         global $CFG;
@@ -60,7 +60,7 @@ final class include_test extends \advanced_testcase {
 
     /**
      * Test the version.
-     * @coversNothing
+     * #[CoversNothing]
      */
     public function test_version(): void {
         global $CFG;

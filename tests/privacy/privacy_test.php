@@ -39,7 +39,7 @@ use tool_translate\privacy\provider;
 final class privacy_test extends provider_testcase {
     /**
      * Test returning metadata.
-     * @covers \tool_translate\privacy\provider
+     * #[CoversClass(tool_translate\privacy\provider)]
      */
     public function test_get_metadata(): void {
         $this->resetAfterTest(true);

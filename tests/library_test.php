@@ -39,7 +39,7 @@ use context_course;
 final class library_test extends advanced_testcase {
     /**
      * Test the library.
-     * @coversNothing
+     * #[CoversNothing]
      */
     public function test_library(): void {
         global $CFG, $PAGE;

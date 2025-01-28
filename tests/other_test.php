@@ -56,7 +56,7 @@ final class other_test extends advanced_testcase {
 
     /**
      * Test the submodule translateengine.
-     * @covers \tool_translate\plugininfo\translateengine
+     * #[CoversClass(tool_translate\plugininfo\translateengine)]
      */
     public function test_translate_engine(): void {
         global $CFG;
@@ -78,7 +78,7 @@ final class other_test extends advanced_testcase {
 
     /**
      * Test the plugin manager.
-     * @covers \tool_translate\plugin_manager
+     * #[CoversClass(tool_translate\plugin_manager)]
      */
     public function test_plugin_manager(): void {
         $pluginmanager = new plugin_manager();
@@ -115,8 +115,8 @@ final class other_test extends advanced_testcase {
 
     /**
      * Test an engine.
-     * @covers \tool_translate\plugininfo\translateengine
-     * @covers \tool_translate\engine
+     * #[CoversClass(tool_translate\plugininfo\translateengine)]
+     * #[CoversClass(tool_translate\engine)]
      */
     public function test_engine(): void {
         global $CFG, $DB, $USER;
@@ -213,7 +213,7 @@ final class other_test extends advanced_testcase {
 
     /**
      * Test an abstract engine.
-     * @covers \tool_translate\engine
+     * #[CoversClass(tool_translate\engine)]
      */
     public function test_abstract_engine(): void {
         $engine = new \translateengine_aws\engine($this->course);
@@ -224,7 +224,7 @@ final class other_test extends advanced_testcase {
 
     /**
      * Test an abstract engine2.
-     * @covers \tool_translate\engine
+     * #[CoversClass(tool_translate\engine)]
      */
     public function test_abstract_engine2(): void {
         $engine = new \translateengine_aws\engine($this->course);
@@ -235,9 +235,9 @@ final class other_test extends advanced_testcase {
 
     /**
      * Test the plugin translation.
-     * @covers \tool_translate\plugininfo\translateengine
-     * @covers \tool_translate\engine
-     * @covers \translateengine_aws\engine
+     * #[CoversClass(tool_translate\plugininfo\translateengine)]
+     * #[CoversClass(tool_translate\engine)]
+     * #[CoversClass(translateengine_aws\engine)]
      */
     public function test_plugin_translate(): void {
         $engine = new \translateengine_aws\engine($this->course);
