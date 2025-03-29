@@ -85,7 +85,7 @@ class engine extends \tool_translate\engine {
                     'source_lang' => $source,
                     'target_lang' => $target,
                     'preserve_formatting' => 1,
-                    'auth_key' => get_config('translateengine_deepl', 'api_key'),
+                    'DeepL-Auth-Key' => get_config('translateengine_deepl', 'api_key'),
                     'tag_handling' => 'xml',
                     'split_sentences' => 'nonewlines',
                 ];
