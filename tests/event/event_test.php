@@ -41,7 +41,7 @@ use moodle_url;
 final class event_test extends advanced_testcase {
     /**
      * Test the tool viewed event.
-     * #[CoversClass(tool_translate\event\tool_viewed)]
+     * @covers \tool_translate\event\tool_viewed
      */
     public function test_tool_viewed(): void {
         $this->resetAfterTest();
@@ -66,7 +66,7 @@ final class event_test extends advanced_testcase {
 
     /**
      * Test the course translated event.
-     * #[CoversClass(tool_translate\event\course_translated)]
+     * @covers \tool_translate\event\course_translated
      */
     public function test_course_translated(): void {
         $this->resetAfterTest();
@@ -91,7 +91,7 @@ final class event_test extends advanced_testcase {
 
     /**
      * Test the section translated event.
-     * #[CoversClass(tool_translate\event\section_translated)]
+     * @covers \tool_translate\event\section_translated
      */
     public function test_section_translated(): void {
         $this->resetAfterTest();
@@ -117,7 +117,7 @@ final class event_test extends advanced_testcase {
 
     /**
      * Test the module translated event.
-     * #[CoversClass(tool_translate\event\module_translated)]
+     * @covers \tool_translate\event\module_translated
      */
     public function test_module_translated(): void {
         $this->resetAfterTest();

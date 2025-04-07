@@ -35,7 +35,7 @@ use html_writer;
  * @copyright iplusacademy (www.iplusacademy.org)
  * @author    Renaat Debleu <info@eWallah.net>
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
- * #[CoversClass(tool_translate\translation_table)]
+ * @covers \tool_translate\translation_table
  */
 final class table_test extends advanced_testcase {
     /**
@@ -49,7 +49,7 @@ final class table_test extends advanced_testcase {
 
     /**
      * Test the library.
-     * #[CoversClass(tool_translate\output\translation_table)]
+     * @covers \tool_translate\output\translation_table
      */
     public function test_table(): void {
         $gen = $this->getDataGenerator();

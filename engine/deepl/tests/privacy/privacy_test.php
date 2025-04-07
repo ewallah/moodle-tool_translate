@@ -38,7 +38,7 @@ use core_privacy\tests\provider_testcase;
 final class privacy_test extends provider_testcase {
     /**
      * Test returning metadata.
-     * #[CoversClass(translateengine_deepl\privacy\provider)]
+     * @covers \translateengine_deepl\privacy\provider
      */
     public function test_get_metadata(): void {
         $this->resetAfterTest(true);
