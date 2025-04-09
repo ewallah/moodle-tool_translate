@@ -35,7 +35,6 @@ use html_writer;
  * @copyright iplusacademy (www.iplusacademy.org)
  * @author    Renaat Debleu <info@eWallah.net>
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
- * @covers \tool_translate\translation_table
  */
 final class table_test extends advanced_testcase {
     /**
