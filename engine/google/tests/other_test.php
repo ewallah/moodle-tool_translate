@@ -25,6 +25,8 @@
 
 namespace translateengine_google;
 
+use PHPUnit\Framework\Attributes\CoversClass;
+
 /**
  * Other tests for Google translate engine.
  *
@@ -33,6 +35,7 @@ namespace translateengine_google;
  * @author    Renaat Debleu <info@eWallah.net>
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
+#[CoversClass(engine::class)]
 final class other_test extends \advanced_testcase {
     /** @var \stdClass course */
     private $course;
@@ -49,7 +52,6 @@ final class other_test extends \advanced_testcase {
 
     /**
      * Test the empty class.
-     * @covers \translateengine_google\engine
      */
     public function test_notconfigured(): void {
         $class = new \translateengine_google\engine($this->course);
@@ -62,7 +64,6 @@ final class other_test extends \advanced_testcase {
 
     /**
      * Test the class.
-     * @covers \translateengine_google\engine
      */
     public function test_class(): void {
         set_config('googleapikey', 'key', 'translateengine_google');
@@ -86,7 +87,6 @@ final class other_test extends \advanced_testcase {
 
     /**
      * Test the errors.
-     * @covers \translateengine_google\engine
      */
     public function test_error1(): void {
         set_config('googleapikey', 'key', 'translateengine_google');
@@ -97,7 +97,6 @@ final class other_test extends \advanced_testcase {
 
     /**
      * Test the errors.
-     * @covers \translateengine_google\engine
      */
     public function test_error2(): void {
         set_config('googleapikey', 'key', 'translateengine_google');

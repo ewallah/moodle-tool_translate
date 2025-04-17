@@ -27,6 +27,7 @@ namespace tool_translate;
 
 use advanced_testcase;
 use context_course;
+use PHPUnit\Framework\Attributes\CoversNothing;
 
 /**
  * Other tests for translate tool.
@@ -36,10 +37,10 @@ use context_course;
  * @author    Renaat Debleu <info@eWallah.net>
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
+#[CoversNothing]
 final class library_test extends advanced_testcase {
     /**
      * Test the library.
-     * @coversNothing
      */
     public function test_library(): void {
         global $CFG, $PAGE;

@@ -24,6 +24,7 @@
  */
 
 namespace tool_translate;
+use PHPUnit\Framework\Attributes\CoversNothing;
 
 /**
  * Include tests for translate tool.
@@ -33,10 +34,10 @@ namespace tool_translate;
  * @author    Renaat Debleu <info@eWallah.net>
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
+#[CoversNothing]
 final class include_test extends \advanced_testcase {
     /**
      * Test the adminmanageplugins.
-     * @coversNothing
      */
     public function test_adminmanagepluginss(): void {
         global $CFG, $PAGE;
@@ -51,7 +52,6 @@ final class include_test extends \advanced_testcase {
 
     /**
      * Test the access.
-     * @coversNothing
      */
     public function test_access(): void {
         global $CFG;
@@ -60,7 +60,6 @@ final class include_test extends \advanced_testcase {
 
     /**
      * Test the version.
-     * @coversNothing
      */
     public function test_version(): void {
         global $CFG;

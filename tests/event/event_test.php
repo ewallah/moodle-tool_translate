@@ -29,6 +29,7 @@ use advanced_testcase;
 use context_course;
 use context_module;
 use moodle_url;
+use PHPUnit\Framework\Attributes\CoversClass;
 
 /**
  * Other tests for translate tool.
@@ -38,10 +39,13 @@ use moodle_url;
  * @author    Renaat Debleu <info@eWallah.net>
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
+#[CoversClass(tool_viewed::class)]
+#[CoversClass(course_translated::class)]
+#[CoversClass(section_translated::class)]
+#[CoversClass(module_translated::class)]
 final class event_test extends advanced_testcase {
     /**
      * Test the tool viewed event.
-     * @covers \tool_translate\event\tool_viewed
      */
     public function test_tool_viewed(): void {
         $this->resetAfterTest();
@@ -66,7 +70,6 @@ final class event_test extends advanced_testcase {
 
     /**
      * Test the course translated event.
-     * @covers \tool_translate\event\course_translated
      */
     public function test_course_translated(): void {
         $this->resetAfterTest();
@@ -91,7 +94,6 @@ final class event_test extends advanced_testcase {
 
     /**
      * Test the section translated event.
-     * @covers \tool_translate\event\section_translated
      */
     public function test_section_translated(): void {
         $this->resetAfterTest();
@@ -117,7 +119,6 @@ final class event_test extends advanced_testcase {
 
     /**
      * Test the module translated event.
-     * @covers \tool_translate\event\module_translated
      */
     public function test_module_translated(): void {
         $this->resetAfterTest();

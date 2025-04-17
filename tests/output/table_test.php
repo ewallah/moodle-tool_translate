@@ -27,6 +27,7 @@ namespace tool_translate\output;
 
 use advanced_testcase;
 use html_writer;
+use PHPUnit\Framework\Attributes\CoversClass;
 
 /**
  * Table tests for translate tool.
@@ -36,6 +37,7 @@ use html_writer;
  * @author    Renaat Debleu <info@eWallah.net>
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
+#[CoversClass(translation_table::class)]
 final class table_test extends advanced_testcase {
     /**
      * Setup testcase.
@@ -48,7 +50,6 @@ final class table_test extends advanced_testcase {
 
     /**
      * Test the library.
-     * @covers \tool_translate\output\translation_table
      */
     public function test_table(): void {
         $gen = $this->getDataGenerator();

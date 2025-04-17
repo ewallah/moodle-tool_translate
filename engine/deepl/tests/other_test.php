@@ -25,6 +25,8 @@
 
 namespace translateengine_deepl;
 
+use PHPUnit\Framework\Attributes\CoversClass;
+
 /**
  * Other tests for deepl translate engine.
  *
@@ -33,6 +35,7 @@ namespace translateengine_deepl;
  * @author    Renaat Debleu <info@eWallah.net>
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
+#[CoversClass(engine::class)]
 final class other_test extends \advanced_testcase {
     /** @var \stdClass course */
     private $course;
@@ -50,7 +53,6 @@ final class other_test extends \advanced_testcase {
 
     /**
      * Test the empty class.
-     * @covers \translateengine_deepl\engine
      */
     public function test_notconfigured(): void {
         set_config('api_key', '', 'translateengine_deepl');
@@ -64,7 +66,6 @@ final class other_test extends \advanced_testcase {
 
     /**
      * Test the class.
-     * @covers \translateengine_deepl\engine
      */
     public function test_class(): void {
         $class = new engine($this->course);
@@ -86,7 +87,6 @@ final class other_test extends \advanced_testcase {
 
     /**
      * Test the errors.
-     * @covers \translateengine_deepl\engine
      */
     public function test_error1(): void {
         $class = new engine($this->course);
@@ -96,7 +96,6 @@ final class other_test extends \advanced_testcase {
 
     /**
      * Test the errors.
-     * @covers \translateengine_deepl\engine
      */
     public function test_error2(): void {
         $class = new engine($this->course);

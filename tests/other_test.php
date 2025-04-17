@@ -29,6 +29,7 @@ use advanced_testcase;
 use lang_string;
 use moodle_url;
 use stdClass;
+use PHPUnit\Framework\Attributes\CoversClass;
 
 /**
  * Other tests for translate tool.
@@ -38,6 +39,9 @@ use stdClass;
  * @author    Renaat Debleu <info@eWallah.net>
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
+#[CoversClass(plugininfo\translateengine::class)]
+#[CoversClass(plugin_manager::class)]
+#[CoversClass(engine::class)]
 final class other_test extends advanced_testcase {
     /** @var \stdClass course */
     private $course;
@@ -56,7 +60,6 @@ final class other_test extends advanced_testcase {
 
     /**
      * Test the submodule translateengine.
-     * @covers \tool_translate\plugininfo\translateengine
      */
     public function test_translate_engine(): void {
         global $CFG;
@@ -78,7 +81,6 @@ final class other_test extends advanced_testcase {
 
     /**
      * Test the plugin manager.
-     * @covers \tool_translate\plugin_manager
      */
     public function test_plugin_manager(): void {
         $pluginmanager = new plugin_manager();
@@ -115,8 +117,6 @@ final class other_test extends advanced_testcase {
 
     /**
      * Test an engine.
-     * @covers \tool_translate\plugininfo\translateengine
-     * @covers \tool_translate\engine
      */
     public function test_engine(): void {
         global $CFG, $DB, $USER;
@@ -213,7 +213,6 @@ final class other_test extends advanced_testcase {
 
     /**
      * Test an abstract engine.
-     * @covers \tool_translate\engine
      */
     public function test_abstract_engine(): void {
         $engine = new \translateengine_aws\engine($this->course);
@@ -224,7 +223,6 @@ final class other_test extends advanced_testcase {
 
     /**
      * Test an abstract engine2.
-     * @covers \tool_translate\engine
      */
     public function test_abstract_engine2(): void {
         $engine = new \translateengine_aws\engine($this->course);
@@ -235,9 +233,6 @@ final class other_test extends advanced_testcase {
 
     /**
      * Test the plugin translation.
-     * @covers \tool_translate\plugininfo\translateengine
-     * @covers \tool_translate\engine
-     * @covers \translateengine_aws\engine
      */
     public function test_plugin_translate(): void {
         $engine = new \translateengine_aws\engine($this->course);

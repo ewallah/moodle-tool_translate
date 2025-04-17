@@ -27,6 +27,7 @@ namespace tool_translate\privacy;
 use core_privacy\tests\provider_testcase;
 use core_privacy\local\metadata\collection;
 use tool_translate\privacy\provider;
+use PHPUnit\Framework\Attributes\CoversClass;
 
 /**
  * Privacy tests for translate tool.
@@ -36,10 +37,10 @@ use tool_translate\privacy\provider;
  * @author    Renaat Debleu <info@eWallah.net>
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
+#[CoversClass(provider::class)]
 final class privacy_test extends provider_testcase {
     /**
      * Test returning metadata.
-     * @covers \tool_translate\privacy\provider
      */
     public function test_get_metadata(): void {
         $this->resetAfterTest(true);
