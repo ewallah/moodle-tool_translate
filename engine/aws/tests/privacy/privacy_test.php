@@ -27,7 +27,7 @@ namespace translateengine_aws\privacy;
 
 use core_privacy\tests\provider_testcase;
 use PHPUnit\Framework\Attributes\CoversClass;
-    
+
 /**
  * Privacy tests for AWS translate engine.
  *
