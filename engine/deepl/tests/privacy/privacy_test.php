@@ -40,7 +40,6 @@ use PHPUnit\Framework\Attributes\CoversClass;
 final class privacy_test extends provider_testcase {
     /**
      * Test returning metadata.
-     * @covers \translateengine_deepl\privacy\provider
      */
     public function test_get_metadata(): void {
         $this->resetAfterTest(true);
