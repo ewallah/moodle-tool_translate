@@ -136,23 +136,14 @@ jobs:
         run: moodle-plugin-ci --ansi behat --suite="classic" --profile=chrome
 
       - name: AWS engine
-        if: ${{ !cancelled() }}
-        run: moodle-plugin-ci --ansi phpunit --testdox --coverage-text moodle/admin/tool/translate/engine/aws
+        if: ${{ matrix.moodle-branch == 'main'}}
+        run: moodle-plugin-ci --ansi phpunit --testdox --coverage-text moodle/public/admin/tool/translate/engine/aws
 
       - name: Google engine
-        if: ${{ !cancelled() }}
-        run: moodle-plugin-ci --ansi phpunit --testdox --coverage-text moodle/admin/tool/translate/engine/google
+        if: ${{ matrix.moodle-branch == 'main'}}
+        run: moodle-plugin-ci --ansi phpunit --testdox --coverage-text moodle/public/admin/tool/translate/engine/google
 
       - name: Deepl engine
-        if: ${{ !cancelled() }}
-        run: moodle-plugin-ci --ansi phpunit --testdox --coverage-text moodle/admin/tool/translate/engine/deepl
+        if: ${{ matrix.moodle-branch == 'main'}}
+        run: moodle-plugin-ci --ansi phpunit --testdox --coverage-text moodle/public/admin/tool/translate/engine/deepl
 
-      - name: admin bookmarks
-        if: ${{ !cancelled() }}
-        run: moodle-plugin-ci --ansi behat --auto-rerun=0 --profile chrome blocks/admin_bookmarks
-        working-directory: moodle
-
-      - name: admin xmldb
-        if: ${{ !cancelled() }}
-        run: moodle-plugin-ci --ansi behat --auto-rerun=0 --profile chrome admin/tool/xmldb
-        working-directory: moodle

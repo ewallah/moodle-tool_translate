@@ -26,8 +26,9 @@
 defined('MOODLE_INTERNAL') || die;
 
 $plugin->component = 'tool_translate';
-$plugin->requires = 2024042200;
 $plugin->maturity = MATURITY_STABLE;
-$plugin->supported = [404, 405];
-$plugin->release = 'v4.4.3';
-$plugin->version = 2024101000;
+$plugin->release = 'v5.0.1';
+$plugin->version = 2025082200;
+$plugin->requires = 2024100700;
+$plugin->supported = [405, 500];
+
