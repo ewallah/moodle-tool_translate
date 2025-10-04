@@ -29,5 +29,5 @@ $plugin->component = 'translateengine_aws';
 $plugin->maturity = MATURITY_STABLE;
 $plugin->release = 'v5.0.1';
 $plugin->version = 2025082200;
-$plugin->requires = 2024100700;
-$plugin->supported = [405, 500];
+$plugin->requires = 2025041400;
+$plugin->supported = [500, 501];
