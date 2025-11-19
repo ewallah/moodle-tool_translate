@@ -39,11 +39,11 @@ if (is_siteadmin()) {
             'eu-west-3' => 'Europe (Paris)', ];
 
         $settings = new admin_settingpage($s . '_settings', $t->pluginname);
-        $setting = new admin_setting_configtext("$s/access_key", $t->access_key, '', '');
+        $setting = new admin_setting_configtext("{$s}/access_key", $t->access_key, '', '');
         $settings->add($setting);
-        $setting = new admin_setting_configpasswordunmask("$s/secret_key", $t->secret_key, '', '');
+        $setting = new admin_setting_configpasswordunmask("{$s}/secret_key", $t->secret_key, '', '');
         $settings->add($setting);
-        $setting = new admin_setting_configselect("$s/region", $t->region, '', 'us-west-1', $regions);
+        $setting = new admin_setting_configselect("{$s}/region", $t->region, '', 'us-west-1', $regions);
         $settings->add($setting);
     }
 }

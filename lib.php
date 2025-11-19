@@ -30,13 +30,13 @@
  * @param stdClass $course The course to object for the tool
  * @param stdClass $context The context of the course
  */
-function tool_translate_extend_navigation_course($navigation, $course, $context) {
+function tool_translate_extend_navigation_course($navigation, $course, $context): void {
     global $CFG;
     if (has_capability('tool/translate:translate', $context)) {
         $arr = [
             'course' => $course->id,
             'target' => strtolower(current_language()),
-            'source' => strtolower($CFG->lang),
+            'source' => strtolower((string) $CFG->lang),
         ];
         $url = new \moodle_url('/admin/tool/translate/index.php', $arr);
         $txt = get_string('translate', 'tool_translate');

@@ -40,7 +40,7 @@ use pix_icon;
  */
 class plugin_manager {
     /** @var moodle_url pageurl */
-    private $pageurl;
+    private readonly \moodle_url $pageurl;
 
     /**
      * Constructor
@@ -56,9 +56,8 @@ class plugin_manager {
      *
      * @param string $action - The action to perform
      * @param string $plugin - Optional name of a plugin type to perform the action on
-     * @return None
      */
-    public function execute($action, $plugin) {
+    public function execute($action, $plugin): void {
         global $OUTPUT;
         $this->check_permissions();
         if ($plugin != null) {
@@ -86,10 +85,8 @@ class plugin_manager {
 
     /**
      * Write the HTML for the submission plugins table.
-     *
-     * @return None
      */
-    private function view_plugins_table() {
+    private function view_plugins_table(): void {
         global $OUTPUT, $CFG;
         require_once($CFG->libdir . '/tablelib.php');
 
@@ -120,6 +117,7 @@ class plugin_manager {
             foreach (array_keys($engine->supported_langs()) as $key) {
                 $alllangs[] = get_string($key, 'core_iso6392');
             }
+
             $row[] = implode('; ', $alllangs);
 
             $visible = !get_config($sub, 'disabled');
@@ -132,32 +130,33 @@ class plugin_manager {
             }
 
             $movelinks = '';
-            if (!$idx == 0) {
+            if (($idx === 0 || ($idx === '' || $idx === '0')) == 0) {
                 $movelinks .= $this->format_icon_link('moveup', $plugin, 't/up', get_string('up'));
             } else {
                 $movelinks .= $OUTPUT->spacer(['width' => 16]);
             }
+
             if ($idx != count($plugins) - 1) {
                 $movelinks .= $this->format_icon_link('movedown', $plugin, 't/down', get_string('down'));
             }
+
             $row[] = $movelinks;
 
-            $exists = $row[1] != '' && file_exists($CFG->dirroot . "/admin/tool/translate/engine/$plugin/settings.php");
+            $exists = $row[1] != '' && file_exists($CFG->dirroot . "/admin/tool/translate/engine/{$plugin}/settings.php");
             $url = new moodle_url('/admin/settings.php', ['section' => $sub . '_settings']);
             $row[] = $exists ? html_writer::link($url, $s) : '&nbsp;';
 
             $row[] = $this->format_icon_link('delete', $plugin, 'i/trash', get_string('uninstallplugin', 'core_admin'));
             $table->add_data($row, $class);
         }
+
         $table->finish_output();
     }
 
     /**
      * Check this user has permission to edit the list of installed plugins
-     *
-     * @return None
      */
-    private function check_permissions() {
+    private function check_permissions(): void {
         require_login();
         $systemcontext = context_system::instance();
         require_capability('moodle/site:config', $systemcontext);
@@ -168,7 +167,7 @@ class plugin_manager {
      *
      * @param string $plugin - The plugin to hide
      */
-    public function hide_plugin($plugin) {
+    public function hide_plugin(string $plugin): void {
         set_config('disabled', 1, 'translateengine_' . $plugin);
         \core_plugin_manager::reset_caches();
         PHPUNIT_TEST ? mtrace('Not redirected') : redirect($this->pageurl);
@@ -179,7 +178,7 @@ class plugin_manager {
      *
      * @param string $plugin - The plugin to show
      */
-    public function show_plugin($plugin) {
+    public function show_plugin(string $plugin): void {
         set_config('disabled', 0, 'translateengine_' . $plugin);
         \core_plugin_manager::reset_caches();
         PHPUNIT_TEST ? mtrace('Not redirected') : redirect($this->pageurl);
@@ -190,7 +189,7 @@ class plugin_manager {
      *
      * @return array The list of plugins
      */
-    public function get_sorted_plugins_list() {
+    public function get_sorted_plugins_list(): array {
         $names = \core_component::get_plugin_list('translateengine');
         $result = [];
         foreach ($names as $name => $location) {
@@ -199,12 +198,15 @@ class plugin_manager {
                 if (!$idx) {
                     $idx = 0;
                 }
+
                 while (array_key_exists($idx, $result)) {
                     $idx += 1;
                 }
+
                 $result[$idx] = $name;
             }
         }
+
         ksort($result);
         return $result;
     }
@@ -224,6 +226,7 @@ class plugin_manager {
                 return $engine;
             }
         }
+
         return new \translateengine_aws\engine($course);
     }
 
@@ -236,7 +239,7 @@ class plugin_manager {
      * @param string $alt The string description of the link used as the title and alt text
      * @return string The icon/link
      */
-    private function format_icon_link($action, $plugin, $icon, $alt) {
+    private function format_icon_link(string $action, string $plugin, string $icon, $alt) {
         global $OUTPUT;
         $url = $this->pageurl;
         if ($action === 'delete') {
@@ -259,7 +262,7 @@ class plugin_manager {
      * @param string $dir - up or down
      * @return string The next page to display
      */
-    public function move_plugin($plugintomove, $dir) {
+    public function move_plugin($plugintomove, $dir): void {
         $plugins = $this->get_sorted_plugins_list();
         $currentindex = 0;
         $plugins = array_values($plugins);
@@ -269,24 +272,24 @@ class plugin_manager {
                 break;
             }
         }
+
         if ($dir == 'up') {
             if ($currentindex > 0) {
                 $tempplugin = $plugins[$currentindex - 1];
                 $plugins[$currentindex - 1] = $plugins[$currentindex];
                 $plugins[$currentindex] = $tempplugin;
             }
-        } else if ($dir == 'down') {
-            if ($currentindex < (count($plugins) - 1)) {
-                $tempplugin = $plugins[$currentindex + 1];
-                $plugins[$currentindex + 1] = $plugins[$currentindex];
-                $plugins[$currentindex] = $tempplugin;
-            }
+        } else if ($dir == 'down' && $currentindex < count($plugins) - 1) {
+            $tempplugin = $plugins[$currentindex + 1];
+            $plugins[$currentindex + 1] = $plugins[$currentindex];
+            $plugins[$currentindex] = $tempplugin;
         }
 
         // Save the new normal order.
         foreach ($plugins as $key => $plugin) {
             set_config('sortorder', $key, 'translateengine_' . $plugin);
         }
+
         PHPUNIT_TEST ? mtrace('Not redirected') : redirect($this->pageurl);
     }
 }

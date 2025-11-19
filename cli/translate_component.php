@@ -75,6 +75,7 @@ if (empty($options['component'])) {
 if (empty($options['to'])) {
     cli_error('Missing mandatory argument to.', 2);
 }
+
 $course = get_course(1);
 $engine = 'translateengine_' . $options['engine'] . '\engine';
 require_once($CFG->dirroot . '/admin/tool/translate/engine/' . $options['engine'] . '/classes/engine.php');
@@ -87,6 +88,7 @@ if ($translateengine->is_configured()) {
     if ($input == get_string('clianswerno', 'admin')) {
         exit(1);
     }
+
     cli_write($translateengine->translate_plugin($options['component'], $options['from'], $options['to']));
 } else {
     cli_problem(get_string('noengine', 'tool_translate'));

@@ -41,19 +41,15 @@ use admin_settingpage;
 class translateengine extends base {
     /**
      * Allow users to uninstall these plugins.
-     *
-     * @return bool
      */
-    public function is_uninstall_allowed() {
+    public function is_uninstall_allowed(): bool {
         return true;
     }
 
     /**
      * This plugin is enabled.
-     *
-     * @return bool
      */
-    public function is_enabled() {
+    public function is_enabled(): bool {
         return true;
     }
 
@@ -62,15 +58,15 @@ class translateengine extends base {
      *
      * @return string the settings section name.
      */
-    public function get_settings_section_name() {
+    public function get_settings_section_name(): string {
         return 'translateengine_' . $this->name;
     }
 
     /**
      * Loads plugin settings to the settings tree.
      *
-     * @param part_of_admin_tree $adminroot
-     * @param string $parentnodename
+     * @param part_of_admin_tree $adminroot Admin root paer
+     * @param string $parentnodename Parent node name
      * @param bool $hassiteconfig whether the current user has moodle/site:config capability
      */
     public function load_settings(part_of_admin_tree $adminroot, $parentnodename, $hassiteconfig) {

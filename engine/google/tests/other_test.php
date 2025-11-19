@@ -81,6 +81,7 @@ final class other_test extends \advanced_testcase {
             $this->assertTrue(array_key_exists($value, $languages1));
             $this->assertTrue(array_key_exists($key, $languages2));
         }
+
         $this->assertSame('Behat', $class->translatetext('en', 'fr', 'boe'));
         $this->assertSame('Behat', $class->translatetext('en', 'en', 'boe'));
     }

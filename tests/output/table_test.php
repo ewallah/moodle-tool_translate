@@ -62,18 +62,22 @@ final class table_test extends advanced_testcase {
             ]
         );
         $gen->create_module('book', ['course' => $course->id]);
+
         $lesson = $gen->create_module('lesson', ['course' => $course->id]);
         $lessongenerator = $gen->get_plugin_generator('mod_lesson');
         $lessongenerator->create_content($lesson);
         $lessongenerator->create_question_truefalse($lesson);
+
         $feedback = $gen->create_module('feedback', ['course' => $course->id]);
         $fg = $gen->get_plugin_generator('mod_feedback');
         $fg->create_item_numeric($feedback);
         $fg->create_item_multichoice($feedback);
+
         $glossary = $gen->create_module('glossary', ['course' => $course->id]);
         $glossarygenerator = $gen->get_plugin_generator('mod_glossary');
         $glossarygenerator->create_content($glossary);
         $glossarygenerator->create_content($glossary, ['concept' => 'Custom concept']);
+
         $gen->create_module('choice', ['course' => $course->id]);
         $gen->create_module('forum', ['course' => $course->id]);
         $gen->create_module('resource', ['course' => $course->id]);
@@ -81,6 +85,7 @@ final class table_test extends advanced_testcase {
         ob_start();
         $table = new translation_table($course);
         $table->filldata();
+
         $out = html_writer::table($table);
         ob_end_clean();
         $this->assertStringContainsString($lesson->name, $out);
@@ -90,6 +95,7 @@ final class table_test extends advanced_testcase {
         ob_start();
         $table = new translation_table($course);
         $table->filldata();
+
         $out = html_writer::table($table);
         ob_end_clean();
         $this->assertStringContainsString($lesson->name, $out);

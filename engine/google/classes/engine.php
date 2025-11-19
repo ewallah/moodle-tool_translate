@@ -38,6 +38,7 @@ use moodle_exception;
 class engine extends \tool_translate\engine {
     /** @var \stdClass client */
     protected $client;
+
     /** @var \stdClass service */
     protected $service;
 
@@ -45,7 +46,6 @@ class engine extends \tool_translate\engine {
      * Rough calculation of price.
      *
      * @param int $letters price per letters
-     * @return string
      */
     public function get_price(int $letters): string {
          return format_float(20 / 1000000 * $letters, 5);
@@ -128,14 +128,16 @@ class engine extends \tool_translate\engine {
                     $response = curl_exec($handle);
                     $responsecode = curl_getinfo($handle, CURLINFO_HTTP_CODE);
                     $responsed = json_decode($response, true);
-                    $responsed = html_entity_decode($responsed['data']['translations'][0]['translatedText']);
+                    $responsed = html_entity_decode((string) $responsed['data']['translations'][0]['translatedText']);
                 }
+
                 curl_close($handle);
                 $return = ($responsecode == 200) ? $responsed : null;
-            } catch (exception $e) {
+            } catch (exception) {
                 return null;
             }
         }
+
         return $return;
     }
 }

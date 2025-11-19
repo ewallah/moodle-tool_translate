@@ -75,6 +75,7 @@ final class other_test extends advanced_testcase {
         $this->assertNotEmpty($translateengine->full_path('settings.php'));
         $this->assertEquals('translateengine_aws', $translateengine->get_settings_section_name());
         $category = new \admin_category('translateengines', new lang_string('settings', 'tool_translate'));
+        $this->setAdminUser();
         $translateengine->load_settings($category, 'aws', true);
     }
 
@@ -98,6 +99,7 @@ final class other_test extends advanced_testcase {
         ob_start();
         $pluginmanager->execute('hide', 'aws');
         $pluginmanager->execute(null, null);
+
         $out = ob_get_contents();
         ob_end_clean();
         $this->assertStringContainsString('aws', $out);
@@ -151,24 +153,28 @@ final class other_test extends advanced_testcase {
         $fordb->imageauthorurl = "http://author-url.example.com";
         $fordb->imagecaption = "Test caption image";
         $fordb->status = BADGE_STATUS_INACTIVE;
+
         $DB->insert_record('badge', $fordb, true);
 
         $lesson = $generator->create_module('lesson', ['course' => $course->id]);
         $lessongenerator = $generator->get_plugin_generator('mod_lesson');
         $lessongenerator->create_content($lesson);
         $lessongenerator->create_question_truefalse($lesson);
+
         $page = $generator->create_module('page', ['course' => $course->id]);
         $book = $generator->create_module('book', ['course' => $course->id]);
         $feedback = $generator->create_module('feedback', ['course' => $course->id]);
         $fg = $generator->get_plugin_generator('mod_feedback');
         $fg->create_item_numeric($feedback);
         $fg->create_item_multichoice($feedback);
+
         $choice = $generator->create_module('choice', ['course' => $course->id]);
         $forum = $generator->create_module('forum', ['course' => $course->id]);
         $glossary = $generator->create_module('glossary', ['course' => $course->id]);
         $glossarygenerator = $generator->get_plugin_generator('mod_glossary');
         $glossarygenerator->create_content($glossary);
         $glossarygenerator->create_content($glossary, ['concept' => 'Custom concept']);
+
         $quizgen = $generator->get_plugin_generator('mod_quiz');
         $quiz = $quizgen->create_instance(['course' => $course->id]);
         $questiongenerator = $generator->get_plugin_generator('core_question');
@@ -228,7 +234,7 @@ final class other_test extends advanced_testcase {
         $engine = new \translateengine_aws\engine($this->course);
         $reflection = new \ReflectionClass('\tool_translate\engine');
         $this->expectExceptionMessage('language not supported');
-        $reflection->getMethod('lang_supported')->invoke($engine, ['xx']);
+        $reflection->getMethod('lang_supported')->invoke($engine, 'xx');
     }
 
     /**
@@ -247,6 +253,6 @@ final class other_test extends advanced_testcase {
         );
         $this->assertStringContainsString('Automatic translated strings (fr) for tool_translate', $out);
         $this->expectExceptionMessage('Plugin not found');
-        $out = $engine->translate_plugin('tool_translatefake', 'en', 'fr');
+        $engine->translate_plugin('tool_translatefake', 'en', 'fr');
     }
 }

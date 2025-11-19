@@ -31,7 +31,7 @@ if (is_siteadmin()) {
         $s = 'translateengine_deepl';
         $t = get_strings(['pluginname', 'api_key'], $s);
         $settings = new admin_settingpage($s . '_settings', $t->pluginname);
-        $setting = new admin_setting_configtext("$s/api_key", $t->api_key, '', '');
+        $setting = new admin_setting_configtext("{$s}/api_key", $t->api_key, '', '');
         $settings->add($setting);
     }
 }

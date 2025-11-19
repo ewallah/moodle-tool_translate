@@ -39,7 +39,6 @@ class engine extends \tool_translate\engine {
      * Rough calculation of price.
      *
      * @param int $letters price per letters
-     * @return string
      */
     public function get_price(int $letters): string {
         // TODO:  Get price.
@@ -94,17 +93,19 @@ class engine extends \tool_translate\engine {
                 } else {
                     $resp = $curl->post('https://api.deepl.com/v2/translate?', $params);
                 }
+
                 $resp = json_decode($resp);
                 // Get the translation and return translation.
                 if (!empty($resp->translations[0]->text) && $resp->translations[0]->detected_source_language !== $source) {
-                    return html_entity_decode($resp->translations[0]->text);
-                } else {
-                    return $txt;
+                    return html_entity_decode((string) $resp->translations[0]->text);
                 }
+
+                return $txt;
             } catch (exception $e) {
-                throw new moodle_exception($e->get_message());
+                throw new moodle_exception($e->get_message(), $e->getCode(), $e);
             }
         }
+
         return null;
     }
 }

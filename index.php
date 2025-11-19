@@ -23,7 +23,7 @@
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-require_once(dirname(__FILE__) . '/../../../config.php');
+require_once(__DIR__ . '/../../../config.php');
 require_once($CFG->libdir . '/adminlib.php');
 
 $courseid = required_param('course', PARAM_INT);
@@ -54,24 +54,23 @@ $PAGE->set_heading($course->fullname);
 echo $OUTPUT->header();
 
 $table = new \tool_translate\output\translation_table($course);
-if ($action === 'translate') {
-    if (confirm_sesskey()) {
-        $sectionid = optional_param('sectionid', 0, PARAM_INT);
-        core_php_time_limit::raise();
-        raise_memory_limit(MEMORY_EXTRA);
-        if ($sectionid > 0) {
-            // Translate section.
-            $out = $table->translate_section($sectionid);
-        } else {
-            $cmid = optional_param('cmid', 0, PARAM_INT);
-            $out = ($cmid > 0) ? $table->translate_module($cmid) : $table->translate_other();
-        }
+if ($action === 'translate' && confirm_sesskey()) {
+    $sectionid = optional_param('sectionid', 0, PARAM_INT);
+    core_php_time_limit::raise();
+    raise_memory_limit(MEMORY_EXTRA);
+    if ($sectionid > 0) {
+        // Translate section.
+        $out = $table->translate_section($sectionid);
+    } else {
+        $cmid = optional_param('cmid', 0, PARAM_INT);
+        $out = ($cmid > 0) ? $table->translate_module($cmid) : $table->translate_other();
     }
 }
 
 if ($out !== '') {
     echo $OUTPUT->notification($out, 'succes');
 }
+
 $table->filldata();
 echo html_writer::table($table);
 echo $OUTPUT->footer($course);

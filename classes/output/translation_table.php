@@ -47,16 +47,22 @@ use stdClass;
 class translation_table extends html_table {
     /** @var stdClass course */
     protected $course;
+
     /** @var stdClass engine */
     public $engine;
+
     /** @var int words */
     protected $words = 0;
+
     /** @var int letters */
     public $letters = 0;
+
     /** @var int counter */
     protected $counter = 0;
+
     /** @var string source */
     protected $source = 'en';
+
     /** @var string target */
     protected $target = 'fr';
 
@@ -89,9 +95,8 @@ class translation_table extends html_table {
 
     /**
      * Fill the data
-     *
      */
-    public function filldata() {
+    public function filldata(): void {
         global $OUTPUT;
         rebuild_course_cache($this->course->id, true);
         $icon = $OUTPUT->pix_icon('i/course', '', 'moodle', ['class' => 'icon']);
@@ -102,10 +107,13 @@ class translation_table extends html_table {
         $modinfo = get_fast_modinfo($this->course->id, -1);
         $sections = $modinfo->get_section_info_all();
         $modinfosections = $modinfo->get_sections();
+
         $options = new stdClass();
         $options->noclean = true;
         $options->overflowdiv = true;
+
         $files = [];
+
         foreach ($sections as $key => $section) {
             $secid = $section->section;
             if (isset($modinfosections[$secid])) {
@@ -124,6 +132,7 @@ class translation_table extends html_table {
                 }
             }
         }
+
         $icon = $OUTPUT->pix_icon('i/folder', '', 'moodle', ['class' => 'icon']);
         $this->addrow($icon, get_string('files'), false);
         // TODO: Translate PDF - DOC - $this->data[] = $files;.
@@ -133,14 +142,22 @@ class translation_table extends html_table {
     /**
      * Add a row
      *
-     * @param string $icon
-     * @param string $text
-     * @param boolean $enabled
-     * @param string $translation
-     * @param string $id
-     * @param string $value
+     * @param string $icon Icon
+     * @param string $text Text
+     * @param bool $enabled Enabled
+     * @param string $translation Tranlation
+     * @param string $id Id
+     * @param string $value Value
      */
-    private function addrow($icon, $text, $enabled = true, $translation = '', $id = '', $value = '') {
+    private function addrow(
+        string $icon,
+        string $text,
+        bool $enabled = true,
+        string $translation = '',
+        string $id = '',
+        string $value = ''
+    ): void {
+
         $words = count_words($translation);
         $letters = count_letters($translation);
         $calc = $this->engine->get_price($letters);
@@ -155,11 +172,11 @@ class translation_table extends html_table {
     /**
      * Create a ibutton
      *
-     * @param array $params
+     * @param array $params Parameters
      * @param string $action defaults to translate
      * @return html_table_cell
      */
-    private function ibutton($params, $action = 'translate') {
+    private function ibutton(array $params, string $action = 'translate'): html_table_cell {
         global $OUTPUT;
         $cell = '';
         if ($this->engine->is_configured()) {
@@ -174,8 +191,6 @@ class translation_table extends html_table {
 
     /**
      * Translate all other fields
-     *
-     * @return string
      */
     public function translate_other(): string {
         $this->engine->counting = false;
@@ -189,10 +204,9 @@ class translation_table extends html_table {
     /**
      * Translate section
      *
-     * @param int $sectionid
-     * @return string
+     * @param int $sectionid Section id
      */
-    public function translate_section($sectionid): string {
+    public function translate_section(int $sectionid): string {
         $this->engine->counting = false;
         $this->engine->targetlang = $this->target;
         $this->engine->sourcelang = $this->source;
@@ -204,10 +218,9 @@ class translation_table extends html_table {
     /**
      * Translate module
      *
-     * @param int $moduleid
-     * @return string
+     * @param int $moduleid Module Id
      */
-    public function translate_module($moduleid): string {
+    public function translate_module(int $moduleid): string {
         $this->engine->counting = false;
         $this->engine->targetlang = $this->target;
         $this->engine->sourcelang = $this->source;
@@ -219,11 +232,10 @@ class translation_table extends html_table {
     /**
      * Translate full course
      *
-     * @param string $sourcelang
-     * @param string $targetlang
-     * @return string
+     * @param string $sourcelang Source
+     * @param string $targetlang Target
      */
-    public function translate_all($sourcelang, $targetlang): string {
+    public function translate_all(string $sourcelang, string $targetlang): string {
         $this->engine->counting = false;
         $this->engine->targetlang = $targetlang;
         $this->engine->sourcelang = $sourcelang;

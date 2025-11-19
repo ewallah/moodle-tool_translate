@@ -41,7 +41,6 @@ class engine extends \tool_translate\engine {
      * Rough calculation of price.
      *
      * @param int $letters price per letters
-     * @return string
      */
     public function get_price(int $letters): string {
         return format_float(15 / 1000000 * $letters, 5);
@@ -62,10 +61,12 @@ class engine extends \tool_translate\engine {
             if (defined('BEHAT_SITE_RUNNING') || PHPUNIT_TEST) {
                 $mock = new \Aws\MockHandler();
                 for ($i = 1; $i < 1000; $i++) {
-                    $mock->append(new \Aws\Result(['TranslatedText' => "BEHAT $i"]));
+                    $mock->append(new \Aws\Result(['TranslatedText' => "BEHAT {$i}"]));
                 }
+
                 $arr['handler'] = $mock;
             }
+
             $this->awsclient = \Aws\Translate\TranslateClient::factory($arr);
         }
     }
@@ -117,11 +118,12 @@ class engine extends \tool_translate\engine {
                         'Text' => $txt,
                     ]
                 );
-                return html_entity_decode($arr['TranslatedText']);
+                return html_entity_decode((string) $arr['TranslatedText']);
             } catch (exception $e) {
-                throw new moodle_exception($e->get_message());
+                throw new moodle_exception($e->get_message(), $e->getCode(), $e);
             }
         }
+
         return null;
     }
 }

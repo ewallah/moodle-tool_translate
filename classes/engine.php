@@ -56,7 +56,7 @@ abstract class engine {
     /**
      * Constructor
      *
-     * @param course $course
+     * @param course $course Course
      */
     public function __construct($course) {
         $this->course = $course;
@@ -64,8 +64,6 @@ abstract class engine {
 
     /**
      * The name of this engine.
-     *
-     * @return string
      */
     public function get_name(): string {
         $classname = str_ireplace('\engine', '', get_class($this));
@@ -74,16 +72,13 @@ abstract class engine {
 
     /**
      * Is the translate engine fully configured and ready to use.
-     *
-     * @return bool if the engine is ready for use
      */
     abstract public function is_configured(): bool;
 
     /**
      * Rough calculation of price.
      *
-     * @param int $letters count of letters
-     * @return string
+     * @param int $letters Count of letters
      */
     abstract public function get_price(int $letters): string;
 
@@ -98,11 +93,9 @@ abstract class engine {
 
     /**
      * Is language supported.
-     *
-     * @param string $lang
-     * @return bool
+     * @param string $lang Language code
      */
-    public function lang_supported($lang): bool {
+    public function lang_supported(string $lang): bool {
         $values = array_values($this->supported_langs());
         if (!in_array($lang, $values, true)) {
             throw new moodle_exception('language not supported');
@@ -122,8 +115,6 @@ abstract class engine {
 
     /**
      * Translate other
-     *
-     * @return string
      */
     public function translate_other(): string {
         global $CFG, $DB;
@@ -156,35 +147,35 @@ abstract class engine {
         $event = event\course_translated::create(['context' => $context]);
         $event->trigger();
         rebuild_course_cache($id);
-        return "$s <br/>Course with id $id translated all extra elements.";
+        return "{$s} <br/>Course with id {$id} translated all extra elements.";
     }
 
     /**
      * Translate section
      *
-     * @param int $sectionid
-     * @return string
+     * @param int $sectionid Section id
      */
-    public function translate_section($sectionid): string {
+    public function translate_section(int $sectionid): string {
         $s = $this->add_records('course_sections', 'id', $sectionid);
+
         if ($this->counting) {
             return $s;
         }
+
         $context = context_course::instance($this->course->id);
         $event = event\module_translated::create(['context' => $context, 'other' => ['sectionid' => $sectionid]]);
         $event->trigger();
         rebuild_course_cache($this->course->id);
         $courseformat = course_get_format($this->course)->get_format();
-        return $s . get_string('sectionname', 'format_' . $courseformat) . " with id $sectionid translated";
+        return $s . get_string('sectionname', 'format_' . $courseformat) . " with id {$sectionid} translated";
     }
 
     /**
      * Translate module
      *
-     * @param int $moduleid
-     * @return string
+     * @param int $moduleid Modulle id
      */
-    public function translate_module($moduleid): string {
+    public function translate_module(int $moduleid): string {
         global $CFG;
         require_once($CFG->libdir . '/questionlib.php');
         $modinfo = get_fast_modinfo($this->course->id, -1);
@@ -228,7 +219,7 @@ abstract class engine {
                         $s .= $this->add_records('question_order', 'question', $sid);
                         $s .= $this->add_records('question_order_sub', 'question', $sid);
                         $q = \question_bank::load_question($sid);
-                        $qt = get_class($q->qtype);
+                        $qt = $q->qtype::class;
                         // Brute force collect feedback.
                         $s .= $this->add_records($qt, 'questionid', $sid);
                         $s .= $this->add_records($qt . '_options', 'questionid', $sid);
@@ -252,46 +243,44 @@ abstract class engine {
         rebuild_course_cache($this->course->id);
         $cm = $modinfo->cms[$moduleid];
         $url = html_writer::link($cm->url, $cm->get_formatted_name());
-        return "$s<br/>Module with id $moduleid translated<br/>$url<br/>";
+        return "{$s}<br/>Module with id {$moduleid} translated<br/>{$url}<br/>";
     }
 
     /**
      * Add record
      *
-     * @param string $tablename
-     * @param string $fieldname
-     * @param int $id
-     * @param array $extra
-     * @return string
+     * @param string $tablename Table name
+     * @param string $fieldname Field name
+     * @param int $id Id
+     * @param array $extra Extra
      */
-    private function add_records($tablename, $fieldname, $id, $extra = []) {
+    private function add_records(string $tablename, string $fieldname, int $id, array $extra = []): string {
         global $DB;
         $s = '';
         $dbman = $DB->get_manager();
-        if ($dbman->table_exists($tablename)) {
-            if ($dbman->field_exists($tablename, $fieldname)) {
-                $items = $DB->get_records($tablename, [$fieldname => $id]);
-                foreach ($items as $item) {
-                    $s .= $this->translate_record($tablename, $item->id, $extra);
-                }
+        if ($dbman->table_exists($tablename) && $dbman->field_exists($tablename, $fieldname)) {
+            $items = $DB->get_records($tablename, [$fieldname => $id]);
+            foreach ($items as $item) {
+                $s .= $this->translate_record($tablename, $item->id, $extra);
             }
         }
+
         return $s;
     }
 
     /**
      * Translate record
      *
-     * @param string $table
-     * @param int $id
-     * @param array $fields
-     * @return string
+     * @param string $table Table
+     * @param int $id Id
+     * @param array $fields Fields
      */
-    private function translate_record($table, $id, $fields = []) {
+    private function translate_record(string $table, int $id, array $fields = []): string {
         global $DB;
         if (!$this->counting && (is_null($this->targetlang) || is_null($this->sourcelang))) {
             throw new moodle_exception('Language not specified');
         }
+
         $s = [];
         if ($record = $DB->get_record($table, ['id' => $id])) {
             $dbman = $DB->get_manager();
@@ -342,12 +331,11 @@ abstract class engine {
     /**
      * Translate a plugin
      *
-     * @param string $component
-     * @param string $fromlanguage
-     * @param string $tolanguage
-     * @return string
+     * @param string $component Component
+     * @param string $fromlanguage From
+     * @param string $tolanguage  To
      */
-    public function translate_plugin($component, $fromlanguage, $tolanguage) {
+    public function translate_plugin(string $component, string $fromlanguage, string $tolanguage): string {
         global $CFG;
         require_once($CFG->dirroot . '/admin/tool/customlang/locallib.php');
         $done = [];
@@ -371,10 +359,9 @@ abstract class engine {
      *
      * @param string $lang the language
      * @param string $component the name of the component
-     * @param array $strings
-     * @return string
+     * @param array $strings strings
      */
-    protected static function dump_strings($lang, $component, $strings) {
+    protected static function dump_strings(string $lang, string $component, array $strings): string {
         $admin = fullname(get_admin());
         $year = date("Y");
         $str = "<?php
@@ -395,10 +382,10 @@ abstract class engine {
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Automatic translated strings ($lang) for $component
+ * Automatic translated strings ({$lang}) for {$component}
  *
- * @package   $component
- * @copyright $year $admin
+ * @package   {$component}
+ * @copyright {$year} {$admin}
  * @author    tool_translate
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
@@ -406,7 +393,7 @@ abstract class engine {
 ";
 
         foreach ($strings as $stringid => $text) {
-            $str .= '$string[\'' . $stringid . '\'] =  ' . var_export($text, true) . ';
+            $str .= '$string[\'' . $stringid .  "'] =  " . var_export($text, true) . ';
 ';
         }
         return $str;
