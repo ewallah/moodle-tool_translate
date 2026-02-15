@@ -100,7 +100,7 @@ class translation_table extends html_table {
         global $OUTPUT;
         rebuild_course_cache($this->course->id, true);
         $icon = $OUTPUT->pix_icon('i/course', '', 'moodle', ['class' => 'icon']);
-        $this->addrow($icon, get_string('course'), true, $this->engine->translate_other(), 'course', $this->course->id);
+        $this->addrow($icon, get_string('course'), false, $this->engine->translate_other(), 'course', $this->course->id);
         get_fast_modinfo($this->course, -1, true);
         $spacer = $OUTPUT->pix_icon('spacer', '', 'moodle', ['class' => 'icon']);
         $courseformat = course_get_format($this->course);
@@ -120,12 +120,12 @@ class translation_table extends html_table {
                 $url = new moodle_url('/course/editsection.php', ['id' => $secid]);
                 $url = html_writer::link($url, $courseformat->get_section_name($key));
                 $icon = $OUTPUT->pix_icon('i/section', '', 'moodle', ['class' => 'icon']);
-                $this->addrow($icon, $url, true, $this->engine->translate_section($section->id), 'section', $secid);
+                $this->addrow($icon, $url, false, $this->engine->translate_section($section->id), 'section', $secid);
                 foreach ($modinfosections[$key] as $cmid) {
                     $cm = $modinfo->cms[$cmid];
                     $icon = html_writer::empty_tag('img', ['src' => $cm->get_icon_url(), 'class' => 'icon']);
                     $url = html_writer::link($cm->url, $cm->get_formatted_name());
-                    $this->addrow($spacer . $icon, $url, true, $this->engine->translate_module($cmid), 'module', $cmid);
+                    $this->addrow($spacer . $icon, $url, false, $this->engine->translate_module($cmid), 'module', $cmid);
                     if ($cm->modname == 'resource') {
                         $files[] = new html_table_row(['', $cm->get_formatted_name(), 0, 0]);
                     }
@@ -162,7 +162,8 @@ class translation_table extends html_table {
         $letters = count_letters($translation);
         $calc = $this->engine->get_price($letters);
         $cell = html_writer::checkbox($id, $letters, $enabled, null, ['id' => $id . $value]);
-        $row = new html_table_row([$cell, $icon . ' ' . $text, $this->ibutton([]), $words, $calc]);
+        $ops = ((int)$value > 0 && $id == 'module') ? ['cmid' => $value] : [];
+        $row = new html_table_row([$cell, $icon . ' ' . $text, $this->ibutton($ops), $words, $calc]);
         $row->attributes['class'] = 'rowid' . $this->counter++;
         $this->data[] = $row;
         $this->words += $words;

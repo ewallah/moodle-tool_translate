@@ -43,6 +43,17 @@ class engine extends \tool_translate\engine {
      * @param int $letters price per letters
      */
     public function get_price(int $letters): string {
+        // TODO: Get price using api.
+        $r = get_config('translateengine_aws', 'region');
+        $k = get_config('translateengine_aws', 'access_key');
+        $s = get_config('translateengine_aws', 'secret_key');
+        $arr = ['region' => $r, 'credentials' => ['key' => $k, 'secret' => $s]];
+        if ($r && $k && $s) {
+            if (defined('BEHAT_SITE_RUNNING') || PHPUNIT_TEST) {
+                return format_float(15 / 1000000 * $letters, 5);
+            }
+            $awsclient = \Aws\Pricing\PricingClient::factory($arr);
+        }
         return format_float(15 / 1000000 * $letters, 5);
     }
 
