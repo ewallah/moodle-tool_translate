@@ -131,7 +131,6 @@ class engine extends \tool_translate\engine {
                     $responsed = html_entity_decode((string) $responsed['data']['translations'][0]['translatedText']);
                 }
 
-                curl_close($handle);
                 $return = ($responsecode == 200) ? $responsed : null;
             } catch (exception) {
                 return null;
